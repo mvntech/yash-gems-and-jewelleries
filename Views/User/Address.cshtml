@@ -1,0 +1,242 @@
+﻿@{
+	ViewData["Title"] = "My Address";
+}
+
+<!-- Page Title -->
+<section class="flat-spacing-2 pb-0">
+    <div class="container">
+        <div class="page-title">
+            <div class="breadcrumbs">
+                <ul class="bread-wrap">
+                    <li><a href="index-2.html" class="text-main-4 link-secondary">Home</a></li>
+                    <li class="br-line w-12 bg-main"></li>
+                    <li>Account</li>
+                </ul>
+                <h1 class="heading fw-normal text-uppercase">
+                    my account
+                </h1>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Page Title -->
+<!-- Account -->
+<div class="flat-spacing">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
+                    <ul class="my-account-nav">
+                        <li>
+                            <a href="account-page.html" class="link-account ">
+                                <span class="text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="account-orders-empty.html" class="link-account">
+                                <span class="text">My Orders</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="wishlist.html" class="link-account">
+                                <span class="text">My Wishlist</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="account-addresses.html" class="link-account active">
+                                <span class="text">Addresses</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="account-details.html" class="link-account">
+                                <span class="text">Detail</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index-2.html" class="link-account">
+                                <span class="text">Log Out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="my-acount-content account-order" id="updateCountMain">
+                    <h4 class="heading fw-normal">
+                        your addresses (<span class="count_text">2</span>)
+                    </h4>
+                    <div class="widget-inner-address">
+                        <button class="tf-btn btn-fill animate-btn fw-medium btn-add-address">
+                            Add new address
+                        </button>
+                        <form class="wd-form-address style-border show-form-address">
+                            <div class="form-content-2">
+                                <div class="cols tf-grid-layout sm-col-2">
+                                    <fieldset>
+                                        <label class="text-label">First Name</label>
+                                        <input type="text" required>
+                                    </fieldset>
+                                    <fieldset>
+                                        <label class="text-label">Last Name</label>
+                                        <input type="text" required>
+                                    </fieldset>
+                                </div>
+                                <fieldset>
+                                    <label class="text-label">Company</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Address 1</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">City</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Country/region</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Province</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Postal/ZIP code</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Phone</label>
+                                    <input type="number" required>
+                                </fieldset>
+                                <div class="checkbox-wrap">
+                                    <input id="set-def-1" type="checkbox" class="tf-check style-4 p-0">
+                                    <label for="set-def-1">Set as default address</label>
+                                </div>
+                            </div>
+
+                            <div class="group-btn-form">
+                                <button class="tf-btn btn-fill fw-medium animate-btn" type="submit">
+                                    Add Address
+                                </button>
+                                <a href="javascript:void(0);" class="tf-btn btn-out-line fw-medium btn-hide-address">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                        <ul class="list-account-address tf-grid-layout md-col-2">
+                            <li class="account-address-item count_item">
+                                <p class="title">
+                                    15 Yarran st (Default address)
+                                </p>
+                                <div class="info-detail">
+                                    <div class="box-infor">
+                                        <span>Vincent Pham</span>
+                                        <span>account@yash.com</span>
+                                        <span>Company</span>
+                                        <span>16 Yarran st</span>
+                                        <span>Punchbowl</span>
+                                        <span>Australia</span>
+                                        <span>2196</span>
+                                        <span>+61 1234 3435</span>
+                                    </div>
+                                    <div class="box-btn">
+                                        <button class="tf-btn btn-out-line fw-medium btn-edit-address" data-form="form-edit-1">
+                                            Edit
+                                        </button>
+                                        <button class="tf-btn btn-out-line fw-medium btn-delete-address count_del" data-form="form-edit-1">
+                                            Delete
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li class="account-address-item count_item">
+                                <p class="title">
+                                    17 Yarran st
+                                </p>
+                                <div class="info-detail">
+                                    <div class="box-infor">
+                                        <span>Mas Shin</span>
+                                        <span>shin@yash.com</span>
+                                        <span>Company</span>
+                                        <span>25 Maple Ave</span>
+                                        <span>Bankstown</span>
+                                        <span>Australia</span>
+                                        <span>2200</span>
+                                        <span>+61 412 567 890</span>
+                                    </div>
+                                    <div class="box-btn">
+                                        <button class="tf-btn btn-out-line fw-medium btn-edit-address" data-form="form-edit-2">
+                                            Edit
+                                        </button>
+                                        <button class="tf-btn btn-out-line fw-medium btn-delete-address count_del" data-form="form-edit-2">
+                                            Delete
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </li>
+                        </ul>
+                        <form class="wd-form-address style-border edit-form-address">
+                            <div class="form-content-2">
+                                <div class="cols tf-grid-layout sm-col-2">
+                                    <fieldset>
+                                        <label class="text-label">First Name</label>
+                                        <input type="text" required>
+                                    </fieldset>
+                                    <fieldset>
+                                        <label class="text-label">Last Name</label>
+                                        <input type="text" required>
+                                    </fieldset>
+                                </div>
+                                <fieldset>
+                                    <label class="text-label">Company</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Address 1</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">City</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Country/region</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Province</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Postal/ZIP code</label>
+                                    <input type="text" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label class="text-label">Phone</label>
+                                    <input type="number" required>
+                                </fieldset>
+                                <div class="checkbox-wrap">
+                                    <input id="set-def-2" type="checkbox" class="tf-check style-4 p-0">
+                                    <label for="set-def-2">Set as default address</label>
+                                </div>
+                            </div>
+
+                            <div class="group-btn-form">
+                                <button class="tf-btn btn-fill fw-medium animate-btn" type="submit">
+                                    Update
+                                </button>
+                                <a href="javascript:void(0);" class="tf-btn btn-out-line fw-medium btn-hide-edit-address">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Account -->

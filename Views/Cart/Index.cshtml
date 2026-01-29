@@ -1,0 +1,519 @@
+﻿@{
+	ViewData["Title"] = "My Cart";
+}
+
+<!-- Page Title -->
+<section class="flat-spacing-2 pb-0">
+    <div class="container">
+        <div class="page-title">
+            <div class="breadcrumbs">
+                <ul class="bread-wrap">
+                    <li><a href="index-2.html" class="text-main-4 link">Home</a></li>
+                    <li class="br-line w-12 bg-main"></li>
+                    <li>Cart</li>
+                </ul>
+                <h1 class="heading fw-normal">
+                    shopping cart
+                </h1>
+            </div>
+            <div class="box-delivery">
+                <h6 class="text fw-normal text-uppercase">
+                    Spend <span class="fw-medium">$100</span> more to get
+                    <span class="fw-medium">
+                        Free
+                        Shipping
+                    </span>
+                </h6>
+                <div class="progress-cart tf-progress-ship">
+                    <div class="value" style="width: 0%;" data-progress="66">
+                        <i class="icon icon-delivery"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Page Title -->
+<!-- Shop Cart -->
+<section class="flat-spacing s-shop-cart each-list-prd">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="left mb-xl-0">
+                    <div class="table-shop-cart table-order-detail">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="order_product h6 fw-normal">Product</th>
+                                    <th class="order_price h6 fw-normal">price</th>
+                                    <th class="order_quantity h6 fw-normal">quantity</th>
+                                    <th class="order_subtotal h6 fw-normal">subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="file-delete order_item each-prd">
+                                    <td>
+                                        <div class="order_product">
+                                            <a href="#" class="image">
+                                                <img src="/app/images/products/product-1.jpg" alt="">
+                                            </a>
+                                            <div class="infor">
+                                                <a href="#" class="prd-name h6 fw-normal link">
+                                                    Crystal Birthstone Eternity Circle Charm
+                                                </a>
+                                                <p class="prd-type">Rose Gold / 50</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="order_price each-price">$130.00</td>
+                                    <td>
+                                        <div class="order_quantity">
+                                            <div class="wg-quantity style-2">
+                                                <button class="btn-quantity minus-quantity"><i class="icon-minus"></i></button>
+                                                <input class="quantity-product" type="text" name="number" value="1">
+                                                <button class="btn-quantity plus-quantity"><i class="icon-plus"></i></button>
+                                            </div>
+                                            <span class="remove tf-btn-line style-line-2 fw-normal">Remove</span>
+                                        </div>
+                                    </td>
+                                    <td class="order_subtotal each-subtotal-price"></td>
+                                </tr>
+                                <tr class="file-delete order_item each-prd">
+                                    <td>
+                                        <div class="order_product">
+                                            <a href="#" class="image">
+                                                <img src="/app/images/products/product-2.jpg" alt="">
+                                            </a>
+                                            <div class="infor">
+                                                <a href="#" class="prd-name h6 fw-normal link">
+                                                    Engagement Ring in 18k Yellow Gold
+                                                </a>
+                                                <p class="prd-type">Rose Gold / 50</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="order_price each-price">$130.00</td>
+                                    <td>
+                                        <div class="order_quantity">
+                                            <div class="wg-quantity style-2">
+                                                <button class="btn-quantity minus-quantity"><i class="icon-minus"></i></button>
+                                                <input class="quantity-product" type="text" name="number" value="1">
+                                                <button class="btn-quantity plus-quantity"><i class="icon-plus"></i></button>
+                                            </div>
+                                            <span class="remove tf-btn-line style-line-2 fw-normal">Remove</span>
+                                        </div>
+                                    </td>
+                                    <td class="order_subtotal each-subtotal-price"></td>
+                                </tr>
+                                <tr class="file-delete order_item each-prd">
+                                    <td>
+                                        <div class="order_product">
+                                            <a href="#" class="image">
+                                                <img src="/app/images/products/product-3.jpg" alt="">
+                                            </a>
+                                            <div class="infor">
+                                                <a href="#" class="prd-name h6 fw-normal link">
+                                                    Ball Bracelet
+                                                </a>
+                                                <p class="prd-type">Rose Gold / 50</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="order_price each-price">$130.00</td>
+                                    <td>
+                                        <div class="order_quantity">
+                                            <div class="wg-quantity style-2">
+                                                <button class="btn-quantity minus-quantity"><i class="icon-minus"></i></button>
+                                                <input class="quantity-product" type="text" name="number" value="1">
+                                                <button class="btn-quantity plus-quantity"><i class="icon-plus"></i></button>
+                                            </div>
+                                            <span class="remove tf-btn-line style-line-2 fw-normal">Remove</span>
+                                        </div>
+                                    </td>
+                                    <td class="order_subtotal each-subtotal-price"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="checkbox-wrap">
+                        <input id="add-gift" type="checkbox" class="tf-check style-4">
+                        <label for="add-gift">Add gift packaging ($10.00)</label>
+                    </div>
+                    <form class="style-border">
+                        <fieldset>
+                            <label class="label-text">Special instructions for seller</label>
+                            <textarea style="height: 206px;"></textarea>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="right">
+                    <div class="checkout-sidebar">
+                        <form class="form-checkout-sidebar">
+                            <div class="form-content">
+                                <h4 class="title-total">
+                                    TOTAL:
+                                    <span class="each-total-price"></span>
+                                </h4>
+                                <p class="tax-text">
+                                    Taxes and shipping calculated at checkout
+                                </p>
+                                <span class="br-line"></span>
+                                <div class="checkbox-wrap">
+                                    <input id="agree-term" type="checkbox" class="tf-check style-4" required>
+                                    <label for="agree-term">I argee Terms and conditions</label>
+                                </div>
+                            </div>
+                            <button type="button" id="checkout-btn" class="tf-btn btn-fill fw-medium animate-btn w-100">
+                                CHECKOUT
+                            </button>
+                        </form>
+                        <p class="text-caption text-center text-we-accept">We accept</p>
+                        <ul class="paymend-method-list justify-content-center">
+                            <li><a href="#"><img src="/app/images/payment/visa-2.svg" alt=""></a></li>
+                            <li><a href="#"><img src="/app/images/payment/dinner-2.svg" alt=""></a></li>
+                            <li><a href="#"><img src="/app/images/payment/master-3.svg" alt=""></a></li>
+                            <li><a href="#"><img src="/app/images/payment/stripe.svg" alt=""></a></li>
+                            <li><a href="#"><img src="/app/images/payment/paypal.svg" alt=""></a></li>
+                            <li><a href="#"><img src="/app/images/payment/gg-pay-2.svg" alt=""></a></li>
+                            <li><a href="#"><img src="/app/images/payment/apple-pay-2.svg" alt=""></a></li>
+                        </ul>
+                    </div>
+                    <div class="tes-slider tf-btn-swiper-item">
+                        <div dir="ltr" class="swiper tf-swiper" data-space-lg="30" data-space-md="20" data-space="15">
+                            <div class="swiper-wrapper">
+                                <!-- item 1 -->
+                                <div class="swiper-slide">
+                                    <div class="box_testimonial--V04">
+                                        <div class="tes-top">
+                                            <i class="icon icon-quote-3 text-primary"></i>
+                                            <ul class="rate-wrap">
+                                                <li><i class="icon-star"></i></li>
+                                                <li><i class="icon-star"></i></li>
+                                                <li><i class="icon-star"></i></li>
+                                                <li><i class="icon-star"></i></li>
+                                                <li><i class="icon-star"></i></li>
+                                            </ul>
+                                        </div>
+                                        <p class="tes-text">
+                                            I was blown away by the craftsmanship and detail of my necklace. It’s even more stunning in
+                                            person! Yash truly delivers timeless elegance.
+                                        </p>
+                                        <div class="tes-author">
+                                            <div class="author-avt">
+                                                <img src="/app/images/avatar/avt-5.jpg" alt="">
+                                            </div>
+                                            <span class="author-name fw-medium">Vincent P.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- item 2 -->
+                                <div class="swiper-slide">
+                                    <div class="box_testimonial--V04">
+                                        <div class="tes-top">
+                                            <i class="icon icon-quote-3 text-primary"></i>
+                                            <ul class="rate-wrap">
+                                                <li><i class="icon-star"></i></li>
+                                                <li><i class="icon-star"></i></li>
+                                                <li><i class="icon-star"></i></li>
+                                                <li><i class="icon-star"></i></li>
+                                                <li><i class="icon-star"></i></li>
+                                            </ul>
+                                        </div>
+                                        <p class="tes-text">
+                                            These minimalist hoops add the perfect touch of elegance to any outfit. Designed for everyday wear
+                                            with a
+                                            sleek, modern finish — your new go-to accessory for effortless sophistication
+                                        </p>
+                                        <div class="tes-author">
+                                            <div class="author-avt">
+                                                <img src="/app/images/avatar/avt-4.jpg" alt="">
+                                            </div>
+                                            <span class="author-name fw-medium">Mas S.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- item 3 -->
+                            </div>
+                            <div class="group-btn-slider">
+                                <i class="tf-sw-nav icon-arrow-left nav-prev-swiper"></i>
+                                <i class="tf-sw-nav icon-arrow-right nav-next-swiper"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Shop Cart -->
+<!-- For You -->
+<section class="flat-spacing pt-0">
+    <div class="container">
+        <div class="sect-top wow fadeInUp">
+            <h3 class="s-title">YOU MAY ALSO LIKE</h3>
+            <div class="group-btn-slider">
+                <div class="nav-prev-swiper tf-sw-nav">
+                    <i class="icon-arrow-left"></i>
+                </div>
+                <div class="nav-next-swiper tf-sw-nav">
+                    <i class="icon-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-preview="4" data-tablet="3" data-mobile-sm="2" data-mobile="2"
+             data-space-lg="30" data-space-md="20" data-space="15" data-pagination="2" data-pagination-sm="2" data-pagination-md="3"
+             data-pagination-lg="4">
+            <div class="swiper-wrapper">
+                <!-- item 1 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="/app/images/products/product-22.jpg" data-src="/app/images/products/product-22.jpg" alt="Image Product"
+                                     class="lazyload img-product">
+                                <img src="/app/images/products/product-23.jpg" data-src="/app/images/products/product-23.jpg" alt="Image Product"
+                                     class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickAdd" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Quick Add</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                                <li class="compare">
+                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
+                                       class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-compare"></span>
+                                        <span class="tooltip">Add to Compare</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Open Heart Bangle
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$1,799.00</span>
+                                <span class="price-old fw-normal">$1,259.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 2 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="/app/images/products/product-24.jpg" data-src="/app/images/products/product-24.jpg" alt="Image Product"
+                                     class="lazyload img-product">
+                                <img src="/app/images/products/product-25.jpg" data-src="/app/images/products/product-25.jpg" alt="Image Product"
+                                     class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Add to Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                                <li class="compare">
+                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
+                                       class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-compare"></span>
+                                        <span class="tooltip">Add to Compare</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Crystal Birthstone Eternity Circle Charm
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$2,499.00</span>
+                                <span class="price-old fw-normal">$2,899.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 3 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="/app/images/products/product-26.jpg" data-src="/app/images/products/product-26.jpg" alt="Image Product"
+                                     class="lazyload img-product">
+                                <img src="/app/images/products/product-27.jpg" data-src="/app/images/products/product-27.jpg" alt="Image Product"
+                                     class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Add to Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                                <li class="compare">
+                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
+                                       class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-compare"></span>
+                                        <span class="tooltip">Add to Compare</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Ball Bracelet
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$3,199.00</span>
+                                <span class="price-old fw-normal">$2,239.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 4 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="/app/images/products/product-28.jpg" data-src="/app/images/products/product-28.jpg" alt="Image Product"
+                                     class="lazyload img-product">
+                                <img src="/app/images/products/product-29.jpg" data-src="/app/images/products/product-29.jpg" alt="Image Product"
+                                     class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Add to Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                                <li class="compare">
+                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
+                                       class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-compare"></span>
+                                        <span class="tooltip">Add to Compare</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Engagement Ring in 18k Yellow Gold
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$1,399.00</span>
+                                <span class="price-old fw-normal">$979.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 5 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="/app/images/products/product-22.jpg" data-src="/app/images/products/product-22.jpg" alt="Image Product"
+                                     class="lazyload img-product">
+                                <img src="/app/images/products/product-23.jpg" data-src="/app/images/products/product-23.jpg" alt="Image Product"
+                                     class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Add to Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                                <li class="compare">
+                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
+                                       class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-compare"></span>
+                                        <span class="tooltip">Add to Compare</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Open Heart Bangle
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$1,119.00</span>
+                                <span class="price-old fw-normal">$1,599.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sw-dot-default tf-sw-pagination d-xl-none"></div>
+        </div>
+    </div>
+</section>
+<!-- /For You -->
