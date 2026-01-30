@@ -833,7 +833,7 @@
                     case "United Kingdom":
                         regex = /^[A-Za-z]{1,2}\d[A-Za-z\d]? \d[A-Za-z]{2}$/;
                         break;
-                    case "India":
+                    case "Pakistan":
                         regex = /^\d{6}$/;
                         break;
                     case "Japan":

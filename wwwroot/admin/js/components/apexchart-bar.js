@@ -719,7 +719,7 @@ var options = {
       "Japan",
       "United States",
       "China",
-      "India",
+      "Pakistan",
     ],
   },
   yaxis: {
