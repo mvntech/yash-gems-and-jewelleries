@@ -53,7 +53,11 @@
                             </a>
                         </li>
                         <li>
-                            <a href="index-2.html" class="link-account">
+                            <form id="logoutFormSidebar" method="post" action="/Account/Logout" style="display:none;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="returnUrl" value="/" />
+                            </form>
+                            <a href="javascript:void(0)" onclick="document.getElementById('logoutFormSidebar').submit()" class="link-account">
                                 <span class="text">Log Out</span>
                             </a>
                         </li>

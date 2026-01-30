@@ -1,0 +1,24 @@
+@using Microsoft.AspNetCore.Identity
+@using Yash_Gems___Jewelleries.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <a asp-controller="Account" asp-action="Index" class="nav-icon-item text-black link" title="Account">
+        <i class="icon icon-user"></i>
+    </a>
+    <form id="logoutFormDesktop" method="post" action="/Account/Logout" style="display:none;">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="returnUrl" value="/" />
+    </form>
+    <a href="javascript:void(0)" onclick="document.getElementById('logoutFormDesktop').submit()" class="nav-icon-item text-black link" title="Logout">
+        <i class="icon-logout" style="font-size: 20px;"></i>
+    </a>
+}
+else
+{
+    <a href="#log" data-bs-toggle="modal" class="nav-icon-item text-black link">
+        <i class="icon icon-user"></i>
+    </a>
+}

@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/app/css/bootstrap.min.css">
     <link rel="stylesheet" href="/app/css/swiper-bundle.min.css">
     <link rel="stylesheet" href="/app/css/animate.css">
-    <link rel="stylesheet" href="/../../../../sibforms.com/forms/end-form/build/sib-styles.css">
     <link rel="stylesheet" type="text/css" href="/app/css/styles.css">
 
     <!-- Favicon and Touch Icons  -->
@@ -306,9 +305,7 @@
                             </li>
                             <li class="br-line d-none d-xl-flex"></li>
                             <li class="d-none d-md-inline-flex">
-                                <a href="#log" data-bs-toggle="modal" class="nav-icon-item text-black link">
-                                    <i class="icon icon-user"></i>
-                                </a>
+                                <partial name="_LoginPartial" />
                             </li>
                             <li class="d-none d-md-inline-flex">
                                 <a href="wishlist.html" class="nav-icon-item text-black link">
@@ -778,10 +775,24 @@
                             Wishlist
                         </a>
                         <p data-bs-dismiss="offcanvas">
-                            <a href="#log" data-bs-toggle="modal" class="site-nav-icon">
-                                <i class="icon icon-user"></i>
-                                Login
-                            </a>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <form method="post" action="/Account/Logout" id="logoutFormMobile">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="returnUrl" value="/" />
+                                    <button type="submit" class="site-nav-icon" style="background:none; border:none; padding:0; display:flex; align-items:center;">
+                                        <i class="icon icon-user"></i>
+                                        <span style="margin-left: 10px;">Logout</span>
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a href="#log" data-bs-toggle="modal" class="site-nav-icon">
+                                    <i class="icon icon-user"></i>
+                                    Login
+                                </a>
+                            }
                         </p>
                     </div>
                     <div class="mb-notice">
@@ -842,21 +853,23 @@
                     <h3 class="title fw-normal text-uppercase">login</h3>
                 </div>
                 <div class="modal-bottom">
-                    <form class="form-log">
+                    <div id="login-error" class="alert alert-danger" style="display:none; margin-bottom:15px;"></div>
+                    <form class="form-log" id="loginForm" method="post">
+                        @Html.AntiForgeryToken()
                         <div class="form-content">
                             <fieldset class="tf-field">
-                                <input class="tf-input" type="text" placeholder value="Hello@yash.com" required>
+                                <input class="tf-input" type="email" name="Input.Email" placeholder="hello@yash.com" required>
                                 <label class="tf-lable">Username *</label>
                             </fieldset>
                             <fieldset class="tf-field password-wrapper">
-                                <input class="tf-input password-field" type="password" placeholder required>
+                                <input class="tf-input password-field" type="password" name="Input.Password" placeholder="••••••••" required>
                                 <label class="tf-lable">Password *</label>
                                 <span class=" toggle-pass icon-show-password"></span>
                             </fieldset>
                         </div>
                         <div class="bottom">
                             <div class="checkbox-wrap">
-                                <input id="remember" type="checkbox" class="tf-check">
+                                <input id="remember" name="Input.RememberMe" type="checkbox" class="tf-check">
                                 <label for="remember">Remember me</label>
                             </div>
                             <a href="#reset" data-bs-toggle="offcanvas" class="link">
@@ -879,27 +892,32 @@
                             </span>
                             Log in with Facebook
                         </a>
-                        <a href="#" class="tf-btn style-2 ic-abs w-100 fw-medium">
-                            <span class="icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g>
-                                        <path d="M23.0938 9.91258L13.3045 9.91211C12.8722 9.91211 12.5218 10.2625 12.5218 10.6947V13.822C12.5218 14.2542 12.8722 14.6046 13.3044 14.6046H18.8172C18.2135 16.1712 17.0869 17.4832 15.6494 18.3168L18 22.386C21.7707 20.2052 24 16.3789 24 12.0955C24 11.4857 23.9551 11.0497 23.8652 10.5587C23.7968 10.1858 23.473 9.91258 23.0938 9.91258Z"
-                                              fill="#167EE6" />
-                                        <path d="M12 19.3037C9.30218 19.3037 6.94699 17.8297 5.68207 15.6484L1.61304 17.9938C3.68374 21.5826 7.56283 23.9994 12 23.9994C14.1768 23.9994 16.2307 23.4133 18 22.3919V22.3863L15.6494 18.3171C14.5742 18.9408 13.3299 19.3037 12 19.3037Z"
-                                              fill="#12B347" />
-                                        <path d="M18 22.3932V22.3876L15.6494 18.3184C14.5741 18.9419 13.33 19.3049 12 19.3049V24.0006C14.1767 24.0006 16.2308 23.4145 18 22.3932Z"
-                                              fill="#0F993E" />
-                                        <path d="M4.69566 12.0003C4.69566 10.6705 5.05856 9.42637 5.68205 8.3512L1.61302 6.00586C0.586031 7.76962 0 9.81797 0 12.0003C0 14.1826 0.586031 16.2309 1.61302 17.9947L5.68205 15.6494C5.05856 14.5742 4.69566 13.3301 4.69566 12.0003Z"
-                                              fill="#FFD500" />
-                                        <path d="M12 4.69566C13.7593 4.69566 15.3753 5.32078 16.6375 6.36061C16.9489 6.61711 17.4014 6.59859 17.6867 6.31336L19.9024 4.09758C20.2261 3.77395 20.203 3.24422 19.8573 2.94431C17.7425 1.10967 14.991 0 12 0C7.56283 0 3.68374 2.41673 1.61304 6.00558L5.68207 8.35092C6.94699 6.16969 9.30218 4.69566 12 4.69566Z"
-                                              fill="#FF4B26" />
-                                        <path d="M16.6374 6.36061C16.9488 6.61711 17.4015 6.59859 17.6866 6.31336L19.9024 4.09758C20.226 3.77395 20.2029 3.24422 19.8573 2.94431C17.7425 1.10962 14.991 0 12 0V4.69566C13.7592 4.69566 15.3752 5.32078 16.6374 6.36061Z"
-                                              fill="#D93F21" />
-                                    </g>
-                                </svg>
-                            </span>
-                            Log in with Google
-                        </a>
+                        <form method="post" action="/Account/ExternalLogin">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="provider" value="Google" />
+                            <input type="hidden" name="returnUrl" value="/" />
+                            <button type="submit" class="tf-btn style-2 ic-abs w-100 fw-medium" style="background: white; border: 1px solid #e5e5e5; cursor: pointer;">
+                                <span class="icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g>
+                                            <path d="M23.0938 9.91258L13.3045 9.91211C12.8722 9.91211 12.5218 10.2625 12.5218 10.6947V13.822C12.5218 14.2542 12.8722 14.6046 13.3044 14.6046H18.8172C18.2135 16.1712 17.0869 17.4832 15.6494 18.3168L18 22.386C21.7707 20.2052 24 16.3789 24 12.0955C24 11.4857 23.9551 11.0497 23.8652 10.5587C23.7968 10.1858 23.473 9.91258 23.0938 9.91258Z"
+                                                  fill="#167EE6" />
+                                            <path d="M12 19.3037C9.30218 19.3037 6.94699 17.8297 5.68207 15.6484L1.61304 17.9938C3.68374 21.5826 7.56283 23.9994 12 23.9994C14.1768 23.9994 16.2307 23.4133 18 22.3919V22.3863L15.6494 18.3171C14.5742 18.9408 13.3299 19.3037 12 19.3037Z"
+                                                  fill="#12B347" />
+                                            <path d="M18 22.3932V22.3876L15.6494 18.3184C14.5741 18.9419 13.33 19.3049 12 19.3049V24.0006C14.1767 24.0006 16.2308 23.4145 18 22.3932Z"
+                                                  fill="#0F993E" />
+                                            <path d="M4.69566 12.0003C4.69566 10.6705 5.05856 9.42637 5.68205 8.3512L1.61302 6.00586C0.586031 7.76962 0 9.81797 0 12.0003C0 14.1826 0.586031 16.2309 1.61302 17.9947L5.68205 15.6494C5.05856 14.5742 4.69566 13.3301 4.69566 12.0003Z"
+                                                  fill="#FFD500" />
+                                            <path d="M12 4.69566C13.7593 4.69566 15.3753 5.32078 16.6375 6.36061C16.9489 6.61711 17.4014 6.59859 17.6867 6.31336L19.9024 4.09758C20.2261 3.77395 20.203 3.24422 19.8573 2.94431C17.7425 1.10967 14.991 0 12 0C7.56283 0 3.68374 2.41673 1.61304 6.00558L5.68207 8.35092C6.94699 6.16969 9.30218 4.69566 12 4.69566Z"
+                                                  fill="#FF4B26" />
+                                            <path d="M16.6374 6.36061C16.9488 6.61711 17.4015 6.59859 17.6866 6.31336L19.9024 4.09758C20.226 3.77395 20.2029 3.24422 19.8573 2.94431C17.7425 1.10962 14.991 0 12 0V4.69566C13.7592 4.69566 15.3752 5.32078 16.6374 6.36061Z"
+                                                  fill="#D93F21" />
+                                        </g>
+                                    </svg>
+                                </span>
+                                Log in with Google
+                            </button>
+                        </form>
                     </div>
                     <div class="text-center">
                         <a href="#register" data-bs-toggle="modal" class="tf-btn-line">
@@ -926,29 +944,32 @@
                     <h3 class="title fw-normal text-uppercase">create account</h3>
                 </div>
                 <div class="modal-bottom">
-                    <form class="form-log">
+                    <div id="register-error" class="alert alert-danger" style="display:none; margin-bottom:15px;"></div>
+                    <div id="register-success" class="alert alert-success" style="display:none; margin-bottom:15px;"></div>
+                    <form class="form-log" id="registerForm" method="post">
+                        @Html.AntiForgeryToken()
                         <div class="form-content">
                             <fieldset class="tf-field">
-                                <input class="tf-input" type="text" placeholder required>
+                                <input class="tf-input" type="text" name="FirstName" placeholder required>
                                 <label class="tf-lable">First name *</label>
                             </fieldset>
                             <fieldset class="tf-field">
-                                <input class="tf-input" type="text" placeholder required>
+                                <input class="tf-input" type="text" name="LastName" placeholder required>
                                 <label class="tf-lable">Last name *</label>
                             </fieldset>
                             <fieldset class="tf-field">
-                                <input class="tf-input" type="email" placeholder value="Hello@yash.com" required>
+                                <input class="tf-input" type="email" name="Email" placeholder value="Hello@yash.com" required>
                                 <label class="tf-lable">Email *</label>
                             </fieldset>
                             <fieldset class="tf-field password-wrapper">
-                                <input class="tf-input password-field" type="password" placeholder required>
+                                <input class="tf-input password-field" type="password" name="Password" placeholder required>
                                 <label class="tf-lable">Password *</label>
                                 <span class=" toggle-pass icon-show-password"></span>
                             </fieldset>
                         </div>
                         <div class="bottom">
                             <div class="checkbox-wrap align-items-start">
-                                <input id="confirm" type="checkbox" class="tf-check flex-shrink-0">
+                                <input id="confirm" name="Newsletter" type="checkbox" class="tf-check flex-shrink-0">
                                 <label for="confirm" class="text-caption">
                                     Yes, sign me up for the Yash Newsletter. I confirm I am over 16 years old. I would
                                     like to receive digital
@@ -957,7 +978,7 @@
                             </div>
                         </div>
                         <button type="submit" class="btn-submit tf-btn btn-fill-2 w-100">
-                            LOG IN
+                            REGISTER
                         </button>
                     </form>
                     <div class="other-login">
@@ -972,27 +993,32 @@
                             </span>
                             Log in with Facebook
                         </a>
-                        <a href="#" class="tf-btn style-2 ic-abs w-100 fw-medium">
-                            <span class="icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g>
-                                        <path d="M23.0938 9.91258L13.3045 9.91211C12.8722 9.91211 12.5218 10.2625 12.5218 10.6947V13.822C12.5218 14.2542 12.8722 14.6046 13.3044 14.6046H18.8172C18.2135 16.1712 17.0869 17.4832 15.6494 18.3168L18 22.386C21.7707 20.2052 24 16.3789 24 12.0955C24 11.4857 23.9551 11.0497 23.8652 10.5587C23.7968 10.1858 23.473 9.91258 23.0938 9.91258Z"
-                                              fill="#167EE6" />
-                                        <path d="M12 19.3037C9.30218 19.3037 6.94699 17.8297 5.68207 15.6484L1.61304 17.9938C3.68374 21.5826 7.56283 23.9994 12 23.9994C14.1768 23.9994 16.2307 23.4133 18 22.3919V22.3863L15.6494 18.3171C14.5742 18.9408 13.3299 19.3037 12 19.3037Z"
-                                              fill="#12B347" />
-                                        <path d="M18 22.3932V22.3876L15.6494 18.3184C14.5741 18.9419 13.33 19.3049 12 19.3049V24.0006C14.1767 24.0006 16.2308 23.4145 18 22.3932Z"
-                                              fill="#0F993E" />
-                                        <path d="M4.69566 12.0003C4.69566 10.6705 5.05856 9.42637 5.68205 8.3512L1.61302 6.00586C0.586031 7.76962 0 9.81797 0 12.0003C0 14.1826 0.586031 16.2309 1.61302 17.9947L5.68205 15.6494C5.05856 14.5742 4.69566 13.3301 4.69566 12.0003Z"
-                                              fill="#FFD500" />
-                                        <path d="M12 4.69566C13.7593 4.69566 15.3753 5.32078 16.6375 6.36061C16.9489 6.61711 17.4014 6.59859 17.6867 6.31336L19.9024 4.09758C20.2261 3.77395 20.203 3.24422 19.8573 2.94431C17.7425 1.10967 14.991 0 12 0C7.56283 0 3.68374 2.41673 1.61304 6.00558L5.68207 8.35092C6.94699 6.16969 9.30218 4.69566 12 4.69566Z"
-                                              fill="#FF4B26" />
-                                        <path d="M16.6374 6.36061C16.9488 6.61711 17.4015 6.59859 17.6866 6.31336L19.9024 4.09758C20.226 3.77395 20.2029 3.24422 19.8573 2.94431C17.7425 1.10962 14.991 0 12 0V4.69566C13.7592 4.69566 15.3752 5.32078 16.6374 6.36061Z"
-                                              fill="#D93F21" />
-                                    </g>
-                                </svg>
-                            </span>
-                            Log in with Google
-                        </a>
+                        <form method="post" action="/Account/ExternalLogin">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="provider" value="Google" />
+                            <input type="hidden" name="returnUrl" value="/" />
+                            <button type="submit" class="tf-btn style-2 ic-abs w-100 fw-medium" style="background: white; border: 1px solid #e5e5e5; cursor: pointer;">
+                                <span class="icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g>
+                                            <path d="M23.0938 9.91258L13.3045 9.91211C12.8722 9.91211 12.5218 10.2625 12.5218 10.6947V13.822C12.5218 14.2542 12.8722 14.6046 13.3044 14.6046H18.8172C18.2135 16.1712 17.0869 17.4832 15.6494 18.3168L18 22.386C21.7707 20.2052 24 16.3789 24 12.0955C24 11.4857 23.9551 11.0497 23.8652 10.5587C23.7968 10.1858 23.473 9.91258 23.0938 9.91258Z"
+                                                  fill="#167EE6" />
+                                            <path d="M12 19.3037C9.30218 19.3037 6.94699 17.8297 5.68207 15.6484L1.61304 17.9938C3.68374 21.5826 7.56283 23.9994 12 23.9994C14.1768 23.9994 16.2307 23.4133 18 22.3919V22.3863L15.6494 18.3171C14.5742 18.9408 13.3299 19.3037 12 19.3037Z"
+                                                  fill="#12B347" />
+                                            <path d="M18 22.3932V22.3876L15.6494 18.3184C14.5741 18.9419 13.33 19.3049 12 19.3049V24.0006C14.1767 24.0006 16.2308 23.4145 18 22.3932Z"
+                                                  fill="#0F993E" />
+                                            <path d="M4.69566 12.0003C4.69566 10.6705 5.05856 9.42637 5.68205 8.3512L1.61302 6.00586C0.586031 7.76962 0 9.81797 0 12.0003C0 14.1826 0.586031 16.2309 1.61302 17.9947L5.68205 15.6494C5.05856 14.5742 4.69566 13.3301 4.69566 12.0003Z"
+                                                  fill="#FFD500" />
+                                            <path d="M12 4.69566C13.7593 4.69566 15.3753 5.32078 16.6375 6.36061C16.9489 6.61711 17.4014 6.59859 17.6867 6.31336L19.9024 4.09758C20.2261 3.77395 20.203 3.24422 19.8573 2.94431C17.7425 1.10967 14.991 0 12 0C7.56283 0 3.68374 2.41673 1.61304 6.00558L5.68207 8.35092C6.94699 6.16969 9.30218 4.69566 12 4.69566Z"
+                                                  fill="#FF4B26" />
+                                            <path d="M16.6374 6.36061C16.9488 6.61711 17.4015 6.59859 17.6866 6.31336L19.9024 4.09758C20.226 3.77395 20.203 3.24422 19.8573 2.94431C17.7425 1.10962 14.991 0 12 0V4.69566C13.7592 4.69566 15.3752 5.32078 16.6374 6.36061Z"
+                                                  fill="#D93F21" />
+                                        </g>
+                                    </svg>
+                                </span>
+                                Log in with Google
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -1010,10 +1036,13 @@
                 Please enter your registered email address to receive an email to reset
                 your password
             </p>
-            <form class="form-reset">
+            <div id="reset-error" class="alert alert-danger" style="display:none; margin-bottom:15px;"></div>
+            <div id="reset-success" class="alert alert-success" style="display:none; margin-bottom:15px;"></div>
+            <form class="form-reset" id="resetForm" method="post">
+                @Html.AntiForgeryToken()
                 <div class="form-content">
                     <fieldset class="tf-field">
-                        <input class="tf-input" type="text" placeholder required>
+                        <input class="tf-input" type="email" name="Input.Email" placeholder required>
                         <label class="tf-lable">Email *</label>
                     </fieldset>
                 </div>
@@ -2099,24 +2128,93 @@
     <script src="/app/js/count-down.js"></script>
     <script src="/app/js/wow.min.js"></script>
     <script src="/app/js/main.js"></script>
-    <script src="/app/js/sibforms.js" defer></script>
     <script>
-        window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
-        window.LOCALE = 'en';
-        window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to handle form submission via AJAX
+            async function handleAuthFormSubmission(formId, endpoint, errorId, successId) {
+                const form = document.getElementById(formId);
+                const errorDiv = document.getElementById(errorId);
+                const successDiv = successId ? document.getElementById(successId) : null;
 
-        window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
+                if (!form) return;
 
-        window.GENERIC_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    if (errorDiv) errorDiv.style.display = 'none';
+                    if (successDiv) successDiv.style.display = 'none';
 
-        window.translation = {
-            common: {
-                selectedList: '{quantity} list selected',
-                selectedLists: '{quantity} lists selected'
+                    const formData = new FormData(form);
+                    
+                    try {
+                        const response = await fetch(endpoint, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                            }
+                        });
+
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                            return;
+                        }
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                if (successDiv) {
+                                    successDiv.textContent = 'Action successful! Please check your email if required.';
+                                    successDiv.style.display = 'block';
+                                    form.reset();
+                                }
+                                if (result.redirectUrl) {
+                                    window.location.href = result.redirectUrl;
+                                } else {
+                                    window.location.reload();
+                                }
+                            } else {
+                                if (errorDiv) {
+                                    if (result.errors && Array.isArray(result.errors)) {
+                                        errorDiv.innerHTML = '<ul>' + result.errors.map(e => `<li>${e}</li>`).join('') + '</ul>';
+                                    } else {
+                                        errorDiv.textContent = result.message || 'An error occurred. Please try again.';
+                                    }
+                                    errorDiv.style.display = 'block';
+                                }
+                            }
+                        } else {
+                            // Fallback for non-JSON responses
+                            if (errorDiv) {
+                                errorDiv.textContent = 'An unexpected server error occurred. Please try again later.';
+                                errorDiv.style.display = 'block';
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Auth request failed:', err);
+                        if (errorDiv) {
+                            errorDiv.textContent = 'Connection error. Please try again later.';
+                            errorDiv.style.display = 'block';
+                        }
+                    }
+                });
             }
-        };
 
-        var AUTOHIDE = Boolean(0);
+            // Wire up the forms
+            handleAuthFormSubmission('loginForm', '/Account/Login', 'login-error');
+            handleAuthFormSubmission('registerForm', '/Account/Register', 'register-error', 'register-success');
+            handleAuthFormSubmission('resetForm', '/Account/ForgotPassword', 'reset-error', 'reset-success');
+
+            // Handle modal auto-trigger from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const modalTrigger = urlParams.get('modal');
+            if (modalTrigger === 'login') {
+                const loginModal = new bootstrap.Modal(document.getElementById('log'));
+                loginModal.show();
+            } else if (modalTrigger === 'register') {
+                const registerModal = new bootstrap.Modal(document.getElementById('register'));
+                registerModal.show();
+            }
+        });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
