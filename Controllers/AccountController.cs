@@ -2,19 +2,19 @@
 
 namespace Yash_Gems___Jewelleries.Controllers
 {
-    public class UserController : Controller
+    public class AccountController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Order()
+        public IActionResult Detail()
         {
             return View();
         }
 
-        public IActionResult Details()
+        public IActionResult Order()
         {
             return View();
         }

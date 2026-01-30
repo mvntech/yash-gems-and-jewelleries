@@ -7,8 +7,4 @@
     <RootNamespace>Yash_Gems___Jewelleries</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\admin\" />
-  </ItemGroup>
-
 </Project>
