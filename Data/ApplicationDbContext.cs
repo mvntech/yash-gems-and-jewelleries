@@ -279,71 +279,69 @@ namespace Yash_Gems___Jewelleries.Data
 
             // Seed Master Data - Brands
             modelBuilder.Entity<Brand>().HasData(
-                new Brand { BrandId = 1, BrandType = "Tanishq", Description = "Pakistan's most trusted jewelry brand", IsActive = true, CreatedDate = seedDate },
-                new Brand { BrandId = 2, BrandType = "CaratLane", Description = "Modern jewelry designs", IsActive = true, CreatedDate = seedDate },
-                new Brand { BrandId = 3, BrandType = "Mia by Tanishq", Description = "Contemporary jewelry for millennials", IsActive = true, CreatedDate = seedDate },
-                new Brand { BrandId = 4, BrandType = "PC Jeweller", Description = "Traditional and modern designs", IsActive = true, CreatedDate = seedDate },
-                new Brand { BrandId = 5, BrandType = "Kalyan Jewellers", Description = "South Indian traditional jewelry", IsActive = true, CreatedDate = seedDate }
+                new Brand { BrandId = 1, BrandType = "Tanishq", Description = "India's most trusted jewelry brand", IsActive = true, CreatedDate = seedDate },
+                new Brand { BrandId = 2, BrandType = "Malabar Gold", Description = "Heritage jewelry designs", IsActive = true, CreatedDate = seedDate },
+                new Brand { BrandId = 3, BrandType = "CaratLane", Description = "Modern jewelry designs", IsActive = true, CreatedDate = seedDate },
+                new Brand { BrandId = 4, BrandType = "Giva", Description = "Affordable silver jewelry", IsActive = true, CreatedDate = seedDate },
+                new Brand { BrandId = 5, BrandType = "Yash", Description = "Premium in-house brand", IsActive = true, CreatedDate = seedDate }
             );
 
-            // Seed Categories
+            // Seed Categories (Shopping Types)
             modelBuilder.Entity<Category>().HasData(
-                new Category { CategoryId = 1, CategoryName = "Gold", Description = "Gold jewelry collection", IsActive = true, CreatedDate = seedDate },
-                new Category { CategoryId = 2, CategoryName = "Diamond", Description = "Diamond jewelry collection", IsActive = true, CreatedDate = seedDate },
-                new Category { CategoryId = 3, CategoryName = "Platinum", Description = "Platinum jewelry collection", IsActive = true, CreatedDate = seedDate },
-                new Category { CategoryId = 4, CategoryName = "Silver", Description = "Silver jewelry collection", IsActive = true, CreatedDate = seedDate },
-                new Category { CategoryId = 5, CategoryName = "Gemstone", Description = "Gemstone jewelry collection", IsActive = true, CreatedDate = seedDate }
+                new Category { CategoryId = 1, CategoryName = "Rings", Description = "Finger rings for all occasions", IsActive = true, CreatedDate = seedDate },
+                new Category { CategoryId = 2, CategoryName = "Necklaces", Description = "Elegant necklaces and chains", IsActive = true, CreatedDate = seedDate },
+                new Category { CategoryId = 3, CategoryName = "Earrings", Description = "Studs, jhumkas and drops", IsActive = true, CreatedDate = seedDate },
+                new Category { CategoryId = 4, CategoryName = "Bangles", Description = "Traditional and modern bangles", IsActive = true, CreatedDate = seedDate },
+                new Category { CategoryId = 5, CategoryName = "Bracelets", Description = "Wrist jewelry for men and women", IsActive = true, CreatedDate = seedDate },
+                new Category { CategoryId = 6, CategoryName = "Nose Pins", Description = "Traditional nose pins", IsActive = true, CreatedDate = seedDate },
+                new Category { CategoryId = 7, CategoryName = "Mangalsutras", Description = "Symbol of marriage", IsActive = true, CreatedDate = seedDate },
+                new Category { CategoryId = 8, CategoryName = "Toe Rings", Description = "Traditional toe rings", IsActive = true, CreatedDate = seedDate },
+                new Category { CategoryId = 9, CategoryName = "Anklets", Description = "Payal and anklets", IsActive = true, CreatedDate = seedDate }
+            );
+
+            // Seed Product Types (Material)
+            modelBuilder.Entity<ProductType>().HasData(
+                new ProductType { ProductTypeId = 1, ProductTypeName = "Gold Jewelry", Description = "Classic gold jewelry", IsActive = true, CreatedDate = seedDate },
+                new ProductType { ProductTypeId = 2, ProductTypeName = "Diamond Jewelry", Description = "Sparkling diamond pieces", IsActive = true, CreatedDate = seedDate },
+                new ProductType { ProductTypeId = 3, ProductTypeName = "Platinum", Description = "Rare and pure platinum", IsActive = true, CreatedDate = seedDate },
+                new ProductType { ProductTypeId = 4, ProductTypeName = "Silver", Description = "Sterling silver jewelry", IsActive = true, CreatedDate = seedDate },
+                new ProductType { ProductTypeId = 5, ProductTypeName = "Kundan", Description = "Traditional Kundan jewelry", IsActive = true, CreatedDate = seedDate },
+                new ProductType { ProductTypeId = 6, ProductTypeName = "Polki", Description = "Uncut diamond jewelry", IsActive = true, CreatedDate = seedDate },
+                new ProductType { ProductTypeId = 7, ProductTypeName = "Temple Jewelry", Description = "South Indian temple designs", IsActive = true, CreatedDate = seedDate },
+                new ProductType { ProductTypeId = 8, ProductTypeName = "Gemstone", Description = "Precious stone jewelry", IsActive = true, CreatedDate = seedDate }
             );
 
             // Seed Certificates
             modelBuilder.Entity<Certificate>().HasData(
-                new Certificate { CertificateId = 1, CertifyType = "GIA", IssuingAuthority = "Gemological Institute of America", IsActive = true, CreatedDate = seedDate },
+                new Certificate { CertificateId = 1, CertifyType = "BIS 916", IssuingAuthority = "Bureau of Indian Standards (HM)", IsActive = true, CreatedDate = seedDate },
                 new Certificate { CertificateId = 2, CertifyType = "IGI", IssuingAuthority = "International Gemological Institute", IsActive = true, CreatedDate = seedDate },
-                new Certificate { CertificateId = 3, CertifyType = "AGS", IssuingAuthority = "American Gem Society", IsActive = true, CreatedDate = seedDate },
-                new Certificate { CertificateId = 4, CertifyType = "HRD", IssuingAuthority = "HRD Antwerp", IsActive = true, CreatedDate = seedDate },
-                new Certificate { CertificateId = 5, CertifyType = "BIS", IssuingAuthority = "Bureau of Indian Standards", IsActive = true, CreatedDate = seedDate }
+                new Certificate { CertificateId = 3, CertifyType = "GIA", IssuingAuthority = "Gemological Institute of America", IsActive = true, CreatedDate = seedDate }
             );
 
             // Seed Gold Karats
             modelBuilder.Entity<GoldKarat>().HasData(
-                new GoldKarat { GoldTypeId = 1, GoldCarat = "24K", PurityPercentage = 99.9m, Description = "Pure Gold", IsActive = true, CreatedDate = seedDate },
-                new GoldKarat { GoldTypeId = 2, GoldCarat = "22K", PurityPercentage = 91.6m, Description = "Most common in Pakistan", IsActive = true, CreatedDate = seedDate },
-                new GoldKarat { GoldTypeId = 3, GoldCarat = "18K", PurityPercentage = 75.0m, Description = "Durable for jewelry", IsActive = true, CreatedDate = seedDate },
-                new GoldKarat { GoldTypeId = 4, GoldCarat = "14K", PurityPercentage = 58.3m, Description = "Strong and affordable", IsActive = true, CreatedDate = seedDate }
-            );
-
-            // Seed Product Types
-            modelBuilder.Entity<ProductType>().HasData(
-                new ProductType { ProductTypeId = 1, ProductTypeName = "Ring", Description = "Finger rings", IsActive = true, CreatedDate = seedDate },
-                new ProductType { ProductTypeId = 2, ProductTypeName = "Necklace", Description = "Necklaces and chains", IsActive = true, CreatedDate = seedDate },
-                new ProductType { ProductTypeId = 3, ProductTypeName = "Earrings", Description = "Ear jewelry", IsActive = true, CreatedDate = seedDate },
-                new ProductType { ProductTypeId = 4, ProductTypeName = "Bracelet", Description = "Wrist jewelry", IsActive = true, CreatedDate = seedDate },
-                new ProductType { ProductTypeId = 5, ProductTypeName = "Bangle", Description = "Bangles and kada", IsActive = true, CreatedDate = seedDate },
-                new ProductType { ProductTypeId = 6, ProductTypeName = "Pendant", Description = "Pendants and lockets", IsActive = true, CreatedDate = seedDate },
-                new ProductType { ProductTypeId = 7, ProductTypeName = "Mangalsutra", Description = "Traditional mangalsutra", IsActive = true, CreatedDate = seedDate },
-                new ProductType { ProductTypeId = 8, ProductTypeName = "Nose Pin", Description = "Nose jewelry", IsActive = true, CreatedDate = seedDate }
+                new GoldKarat { GoldTypeId = 1, GoldCarat = "24K", PurityPercentage = 99.9m, Description = "Pure Gold (Coins/Bars)", IsActive = true, CreatedDate = seedDate },
+                new GoldKarat { GoldTypeId = 2, GoldCarat = "22K", PurityPercentage = 91.6m, Description = "Standard for Gold Jewelry", IsActive = true, CreatedDate = seedDate },
+                new GoldKarat { GoldTypeId = 3, GoldCarat = "18K", PurityPercentage = 75.0m, Description = "Standard for Diamond Jewelry", IsActive = true, CreatedDate = seedDate }
             );
 
             // Seed Diamond Qualities
             modelBuilder.Entity<DiamondQuality>().HasData(
-                new DiamondQuality { DiamondQualityId = 1, QualityGrade = "IF", Clarity = "Internally Flawless", Color = "D-F", Cut = "Excellent", IsActive = true, CreatedDate = seedDate },
-                new DiamondQuality { DiamondQualityId = 2, QualityGrade = "VVS1", Clarity = "Very Very Slightly Included 1", Color = "D-G", Cut = "Very Good", IsActive = true, CreatedDate = seedDate },
-                new DiamondQuality { DiamondQualityId = 3, QualityGrade = "VVS2", Clarity = "Very Very Slightly Included 2", Color = "E-H", Cut = "Very Good", IsActive = true, CreatedDate = seedDate },
-                new DiamondQuality { DiamondQualityId = 4, QualityGrade = "VS1", Clarity = "Very Slightly Included 1", Color = "F-I", Cut = "Good", IsActive = true, CreatedDate = seedDate },
-                new DiamondQuality { DiamondQualityId = 5, QualityGrade = "VS2", Clarity = "Very Slightly Included 2", Color = "G-J", Cut = "Good", IsActive = true, CreatedDate = seedDate },
-                new DiamondQuality { DiamondQualityId = 6, QualityGrade = "SI1", Clarity = "Slightly Included 1", Color = "H-K", Cut = "Good", IsActive = true, CreatedDate = seedDate },
-                new DiamondQuality { DiamondQualityId = 7, QualityGrade = "SI2", Clarity = "Slightly Included 2", Color = "I-L", Cut = "Fair", IsActive = true, CreatedDate = seedDate }
+                new DiamondQuality { DiamondQualityId = 1, QualityGrade = "VVS", Clarity = "Very Very Slightly Included", Color = "D-H", Cut = "Excellent", IsActive = true, CreatedDate = seedDate },
+                new DiamondQuality { DiamondQualityId = 2, QualityGrade = "VS", Clarity = "Very Slightly Included", Color = "G-J", Cut = "Very Good", IsActive = true, CreatedDate = seedDate },
+                new DiamondQuality { DiamondQualityId = 3, QualityGrade = "SI", Clarity = "Slightly Included", Color = "H-K", Cut = "Good", IsActive = true, CreatedDate = seedDate },
+                new DiamondQuality { DiamondQualityId = 4, QualityGrade = "AD", Clarity = "Artificial (American Diamond)", Color = "White", Cut = "Good", IsActive = true, CreatedDate = seedDate }
             );
 
             // Seed Stone Qualities
             modelBuilder.Entity<StoneQuality>().HasData(
-                new StoneQuality { StoneQualityId = 1, StoneType = "Ruby", QualityGrade = "AA+", Color = "Pigeon Blood Red", Origin = "Burma", IsActive = true, CreatedDate = seedDate },
-                new StoneQuality { StoneQualityId = 2, StoneType = "Emerald", QualityGrade = "AA+", Color = "Vivid Green", Origin = "Colombia", IsActive = true, CreatedDate = seedDate },
-                new StoneQuality { StoneQualityId = 3, StoneType = "Sapphire", QualityGrade = "AA", Color = "Royal Blue", Origin = "Kashmir", IsActive = true, CreatedDate = seedDate },
+                new StoneQuality { StoneQualityId = 1, StoneType = "Ruby", QualityGrade = "Standard", Color = "Red", Origin = "Burma", IsActive = true, CreatedDate = seedDate },
+                new StoneQuality { StoneQualityId = 2, StoneType = "Emerald", QualityGrade = "Standard", Color = "Green", Origin = "Colombia", IsActive = true, CreatedDate = seedDate },
+                new StoneQuality { StoneQualityId = 3, StoneType = "Sapphire", QualityGrade = "Standard", Color = "Blue", Origin = "Kashmir", IsActive = true, CreatedDate = seedDate },
                 new StoneQuality { StoneQualityId = 4, StoneType = "Pearl", QualityGrade = "AAA", Color = "White", Origin = "South Sea", IsActive = true, CreatedDate = seedDate },
-                new StoneQuality { StoneQualityId = 5, StoneType = "Tanzanite", QualityGrade = "AA", Color = "Violet Blue", Origin = "Tanzania", IsActive = true, CreatedDate = seedDate },
-                new StoneQuality { StoneQualityId = 6, StoneType = "Topaz", QualityGrade = "A", Color = "Blue", Origin = "Brazil", IsActive = true, CreatedDate = seedDate },
-                new StoneQuality { StoneQualityId = 7, StoneType = "Amethyst", QualityGrade = "A", Color = "Purple", Origin = "Brazil", IsActive = true, CreatedDate = seedDate }
+                new StoneQuality { StoneQualityId = 5, StoneType = "Topaz", QualityGrade = "A", Color = "Blue", Origin = "Brazil", IsActive = true, CreatedDate = seedDate },
+                new StoneQuality { StoneQualityId = 6, StoneType = "Amethyst", QualityGrade = "A", Color = "Purple", Origin = "Brazil", IsActive = true, CreatedDate = seedDate },
+                new StoneQuality { StoneQualityId = 7, StoneType = "Meena", QualityGrade = "Standard", Color = "Multicolor", Origin = "India", IsActive = true, CreatedDate = seedDate }
             );
         }
     }
