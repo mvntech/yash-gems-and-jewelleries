@@ -25,6 +25,8 @@ namespace Yash_Gems___Jewelleries.Models.Masters
         [StringLength(200)]
         public string? ImageUrl { get; set; }
 
+        public int Stock { get; set; }
+
         public bool IsActive { get; set; } = true;
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
