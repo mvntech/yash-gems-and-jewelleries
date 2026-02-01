@@ -32,10 +32,10 @@ namespace Yash_Gems___Jewelleries.Helpers
                     ItemName = "Classic Diamond Ring",
                     Description = "Elegant diamond ring with VVS1 clarity",
                     BrandId = 1, // Tanishq
-                    CategoryId = 2, // Diamond
-                    ProductTypeId = 1, // Ring
+                    CategoryId = 1, // Rings
+                    ProductTypeId = 2, // Diamond Jewelry
                     GoldTypeId = 3, // 18K
-                    CertificateId = 1, // GIA
+                    CertificateId = 3, // GIA
                     Quantity = 10,
                     Pairs = 1,
                     GoldWeight = 5.5m,
@@ -43,7 +43,8 @@ namespace Yash_Gems___Jewelleries.Helpers
                     GoldRate = 6500m,
                     GoldMakingCharges = 2000m,
                     StoneMakingCharges = 500m,
-                    PrimaryImageUrl = "/app/images/products/ring1.jpg",
+                    PrimaryImageUrl = "/app/images/products/product-1.jpg",
+                    IsActive = true,
                     IsFeatured = true,
                     IsNewLaunch = true
                 },
@@ -52,18 +53,19 @@ namespace Yash_Gems___Jewelleries.Helpers
                     StyleCode = "YGJ-2024-002",
                     ItemName = "Bridal Gold Necklace",
                     Description = "Traditional 22K gold necklace with intricate design",
-                    BrandId = 5, // Kalyan Jewellers
-                    CategoryId = 1, // Gold
-                    ProductTypeId = 2, // Necklace
+                    BrandId = 2, // Malabar Gold
+                    CategoryId = 2, // Necklaces
+                    ProductTypeId = 1, // Gold Jewelry
                     GoldTypeId = 2, // 22K
-                    CertificateId = 5, // BIS
+                    CertificateId = 1, // BIS 916
                     Quantity = 5,
                     Pairs = 1,
                     GoldWeight = 25.5m,
                     WastagePercentage = 12m,
                     GoldRate = 6500m,
                     GoldMakingCharges = 8000m,
-                    PrimaryImageUrl = "/app/images/products/necklace1.jpg",
+                    PrimaryImageUrl = "/app/images/products/product-2.jpg",
+                    IsActive = true,
                     IsFeatured = true
                 },
                 new Item
@@ -71,9 +73,9 @@ namespace Yash_Gems___Jewelleries.Helpers
                     StyleCode = "YGJ-2024-003",
                     ItemName = "Diamond Earrings",
                     Description = "Sparkling diamond studs for everyday wear",
-                    BrandId = 2, // CaratLane
-                    CategoryId = 2, // Diamond
-                    ProductTypeId = 3, // Earrings
+                    BrandId = 3, // CaratLane
+                    CategoryId = 3, // Earrings
+                    ProductTypeId = 2, // Diamond Jewelry
                     GoldTypeId = 3, // 18K
                     CertificateId = 2, // IGI
                     Quantity = 15,
@@ -83,7 +85,8 @@ namespace Yash_Gems___Jewelleries.Helpers
                     GoldRate = 6500m,
                     GoldMakingCharges = 1500m,
                     StoneMakingCharges = 300m,
-                    PrimaryImageUrl = "/app/images/products/earrings1.jpg",
+                    PrimaryImageUrl = "/app/images/products/product-3.jpg",
+                    IsActive = true,
                     IsNewLaunch = true
                 },
                 new Item
@@ -92,17 +95,18 @@ namespace Yash_Gems___Jewelleries.Helpers
                     ItemName = "Traditional Gold Bangle",
                     Description = "Set of 2 traditional gold bangles",
                     BrandId = 1, // Tanishq
-                    CategoryId = 1, // Gold
-                    ProductTypeId = 5, // Bangle
+                    CategoryId = 4, // Bangles
+                    ProductTypeId = 1, // Gold Jewelry
                     GoldTypeId = 2, // 22K
-                    CertificateId = 5, // BIS
+                    CertificateId = 1, // BIS 916
                     Quantity = 8,
                     Pairs = 2,
                     GoldWeight = 35.0m,
                     WastagePercentage = 15m,
                     GoldRate = 6500m,
                     GoldMakingCharges = 5000m,
-                    PrimaryImageUrl = "/app/images/products/bangle1.jpg",
+                    PrimaryImageUrl = "/app/images/products/product-4.jpg",
+                    IsActive = true,
                     IsFeatured = true
                 },
                 new Item
@@ -110,11 +114,11 @@ namespace Yash_Gems___Jewelleries.Helpers
                     StyleCode = "YGJ-2024-005",
                     ItemName = "Platinum Diamond Pendant",
                     Description = "Modern platinum pendant with solitaire diamond",
-                    BrandId = 3, // Mia by Tanishq
-                    CategoryId = 3, // Platinum
-                    ProductTypeId = 6, // Pendant
-                    GoldTypeId = 3, // 18K (for chain)
-                    CertificateId = 1, // GIA
+                    BrandId = 3, // CaratLane
+                    CategoryId = 2, // Necklaces
+                    ProductTypeId = 3, // Platinum
+                    GoldTypeId = 2, // 22K
+                    CertificateId = 3, // GIA
                     Quantity = 12,
                     Pairs = 1,
                     GoldWeight = 4.5m,
@@ -122,7 +126,8 @@ namespace Yash_Gems___Jewelleries.Helpers
                     GoldRate = 6500m,
                     GoldMakingCharges = 3000m,
                     StoneMakingCharges = 800m,
-                    PrimaryImageUrl = "/app/images/products/pendant1.jpg",
+                    PrimaryImageUrl = "/app/images/products/product-5.jpg",
+                    IsActive = true,
                     IsOnSale = true,
                     DiscountPercentage = 15m
                 }
