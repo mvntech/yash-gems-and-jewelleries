@@ -1,5 +1,6 @@
-﻿@{
-	ViewData["Title"] = "Product Details";
+﻿@model Yash_Gems___Jewelleries.Models.Item
+@{
+	ViewData["Title"] = Model.ItemName;
 }
 
 <!-- Page Title -->
@@ -8,10 +9,12 @@
         <div class="page-title border-0">
             <div class="breadcrumbs">
                 <ul class="bread-wrap mb-0">
-                    <li><a href="index-2.html" class="text-main-4 link">Home</a></li>
+                    <li><a asp-controller="Home" asp-action="Index" class="text-main-4 link">Home</a></li>
+                    <li class="br-line w-12 bg-main"></li>
+                    <li><a asp-controller="Shop" asp-action="Index" class="text-main-4 link">Shop</a></li>
                     <li class="br-line w-12 bg-main"></li>
                     <li>
-                        <p>Shop</p>
+                        <p>@Model.ItemName</p>
                     </li>
                 </ul>
             </div>
@@ -30,166 +33,45 @@
                             <div class="flat-wrap-media-product">
                                 <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
                                     <div class="swiper-wrapper">
-                                        <!-- item 1 -->
-                                        <div class="swiper-slide" data-color="gold" data-size="48">
-                                            <a href="/app/images/products/detail/prd-detail-1.jpg" target="_blank" class="item"
-                                               data-pswp-width="593px" data-pswp-height="744px">
-                                                <img class="tf-image-zoom-magnifier lazyload"
-                                                     data-zoom="/app/images/products/detail/prd-detail-1.jpg"
-                                                     data-src="/app/images/products/detail/prd-detail-1.jpg"
-                                                     src="/app/images/products/detail/prd-detail-1.jpg" alt="img-product">
-                                            </a>
-                                        </div>
-                                        <!-- item 2 -->
-                                        <div class="swiper-slide" data-color="gold" data-size="48">
-                                            <a href="/app/images/products/detail/prd-detail-2.jpg" target="_blank" class="item"
-                                               data-pswp-width="593px" data-pswp-height="744px">
-                                                <img class="tf-image-zoom-magnifier lazyload"
-                                                     data-zoom="/app/images/products/detail/prd-detail-2.jpg"
-                                                     data-src="/app/images/products/detail/prd-detail-2.jpg"
-                                                     src="/app/images/products/detail/prd-detail-2.jpg" alt="img-product">
-                                            </a>
-                                        </div>
-                                        <!-- item 3 -->
-                                        <div class="swiper-slide" data-color="gold" data-size="48">
-                                            <a href="/app/images/products/detail/prd-detail-3.jpg" target="_blank" class="item"
-                                               data-pswp-width="593px" data-pswp-height="744px">
-                                                <img class="tf-image-zoom-magnifier lazyload"
-                                                     data-zoom="/app/images/products/detail/prd-detail-3.jpg"
-                                                     data-src="/app/images/products/detail/prd-detail-3.jpg"
-                                                     src="/app/images/products/detail/prd-detail-3.jpg" alt="img-product">
-                                            </a>
-                                        </div>
-                                        <!-- item 4 -->
-                                        <div class="swiper-slide" data-color="rose" data-size="48">
-                                            <a href="/app/images/products/detail/prd-detail-4.jpg" target="_blank" class="item"
-                                               data-pswp-width="593px" data-pswp-height="744px">
-                                                <img class="tf-image-zoom-magnifier lazyload"
-                                                     data-zoom="/app/images/products/detail/prd-detail-4.jpg"
-                                                     data-src="/app/images/products/detail/prd-detail-4.jpg"
-                                                     src="/app/images/products/detail/prd-detail-4.jpg" alt="img-product">
-                                            </a>
-                                        </div>
-                                        <!-- item 5 -->
-                                        <div class="swiper-slide" data-color="rose" data-size="48">
-                                            <a href="/app/images/products/detail/prd-detail-5.jpg" target="_blank" class="item"
-                                               data-pswp-width="593px" data-pswp-height="744px">
-                                                <img class="tf-image-zoom-magnifier lazyload"
-                                                     data-zoom="/app/images/products/detail/prd-detail-5.jpg"
-                                                     data-src="/app/images/products/detail/prd-detail-5.jpg"
-                                                     src="/app/images/products/detail/prd-detail-5.jpg" alt="img-product">
-                                            </a>
-                                        </div>
-                                        <!-- item 6 -->
-                                        <div class="swiper-slide" data-color="rose" data-size="48">
-                                            <a href="/app/images/products/detail/prd-detail-6.jpg" target="_blank" class="item"
-                                               data-pswp-width="593px" data-pswp-height="744px">
-                                                <img class="tf-image-zoom-magnifier lazyload"
-                                                     data-zoom="/app/images/products/detail/prd-detail-6.jpg"
-                                                     data-src="/app/images/products/detail/prd-detail-6.jpg"
-                                                     src="/app/images/products/detail/prd-detail-6.jpg" alt="img-product">
-                                            </a>
-                                        </div>
-                                        <!-- item 7 -->
-                                        <div class="swiper-slide" data-color="titanium" data-size="48">
-                                            <a href="/app/images/products/detail/prd-detail-7.jpg" target="_blank" class="item"
-                                               data-pswp-width="593px" data-pswp-height="744px">
-                                                <img class="tf-image-zoom-magnifier lazyload"
-                                                     data-zoom="/app/images/products/detail/prd-detail-7.jpg"
-                                                     data-src="/app/images/products/detail/prd-detail-7.jpg"
-                                                     src="/app/images/products/detail/prd-detail-7.jpg" alt="img-product">
-                                            </a>
-                                        </div>
-                                        <!-- item 8 -->
-                                        <div class="swiper-slide" data-color="titanium" data-size="48">
-                                            <a href="/app/images/products/detail/prd-detail-8.jpg" target="_blank" class="item"
-                                               data-pswp-width="593px" data-pswp-height="744px">
-                                                <img class="tf-image-zoom-magnifier lazyload"
-                                                     data-zoom="/app/images/products/detail/prd-detail-8.jpg"
-                                                     data-src="/app/images/products/detail/prd-detail-8.jpg"
-                                                     src="/app/images/products/detail/prd-detail-8.jpg" alt="img-product">
-                                            </a>
-                                        </div>
-                                        <!-- item 9 -->
-                                        <div class="swiper-slide" data-color="titanium" data-size="48">
-                                            <a href="/app/images/products/detail/prd-detail-9.jpg" target="_blank" class="item"
-                                               data-pswp-width="593px" data-pswp-height="744px">
-                                                <img class="tf-image-zoom-magnifier lazyload"
-                                                     data-zoom="/app/images/products/detail/prd-detail-9.jpg"
-                                                     data-src="/app/images/products/detail/prd-detail-9.jpg"
-                                                     src="/app/images/products/detail/prd-detail-9.jpg" alt="img-product">
-                                            </a>
-                                        </div>
+                                        @{
+                                            var images = new[] { Model.PrimaryImageUrl, Model.SecondaryImageUrl, Model.TertiaryImageUrl }
+                                            .Where(img => !string.IsNullOrEmpty(img))
+                                            .ToList();
+                                        }
+                                        @for (int i = 0; i < images.Count; i++)
+                                        {
+                                            <div class="swiper-slide" data-color="gold" data-size="48">
+                                                <a href="@images[i]" target="_blank" class="item"
+                                                   data-pswp-width="593px" data-pswp-height="744px">
+                                                    <img class="tf-image-zoom lazyload"
+                                                         data-zoom="@images[i]"
+                                                         data-src="@images[i]"
+                                                         src="@images[i]" alt="@Model.ItemName - Image @(i + 1)">
+                                                </a>
+                                            </div>
+                                        }
                                     </div>
+                                    <div class="sw-nav-box sw-nav-prev thumbs-prev"><i class="icon-arrow-left"></i></div>
+                                    <div class="sw-nav-box sw-nav-next thumbs-next"><i class="icon-arrow-right"></i></div>
+                                    <div class="swiper-pagination thumbs-pagination"></div>
                                 </div>
                             </div>
-                            <div dir="ltr" class="swiper tf-product-media-thumbs" data-preview="4" data-direction="horizontal">
-                                <div class="swiper-wrapper stagger-wrap">
-                                    <!-- item 1 -->
-                                    <div class="swiper-slide stagger-item" data-color="gold">
-                                        <div class="item">
-                                            <img data-src="/app/images/products/detail/prd-detail-1.jpg"
-                                                 src="/app/images/products/detail/prd-detail-1.jpg" alt="" class="lazyload">
-                                        </div>
-                                    </div>
-                                    <!-- item 2 -->
-                                    <div class="swiper-slide stagger-item" data-color="gold">
-                                        <div class="item">
-                                            <img data-src="/app/images/products/detail/prd-detail-2.jpg"
-                                                 src="/app/images/products/detail/prd-detail-2.jpg" alt="" class="lazyload">
-                                        </div>
-                                    </div>
-                                    <!-- item 3 -->
-                                    <div class="swiper-slide stagger-item" data-color="gold">
-                                        <div class="item">
-                                            <img data-src="/app/images/products/detail/prd-detail-3.jpg"
-                                                 src="/app/images/products/detail/prd-detail-3.jpg" alt="" class="lazyload">
-                                        </div>
-                                    </div>
-                                    <!-- item 4 -->
-                                    <div class="swiper-slide stagger-item" data-color="rose">
-                                        <div class="item">
-                                            <img data-src="/app/images/products/detail/prd-detail-4.jpg"
-                                                 src="/app/images/products/detail/prd-detail-4.jpg" alt="Image Product" class="lazyload">
-                                        </div>
-                                    </div>
-                                    <!-- item 5 -->
-                                    <div class="swiper-slide stagger-item" data-color="rose">
-                                        <div class="item">
-                                            <img data-src="/app/images/products/detail/prd-detail-5.jpg"
-                                                 src="/app/images/products/detail/prd-detail-5.jpg" alt="Image Product" class="lazyload">
-                                        </div>
-                                    </div>
-                                    <!-- item 6 -->
-                                    <div class="swiper-slide stagger-item" data-color="rose">
-                                        <div class="item">
-                                            <img data-src="/app/images/products/detail/prd-detail-6.jpg"
-                                                 src="/app/images/products/detail/prd-detail-6.jpg" alt="Image Product" class="lazyload">
-                                        </div>
-                                    </div>
-                                    <!-- item 7 -->
-                                    <div class="swiper-slide stagger-item" data-color="titanium">
-                                        <div class="item">
-                                            <img data-src="/app/images/products/detail/prd-detail-7.jpg"
-                                                 src="/app/images/products/detail/prd-detail-7.jpg" alt="Image Product" class="lazyload">
-                                        </div>
-                                    </div>
-                                    <!-- item 8 -->
-                                    <div class="swiper-slide stagger-item" data-color="titanium">
-                                        <div class="item">
-                                            <img data-src="/app/images/products/detail/prd-detail-8.jpg"
-                                                 src="/app/images/products/detail/prd-detail-8.jpg" alt="Image Product" class="lazyload">
-                                        </div>
-                                    </div>
-                                    <!-- item 9 -->
-                                    <div class="swiper-slide stagger-item" data-color="titanium">
-                                        <div class="item">
-                                            <img data-src="/app/images/products/detail/prd-detail-9.jpg"
-                                                 src="/app/images/products/detail/prd-detail-9.jpg" alt="Image Product" class="lazyload">
-                                        </div>
+                            @if (images.Count > 1)
+                            {
+                                <div dir="ltr" class="swiper tf-product-media-thumbs" data-preview="4" data-direction="horizontal">
+                                    <div class="swiper-wrapper stagger-wrap">
+                                        @for (int i = 0; i < images.Count; i++)
+                                        {
+                                            <div class="swiper-slide stagger-item" data-color="gold">
+                                                <div class="item">
+                                                    <img data-src="@images[i]"
+                                                         src="@images[i]" alt="@Model.ItemName - Image @(i + 1)" class="lazyload">
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -206,78 +88,52 @@
                                     <li><i class="icon-star"></i></li>
                                 </ul>
                                 <h3 class="product-info-name fw-normal">
-                                    EMERALD-CUT HALO ENGAGEMENT RING WITH A DIAMOND PLATINUM BAND
+                                    @Model.ItemName
                                 </h3>
                                 <div class="product-info-price">
-                                    <div class="price-wrap">
-                                        <span class="price-new price-on-sale h4">$2,499.00</span>
-                                        <span class="price-old compare-at-price fw-normal h6">$2,899.00</span>
-                                        <p class="badges-on-sale">
-                                            <i class="icon-tag"></i>
-                                            <span class="number-sale" data-person-sale="30">
-                                                30% OFF
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <p class="product-infor-sub h6 fw-normal text-main-4">
-                                    This regulator has a rolled diaphragm and high flow rate with reduced pressure drop.It has an excellent
-                                    degree of condensation.
-                                </p>
-                                <div class="product-info-progress-sale">
-                                    <h6 class="text-hurry-up fw-normal">Only 4 items left</h6>
-                                    <div class="progress-cart">
-                                        <div class="value" style="width: 0%;" data-progress="70"></div>
-                                    </div>
-                                </div>
+                                     <div class="price-wrap">
+                                         <span class="price-new price-on-sale h4">@Model.SellingPrice.ToString("C")</span>
+                                         @if (Model.MRP > Model.SellingPrice)
+                                         {
+                                             <span class="price-old compare-at-price fw-normal h6">@Model.MRP.ToString("C")</span>
+                                             <p class="badges-on-sale">
+                                                 <i class="icon-tag"></i>
+                                                 <span class="number-sale">
+                                                     @(((Model.MRP - Model.SellingPrice) / Model.MRP * 100).ToString("0"))% OFF
+                                                 </span>
+                                             </p>
+                                         }
+                                     </div>
+                                 </div>
+                                 <p class="product-infor-sub h6 fw-normal text-main-4">
+                                     @Model.Description
+                                 </p>
+                                 @if (Model.Quantity > 0 && Model.Quantity <= 10)
+                                 {
+                                     <div class="product-info-progress-sale">
+                                         <h6 class="text-hurry-up fw-normal">Only @Model.Quantity items left</h6>
+                                         <div class="progress-cart">
+                                             <div class="value" style="width: @(100 - (Model.Quantity * 10))%;" data-progress="@(100 - (Model.Quantity * 10))"></div>
+                                         </div>
+                                     </div>
+                                 }
+                                 else if (Model.Quantity <= 0)
+                                 {
+                                     <div class="product-info-progress-sale">
+                                         <h6 class="text-hurry-up fw-normal text-danger">Out of Stock</h6>
+                                     </div>
+                                 }
+                            </div>
+                            <div class="tf-product-info-variant d-none">
+                                @* Variants hidden as each StyleCode is a unique product *@
                             </div>
                             <div class="tf-product-info-variant">
-                                <div class="variant-picker-item variant-color">
-                                    <div class="variant-picker-label h6 fw-normal">
-                                        Material:
-                                        <span class="variant-picker-label-value value-currentColor d-none">gold</span>
-                                    </div>
-                                    <div class="variant-picker-values">
-                                        <div class="hover-tooltip color-btn style-image-square" data-color="gold" data-price="2,499.00">
-                                            <span class="check-color">
-                                                <img src="/app/images/products/material/yellow.jpg" alt="">
-                                            </span>
-                                            <span class="tooltip">Gold</span>
-                                        </div>
-                                        <div class="hover-tooltip color-btn style-image-square" data-color="rose" data-price="2,499.00">
-                                            <span class="check-color">
-                                                <img src="/app/images/products/material/pink.jpg" alt="">
-                                            </span>
-                                            <span class="tooltip">Rose</span>
-                                        </div>
-                                        <div class="hover-tooltip color-btn style-image-square" data-color="titanium" data-price="2,499.00">
-                                            <span class="check-color">
-                                                <img src="/app/images/products/material/gray.jpg" alt="">
-                                            </span>
-                                            <span class="tooltip">Titanium</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="variant-picker-item variant-size">
-                                    <div class="variant-picker-label h6 fw-normal">
-                                        Size:
-                                        <span class="variant-picker-label-value value-currentSize d-none">48</span>
-                                    </div>
-                                    <div class="variant-picker-values">
-                                        <div class="btn-group">
-                                            <span class="size-btn active" data-size="48" data-price="2,499.00">48</span>
-                                            <span class="size-btn" data-size="50" data-price="999.00">50</span>
-                                            <span class="size-btn" data-size="52" data-price="1,999.00">52</span>
-                                            <span class="size-btn" data-size="54" data-price="2,199.00">54</span>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="variant-picker-item">
                                     <div class="variant-picker-label h6 fw-normal">Quantity</div>
                                     <div class="variant-picker-values">
                                         <div class="wg-quantity">
                                             <button class="btn-quantity btn-decrease"><i class="icon-minus"></i></button>
-                                            <input class="quantity-product" type="text" name="number" value="1">
+                                            <input class="quantity-product" type="text" name="number" value="1" @(Model.Quantity <= 0 ? "disabled" : "")>
                                             <button class="btn-quantity btn-increase"><i class="icon-plus"></i></button>
                                         </div>
                                     </div>
@@ -286,26 +142,36 @@
                             <div class="tf-product-total-quantity">
                                 <div class="group-btn">
                                     <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                       class="tf-btn btn-fill-2 text-uppercase fw-medium animate-btn">
-
-                                        add to bag
-                                        <i class="icon-minus d-none d-sm-block"></i>
-                                        <span class="price-add d-none d-sm-block">$2,499.00</span>
+                                       class="tf-btn btn-fill-2 text-uppercase fw-medium animate-btn btn-add-to-cart @(Model.Quantity <= 0 ? "disabled" : "")"
+                                       data-stylecode="@Model.StyleCode">
+                                        @if (Model.Quantity <= 0)
+                                        {
+                                            <span>out of stock</span>
+                                        }
+                                        else
+                                        {
+                                            <span>add to bag</span>
+                                            <i class="icon-minus d-none d-sm-block"></i>
+                                            <span class="price-add d-none d-sm-block">@Model.SellingPrice.ToString("C")</span>
+                                        }
                                     </a>
                                     <div class="group-btn-action">
                                         <a href="javascript:void(0);" class="tf-btn-icon hover-tooltip btn-add-wishlist">
                                             <span class="icon icon-heart-2"></span>
                                             <span class="tooltip">Add to Wishlist</span>
                                         </a>
-                                        <a href="#compare" data-bs-toggle="modal" aria-controls="compare" class="tf-btn-icon hover-tooltip">
+                                        @* <a href="#compare" data-bs-toggle="modal" aria-controls="compare" class="tf-btn-icon hover-tooltip">
                                             <span class="icon icon-compare"></span>
                                             <span class="tooltip">Compare</span>
-                                        </a>
+                                        </a> *@
                                     </div>
                                 </div>
-                                <a href="checkout.html" class="tf-btn w-100 text-uppercase fw-medium">
-                                    buy it now
-                                </a>
+                                @if (Model.Quantity > 0)
+                                {
+                                    <a href="javascript:void(0);" class="tf-btn w-100 text-uppercase fw-medium btn-buy-now" data-stylecode="@Model.StyleCode">
+                                        buy it now
+                                    </a>
+                                }
                             </div>
                             <div class="tf-product-share">
                                 <ul class="tf-social-icon">
@@ -332,7 +198,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="tf-product-fbt">
+                        <!-- <div class="tf-product-fbt">
                             <h4 class="title fw-normal text-uppercase">Frequently Bought together</h4>
                             <form class="tf-product-form-bundle">
                                 <ul class="tf-bundle-products">
@@ -395,7 +261,7 @@
                                     <span class="total-price"></span>
                                 </a>
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -406,25 +272,16 @@
             <div class="tf-height-observer w-100 d-flex align-items-center">
                 <div class="tf-sticky-atc-product d-flex align-items-center">
                     <div class="tf-sticky-atc-img">
-                        <img class="lazyload" data-src="/app/images/products/detail/prd-detail-1.jpg" alt=""
-                             src="/app/images/products/detail/prd-detail-1.jpg">
+                        <img class="lazyload" data-src="@Model.PrimaryImageUrl" alt="@Model.ItemName"
+                             src="@Model.PrimaryImageUrl">
                     </div>
-                    <div class="tf-sticky-atc-title fw-5 d-lg-block d-none">HALO ENGAGEMENT RING</div>
+                    <div class="tf-sticky-atc-title fw-5 d-lg-block d-none">@Model.ItemName</div>
                 </div>
                 <div class="tf-sticky-atc-infos">
                     <form class="">
                         <div class="tf-sticky-atc-variant-price text-center tf-select">
-                            <select>
-                                <option selected="selected">Gold / 48 - $1,499.00</option>
-                                <option>Gold / 50 - $1,999.00</option>
-                                <option>Gold / 52 - $2,499.00</option>
-                                <option>Titanium / 48 - $1,499.00</option>
-                                <option>Titanium / 50 - $1,999.00</option>
-                                <option>Titanium / 52 - $2,499.00</option>
-                                <option>Titanium / 54 - $2,999.00</option>
-                                <option>Rose / 48 - $1,899.00</option>
-                                <option>Rose / 50 - $2,399.00</option>
-                                <option>Rose / 52 - $2,799.00</option>
+                            <select disabled>
+                                <option selected="selected">@(Model.Category?.CategoryName ?? "Product") / @(Model.GoldKarat?.GoldCarat ?? "") - @Model.SellingPrice.ToString("C")</option>
                             </select>
                         </div>
                         <div class="tf-sticky-atc-btns">
@@ -435,7 +292,9 @@
                                     <button type="button" class="btn-quantity plus-btn"><i class="icon-plus"></i></button>
                                 </div>
                             </div>
-                            <a href="#shoppingCart" data-bs-toggle="offcanvas" class="tf-btn btn-fill animate-btn fw-medium">Add to cart</a>
+                            <a href="#shoppingCart" data-bs-toggle="offcanvas" 
+                               class="tf-btn btn-fill animate-btn fw-medium btn-add-to-cart"
+                               data-stylecode="@Model.StyleCode">Add to cart</a>
                         </div>
                     </form>
                 </div>
@@ -455,11 +314,9 @@
             </div>
             <div id="description" class="collapse widget-desc">
                 <div class="accordion-body">
-                    <h6 class="text-main-4 fw-normal">
-                        Link what you love. This sterling silver link chain holds endless styling potential. Featuring two openable links,
-                        groups of four static links between each one and a carabiner closure. Customise your link chain – then remix it with
-                        meaningful charms.
-                    </h6>
+                    <p class="text-main-4">
+                        @Model.Description
+                    </p>
                 </div>
             </div>
         </div>
@@ -474,30 +331,98 @@
                     <table class="table-material">
                         <tbody>
                             <tr>
-                                <td class="h6">Material</td>
-                                <td class="h6">Gold, Rose Gold, Silver</td>
-                            </tr>
-                            <tr>
-                                <td class="h6">Color</td>
-                                <td class="h6">White</td>
-                            </tr>
-                            <tr>
-                                <td class="h6">Stone</td>
-                                <td class="h6">Diamond</td>
-                            </tr>
-                            <tr>
                                 <td class="h6">Brand</td>
-                                <td class="h6">Yash</td>
+                                <td class="h6">@(Model.Brand?.BrandType ?? "N/A")</td>
                             </tr>
                             <tr>
-                                <td class="h6">Size</td>
-                                <td class="h6">5, 6, 7, 8</td>
+                                <td class="h6">Category</td>
+                                <td class="h6">@(Model.Category?.CategoryName ?? "N/A")</td>
+                            </tr>
+                            <tr>
+                                <td class="h6">Product Type</td>
+                                <td class="h6">@(Model.ProductType?.ProductTypeName ?? "N/A")</td>
+                            </tr>
+                            <tr>
+                                <td class="h6">Gold Karat</td>
+                                <td class="h6">@(Model.GoldKarat?.GoldCarat ?? "N/A")</td>
+                            </tr>
+                            <tr>
+                                <td class="h6">Style Code</td>
+                                <td class="h6">@Model.StyleCode</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
+        @if (Model.DiamondDetails != null && Model.DiamondDetails.Any())
+        {
+            <div class="widget-accordion wd-product-descriptions">
+                <div class="accordion-title collapsed" data-bs-target="#diamond-details" data-bs-toggle="collapse"
+                     aria-expanded="false" aria-controls="diamond-details" role="button">
+                    <span class="icon icon-arrow-right-down"></span>
+                    <span>diamond details</span>
+                </div>
+                <div id="diamond-details" class="collapse widget-material">
+                    <div class="accordion-body">
+                        <table class="table-material">
+                            <tbody>
+                                @foreach (var diamond in Model.DiamondDetails)
+                                {
+                                    <tr>
+                                        <td class="h6">Quality</td>
+                                        <td class="h6">@(diamond.DiamondQuality?.QualityGrade ?? "N/A")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="h6">Pcs</td>
+                                        <td class="h6">@diamond.Pieces</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="h6">Carat</td>
+                                        <td class="h6">@diamond.Carat cts</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.StoneDetails != null && Model.StoneDetails.Any())
+        {
+            <div class="widget-accordion wd-product-descriptions">
+                <div class="accordion-title collapsed" data-bs-target="#stone-details" data-bs-toggle="collapse"
+                     aria-expanded="false" aria-controls="stone-details" role="button">
+                    <span class="icon icon-arrow-right-down"></span>
+                    <span>stone details</span>
+                </div>
+                <div id="stone-details" class="collapse widget-material">
+                    <div class="accordion-body">
+                        <table class="table-material">
+                            <tbody>
+                                @foreach (var stone in Model.StoneDetails)
+                                {
+                                    <tr>
+                                        <td class="h6">Quality</td>
+                                        <td class="h6">@(stone.StoneQuality?.QualityGrade ?? "N/A")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="h6">Pcs</td>
+                                        <td class="h6">@stone.Pieces</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="h6">Carat</td>
+                                        <td class="h6">@stone.Carat cts</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
         <div class="widget-accordion wd-product-descriptions">
             <div class="accordion-title collapsed" data-bs-target="#review" data-bs-toggle="collapse" aria-expanded="true"
                  aria-controls="review" role="button">
@@ -753,251 +678,58 @@
              data-space-lg="30" data-space-md="20" data-space="15" data-pagination="2" data-pagination-sm="2" data-pagination-md="3"
              data-pagination-lg="4">
             <div class="swiper-wrapper">
-                <!-- item 1 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-22.jpg" data-src="/app/images/products/product-22.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-23.jpg" data-src="/app/images/products/product-23.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
+                @if (ViewBag.RelatedProducts != null)
+                {
+                    foreach (var related in (IEnumerable<Yash_Gems___Jewelleries.Models.Item>)ViewBag.RelatedProducts)
+                    {
+                        <div class="swiper-slide">
+                            <div class="card_product--V01">
+                                <div class="card_product-wrapper">
+                                    <a asp-action="ProductDetail" asp-route-id="@related.StyleCode" class="product-img">
+                                        <img src="@related.PrimaryImageUrl" data-src="@related.PrimaryImageUrl" alt="@related.ItemName"
+                                             class="lazyload img-product">
+                                        <img src="@(string.IsNullOrEmpty(related.SecondaryImageUrl) ? related.PrimaryImageUrl : related.SecondaryImageUrl)" 
+                                             data-src="@(string.IsNullOrEmpty(related.SecondaryImageUrl) ? related.PrimaryImageUrl : related.SecondaryImageUrl)" 
+                                             alt="@related.ItemName"
+                                             class="lazyload img-hover">
                                     </a>
-                                </li>
-                                <li>
-                                    <a href="#quickAdd" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Quick Add</span>
+                                    <ul class="list-product-btn">
+                                        <li class="wishlist">
+                                            <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                                <span class="icon icon-heart-2"></span>
+                                                <span class="tooltip">Add to Wishlist</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon btn-add-to-cart" data-stylecode="@related.StyleCode">
+                                                <span class="icon icon-shop-cart"></span>
+                                                <span class="tooltip">Add to Cart</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview" data-stylecode="@related.StyleCode">
+                                                <span class="icon icon-view"></span>
+                                                <span class="tooltip">Quick View</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card_product-info">
+                                    <a asp-action="ProductDetail" asp-route-id="@related.StyleCode" class="name-product h5 fw-normal link text-line-clamp-2">
+                                        @related.ItemName
                                     </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Open Heart Bangle
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$1,799.00</span>
-                                <span class="price-old fw-normal">$1,259.00</span>
+                                    <div class="price-wrap">
+                                        <span class="price-new h5">@related.SellingPrice.ToString("C")</span>
+                                        @if (related.MRP > related.SellingPrice)
+                                        {
+                                            <span class="price-old fw-normal">@related.MRP.ToString("C")</span>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- item 2 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-24.jpg" data-src="/app/images/products/product-24.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-25.jpg" data-src="/app/images/products/product-25.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Add to Cart</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Crystal Birthstone Eternity Circle Charm
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$2,499.00</span>
-                                <span class="price-old fw-normal">$2,899.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 3 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-26.jpg" data-src="/app/images/products/product-26.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-27.jpg" data-src="/app/images/products/product-27.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Add to Cart</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Ball Bracelet
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$3,199.00</span>
-                                <span class="price-old fw-normal">$2,239.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 4 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-28.jpg" data-src="/app/images/products/product-28.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-29.jpg" data-src="/app/images/products/product-29.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Add to Cart</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Engagement Ring in 18k Yellow Gold
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$1,399.00</span>
-                                <span class="price-old fw-normal">$979.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 5 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-22.jpg" data-src="/app/images/products/product-22.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-23.jpg" data-src="/app/images/products/product-23.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Add to Cart</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Open Heart Bangle
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$1,119.00</span>
-                                <span class="price-old fw-normal">$1,599.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    }
+                }
             </div>
             <div class="sw-dot-default tf-sw-pagination d-xl-none"></div>
         </div>
@@ -1022,251 +754,58 @@
              data-space-lg="30" data-space-md="20" data-space="15" data-pagination="2" data-pagination-sm="2" data-pagination-md="3"
              data-pagination-lg="4">
             <div class="swiper-wrapper">
-                <!-- item 1 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-22.jpg" data-src="/app/images/products/product-22.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-23.jpg" data-src="/app/images/products/product-23.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
+                @if (ViewBag.RecentlyViewedItems != null)
+                {
+                    foreach (var recent in (IEnumerable<Yash_Gems___Jewelleries.Models.Item>)ViewBag.RecentlyViewedItems)
+                    {
+                        <div class="swiper-slide">
+                            <div class="card_product--V01">
+                                <div class="card_product-wrapper">
+                                    <a asp-action="ProductDetail" asp-route-id="@recent.StyleCode" class="product-img">
+                                        <img src="@recent.PrimaryImageUrl" data-src="@recent.PrimaryImageUrl" alt="@recent.ItemName"
+                                             class="lazyload img-product">
+                                        <img src="@(string.IsNullOrEmpty(recent.SecondaryImageUrl) ? recent.PrimaryImageUrl : recent.SecondaryImageUrl)" 
+                                             data-src="@(string.IsNullOrEmpty(recent.SecondaryImageUrl) ? recent.PrimaryImageUrl : recent.SecondaryImageUrl)" 
+                                             alt="@recent.ItemName"
+                                             class="lazyload img-hover">
                                     </a>
-                                </li>
-                                <li>
-                                    <a href="#quickAdd" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Quick Add</span>
+                                    <ul class="list-product-btn">
+                                        <li class="wishlist">
+                                            <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                                <span class="icon icon-heart-2"></span>
+                                                <span class="tooltip">Add to Wishlist</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon btn-add-to-cart" data-stylecode="@recent.StyleCode">
+                                                <span class="icon icon-shop-cart"></span>
+                                                <span class="tooltip">Add to Cart</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview" data-stylecode="@recent.StyleCode">
+                                                <span class="icon icon-view"></span>
+                                                <span class="tooltip">Quick View</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card_product-info">
+                                    <a asp-action="ProductDetail" asp-route-id="@recent.StyleCode" class="name-product h5 fw-normal link text-line-clamp-2">
+                                        @recent.ItemName
                                     </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Open Heart Bangle
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$1,799.00</span>
-                                <span class="price-old fw-normal">$1,259.00</span>
+                                    <div class="price-wrap">
+                                        <span class="price-new h5">@recent.SellingPrice.ToString("C")</span>
+                                        @if (recent.MRP > recent.SellingPrice)
+                                        {
+                                            <span class="price-old fw-normal">@recent.MRP.ToString("C")</span>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- item 2 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-24.jpg" data-src="/app/images/products/product-24.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-25.jpg" data-src="/app/images/products/product-25.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Add to Cart</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Crystal Birthstone Eternity Circle Charm
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$2,499.00</span>
-                                <span class="price-old fw-normal">$2,899.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 3 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-26.jpg" data-src="/app/images/products/product-26.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-27.jpg" data-src="/app/images/products/product-27.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Add to Cart</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Ball Bracelet
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$3,199.00</span>
-                                <span class="price-old fw-normal">$2,239.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 4 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-28.jpg" data-src="/app/images/products/product-28.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-29.jpg" data-src="/app/images/products/product-29.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Add to Cart</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Engagement Ring in 18k Yellow Gold
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$1,399.00</span>
-                                <span class="price-old fw-normal">$979.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- item 5 -->
-                <div class="swiper-slide">
-                    <div class="card_product--V01">
-                        <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
-                                <img src="/app/images/products/product-22.jpg" data-src="/app/images/products/product-22.jpg" alt="Image Product"
-                                     class="lazyload img-product">
-                                <img src="/app/images/products/product-23.jpg" data-src="/app/images/products/product-23.jpg" alt="Image Product"
-                                     class="lazyload img-hover">
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-shop-cart"></span>
-                                        <span class="tooltip">Add to Cart</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                Open Heart Bangle
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">$1,119.00</span>
-                                <span class="price-old fw-normal">$1,599.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    }
+                }
             </div>
             <div class="sw-dot-default tf-sw-pagination d-xl-none"></div>
         </div>
