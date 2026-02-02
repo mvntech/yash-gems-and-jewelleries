@@ -1,0 +1,79 @@
+@model Yash_Gems___Jewelleries.Models.Order
+
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <span class="icon-close-popup" data-bs-dismiss="modal">
+            <i class="icon-close"></i>
+        </span>
+        <div class="modal-top">
+            <h3 class="title fw-normal text-uppercase">Order Detail</h3>
+        </div>
+        <div class="modal-body">
+            <ul class="list-infor">
+                <li class="order_id">#@Model.OrderNumber</li>
+                <li class="br-line"></li>
+                <li class="order_date">@Model.OrderDate.ToString("dd MMM yyyy")</li>
+                <li class="br-line"></li>
+                <li class="order_item">@Model.OrderItems.Sum(i => i.Quantity) ITEMS</li>
+                <li class="br-line"></li>
+                @{
+                    var statusClass = Model.OrderStatus.ToLower() switch
+                    {
+                        "delivered" => "delivered",
+                        "cancelled" => "cancelled",
+                        "pending" => "",
+                        _ => ""
+                    };
+                }
+                <li class="order_status @statusClass">@Model.OrderStatus.ToUpper()</li>
+            </ul>
+            <div class="table-order-detail account">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="order_product h6 fw-normal">Product</th>
+                            <th class="order_price h6 fw-normal">price</th>
+                            <th class="order_quantity h6 fw-normal">quantity</th>
+                            <th class="order_subtotal h6 fw-normal">subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td class="order_product">
+                                    <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="image">
+                                        <img src="@(string.IsNullOrEmpty(item.ProductImageUrl) ? "/app/images/products/product-1.jpg" : item.ProductImageUrl)" alt="@item.ProductName">
+                                    </a>
+                                    <div class="infor">
+                                        <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="prd-name h6 fw-normal link">
+                                            @item.ProductName
+                                        </a>
+                                        <p class="prd-type">@item.GoldCarat / @item.GoldWeight g</p>
+                                    </div>
+                                </td>
+                                <td class="order_price">@item.UnitPrice.ToString("C")</td>
+                                <td class="order_quantity">@item.Quantity</td>
+                                <td class="order_subtotal">@item.Subtotal.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="order-total-wrap">
+                <h5 class="text fw-normal text-uppercase">Total:</h5>
+                <h5 class="order-total fw-normal">@Model.TotalAmount.ToString("C")</h5>
+            </div>
+
+            <p class="privacy text-main-4 text-center mt-4">
+                Not happy with the order? You can
+                <a href="#" class="tf-btn-line style-line-2">
+                    <span class="text-body">
+                        Request a free return
+                    </span>
+                </a> in 14 days
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,359 @@
+@model IEnumerable<Yash_Gems___Jewelleries.Models.Wishlist>
+@{
+    ViewData["Title"] = "My Wishlist";
+}
+
+<!-- Page Title -->
+<section class="flat-spacing-2 pb-0">
+    <div class="container">
+        <div class="page-title">
+            <div class="breadcrumbs">
+                <ul class="bread-wrap">
+                    <li><a href="index-2.html" class="text-main-4 link-secondary">Home</a></li>
+                    <li class="br-line w-12 bg-main"></li>
+                    <li>
+                        <p>Account</p>
+                    </li>
+                </ul>
+                <h1 class="heading fw-normal text-uppercase">
+                    my wishlist
+                </h1>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Page Title -->
+
+<!-- Product -->
+<div class="flat-spacing">
+    <div class="container">
+        @if (!Model.Any())
+        {
+        <div class="d-flex justify-content-center">
+            <div class="my-acount-content account-order empty">
+                <div class="ic-img">
+                    <img src="/app/images/section/empty-cart.svg" alt="Emty Cart">
+                </div>
+                <p class="title text-lg-2">Your wishlist is empty</p>
+                <p class="sub-title">Browse our collection and find something you love.</p>
+                <a asp-action="Index" asp-controller="Shop" class="tf-btn fw-medium btn-out-line">
+                    SHOPPING
+                </a>
+            </div>
+        </div>
+        }
+        else
+        {
+            <div class="wrapper-wishlist tf-grid-layout tf-col-2 md-col-3 xl-col-4">
+                @foreach (var wishItem in Model)
+                {
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <form asp-action="RemoveFromWishlist" asp-controller="Account" method="post" class="remove-wishlist-form">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@wishItem.WishlistId" />
+                                <button type="submit" class="remove icon-close bg-transparent border-0 p-0" title="Remove from wishlist"></button>
+                            </form>
+                            
+                            <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@wishItem.StyleCode" class="product-img">
+                                <img src="@(string.IsNullOrEmpty(wishItem.Item.PrimaryImageUrl) ? "/app/images/products/product-1.jpg" : wishItem.Item.PrimaryImageUrl)" 
+                                     alt="@wishItem.Item.ItemName" class="lazyload img-product">
+                                @if (!string.IsNullOrEmpty(wishItem.Item.SecondaryImageUrl))
+                                {
+                                    <img src="@wishItem.Item.SecondaryImageUrl" alt="@wishItem.Item.ItemName" class="lazyload img-hover">
+                                }
+                                else
+                                {
+                                     <img src="@(string.IsNullOrEmpty(wishItem.Item.PrimaryImageUrl) ? "/app/images/products/product-1.jpg" : wishItem.Item.PrimaryImageUrl)" 
+                                     alt="@wishItem.Item.ItemName" class="lazyload img-hover">
+                                }
+                            </a>
+                            <ul class="list-product-btn d-none d-md-flex">
+                                <li>
+                                    @if (wishItem.Item.Quantity > 0)
+                                    {
+                                        <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon btn-add-to-cart" data-stylecode="@wishItem.StyleCode">
+                                            <span class="icon icon-shop-cart"></span>
+                                            <span class="tooltip">Add to Cart</span>
+                                        </a>
+                                    }
+                                    else 
+                                    {
+                                        <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon disabled">
+                                            <span class="icon icon-shop-cart"></span>
+                                            <span class="tooltip">Out of Stock</span>
+                                        </a>
+                                    }
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview" onclick="loadQuickView('@wishItem.StyleCode')">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            @if (wishItem.Item.IsNewLaunch)
+                            {
+                                <div class="badge-box">
+                                    <span class="badge-item new">NEW IN</span>
+                                </div>
+                            }
+                            else if (wishItem.Item.DiscountPercentage > 0)
+                            {
+                                <div class="badge-box">
+                                    <span class="badge-item sale">@wishItem.Item.DiscountPercentage.ToString("0")% OFF</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="card_product-info">
+                            <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@wishItem.StyleCode" class="name-product h5 fw-normal link text-line-clamp-2">
+                                @wishItem.Item.ItemName
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">@wishItem.Item.SellingPrice.ToString("C")</span>
+                                @if (wishItem.Item.MRP > wishItem.Item.SellingPrice)
+                                {
+                                    <span class="price-old fw-normal">@wishItem.Item.MRP.ToString("C")</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+<!-- /Product -->
+<!-- Recently -->
+<section class="s-recently d-none flat-spacing pt-0">
+    <div class="container">
+        <div class="sect-top">
+            <h3 class="s-title">recently viewed products</h3>
+            <div class="group-btn-slider">
+                <div class="nav-prev-swiper tf-sw-nav">
+                    <i class="icon-arrow-left"></i>
+                </div>
+                <div class="nav-next-swiper tf-sw-nav">
+                    <i class="icon-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        <div dir="ltr" class="swiper tf-swiper" data-preview="4" data-tablet="3" data-mobile-sm="2" data-mobile="2" data-space-lg="30"
+            data-space-md="20" data-space="15" data-pagination="2" data-pagination-sm="2" data-pagination-md="3" data-pagination-lg="4">
+            <div class="swiper-wrapper">
+                <!-- item 1 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="images/products/product-22.jpg" data-src="images/products/product-22.jpg" alt="Image Product"
+                                    class="lazyload img-product">
+                                <img src="images/products/product-23.jpg" data-src="images/products/product-23.jpg" alt="Image Product"
+                                    class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickAdd" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Quick Add</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Open Heart Bangle
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$1,799.00</span>
+                                <span class="price-old fw-normal">$1,259.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 2 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="images/products/product-24.jpg" data-src="images/products/product-24.jpg" alt="Image Product"
+                                    class="lazyload img-product">
+                                <img src="images/products/product-25.jpg" data-src="images/products/product-25.jpg" alt="Image Product"
+                                    class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Add to Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Crystal Birthstone Eternity Circle Charm
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$2,499.00</span>
+                                <span class="price-old fw-normal">$2,899.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 3 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="images/products/product-26.jpg" data-src="images/products/product-26.jpg" alt="Image Product"
+                                    class="lazyload img-product">
+                                <img src="images/products/product-27.jpg" data-src="images/products/product-27.jpg" alt="Image Product"
+                                    class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Add to Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Ball Bracelet
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$3,199.00</span>
+                                <span class="price-old fw-normal">$2,239.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 4 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="images/products/product-28.jpg" data-src="images/products/product-28.jpg" alt="Image Product"
+                                    class="lazyload img-product">
+                                <img src="images/products/product-29.jpg" data-src="images/products/product-29.jpg" alt="Image Product"
+                                    class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Add to Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Engagement Ring in 18k Yellow Gold
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$1,399.00</span>
+                                <span class="price-old fw-normal">$979.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- item 5 -->
+                <div class="swiper-slide">
+                    <div class="card_product--V01">
+                        <div class="card_product-wrapper">
+                            <a href="product-default.html" class="product-img">
+                                <img src="images/products/product-22.jpg" data-src="images/products/product-22.jpg" alt="Image Product"
+                                    class="lazyload img-product">
+                                <img src="images/products/product-23.jpg" data-src="images/products/product-23.jpg" alt="Image Product"
+                                    class="lazyload img-hover">
+                            </a>
+                            <ul class="list-product-btn">
+                                <li class="wishlist">
+                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-heart-2"></span>
+                                        <span class="tooltip">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#shoppingCart" data-bs-toggle="offcanvas" class="hover-tooltip tooltip-left box-icon">
+                                        <span class="icon icon-shop-cart"></span>
+                                        <span class="tooltip">Add to Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview">
+                                        <span class="icon icon-view"></span>
+                                        <span class="tooltip">Quick View</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card_product-info">
+                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                                Open Heart Bangle
+                            </a>
+                            <div class="price-wrap">
+                                <span class="price-new h5">$1,119.00</span>
+                                <span class="price-old fw-normal">$1,599.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sw-dot-default tf-sw-pagination d-xl-none"></div>
+        </div>
+    </div>
+</section>
+<!-- /Recently -->

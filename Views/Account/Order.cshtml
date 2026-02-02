@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Yash_Gems___Jewelleries.Models.Order>
+@{
 	ViewData["Title"] = "My Orders";
 }
 
@@ -28,27 +29,27 @@
                 <div class="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
                     <ul class="my-account-nav">
                         <li>
-                            <a href="account-page.html" class="link-account ">
+                            <a asp-action="Index" asp-controller="Account" class="link-account ">
                                 <span class="text">Dashboard</span>
                             </a>
                         </li>
                         <li>
-                            <a href="account-orders-empty.html" class="link-account active">
+                            <a asp-action="Order" asp-controller="Account" class="link-account">
                                 <span class="text">My Orders</span>
                             </a>
                         </li>
                         <li>
-                            <a href="wishlist.html" class="link-account">
+                            <a asp-action="Wishlist" asp-controller="Account" class="link-account">
                                 <span class="text">My Wishlist</span>
                             </a>
                         </li>
                         <li>
-                            <a href="account-addresses.html" class="link-account">
-                                <span class="text">Addresses</span>
+                            <a asp-action="Inquiries" asp-controller="Account" class="link-account">
+                                <span class="text">Inquiries</span>
                             </a>
                         </li>
                         <li>
-                            <a href="account-details.html" class="link-account">
+                            <a asp-action="Detail" asp-controller="Account" class="link-account">
                                 <span class="text">Detail</span>
                             </a>
                         </li>
@@ -69,11 +70,13 @@
                     <h4 class="heading fw-normal">
                         Order History
                     </h4>
-                    <div class="table-order-history">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="title-case order_code">ORDER ID</th>
+                    @if(Model != null && Model.Any())
+                    {
+                        <div class="table-order-history">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="title-case order_code">ORDER ID</th>
                                     <th class="title-case order_date">ORDER DATE</th>
                                     <th class="title-case order_status">STATUS</th>
                                     <th class="title-case order_total">TOTAL</th>
@@ -81,42 +84,39 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>#1001</td>
-                                    <td>27 Mar 2025</td>
-                                    <td>Delivered</td>
-                                    <td>$870.00 / 4 items</td>
-                                    <td>
-                                        <a href="#orderDetail" data-bs-toggle="modal" class="btn-action link">
+                                @foreach(var item in Model)
+                                {
+                                    <tr>
+                                        <td>#@item.OrderNumber</td>
+                                        <td>@item.OrderDate.ToString("MMM dd, yyyy")</td>
+                                        <td>@item.OrderStatus</td>
+                                        <td>@item.TotalAmount.ToString("C")</td>
+                                        <td>
+                                        <a href="#orderDetail" data-bs-toggle="modal" data-order-id="@item.OrderId" class="btn-action link">
                                             <i class="icon icon-view-2"></i>
                                         </a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>#1002</td>
-                                    <td>29 Mar 2025</td>
-                                    <td>Delivered</td>
-                                    <td>$80.00 / 1 items</td>
-                                    <td>
-                                        <a href="#orderDetail" data-bs-toggle="modal" class="btn-action link">
-                                            <i class="icon icon-view-2"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#1003</td>
-                                    <td>30 Mar 2025</td>
-                                    <td>On the way</td>
-                                    <td>$690.00 / 3 items</td>
-                                    <td>
-                                        <a href="#orderDetail" data-bs-toggle="modal" class="btn-action link">
-                                            <i class="icon icon-view-2"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
+                    }
+                    else
+                    {
+                    <div class="col-lg-8 d-flex justify-content-center">
+                        <div class="my-acount-content account-order empty">
+                            <div class="ic-img">
+                                <img src="/app/images/section/empty-cart.svg" alt="Emty Cart">
+                            </div>
+                            <p class="title text-lg-2">You haven’t placed any order yet</p>
+                            <p class="sub-title">It’s time to make your first order</p>
+                            <a asp-action="Index" asp-controller="Shop" class="tf-btn fw-medium btn-out-line">
+                                SHOPPING
+                            </a>
+                        </div>
+                    </div>
+                    }
                 </div>
             </div>
         </div>
@@ -124,102 +124,38 @@
 </div>
 <!-- /Account -->
 <!-- Order Detail -->
-<div class="modal modalCentered fade modal-order-detail" id="orderDetail">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <span class="icon-close-popup" data-bs-dismiss="modal">
-                <i class="icon-close"></i>
-            </span>
-            <div class="modal-top">
-                <h3 class="title fw-normal text-uppercase">Order Detail</h3>
-            </div>
-            <div class="modal-body">
-                <ul class="list-infor">
-                    <li class="order_id">#1001</li>
-                    <li class="br-line"></li>
-                    <li class="order_date">27 MAY 2025</li>
-                    <li class="br-line"></li>
-                    <li class="order_item">6 ITEMS</li>
-                    <li class="br-line"></li>
-                    <li class="order_status delivered">DELIVERED</li>
-                </ul>
-                <div class="table-order-detail account">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="order_product h6 fw-normal">Product</th>
-                                <th class="order_price h6 fw-normal">price</th>
-                                <th class="order_quantity h6 fw-normal">quantity</th>
-                                <th class="order_subtotal h6 fw-normal">subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="order_product">
-                                    <a href="product-default.html" class="image">
-                                        <img src="/app/images/products/product-1.jpg" alt="Product">
-                                    </a>
-                                    <div class="infor">
-                                        <a href="product-default.html" class="prd-name h6 fw-normal link">
-                                            Engagement Ring in 18k Yellow Gold
-                                        </a>
-                                        <p class="prd-type">Titanium / 52</p>
-                                    </div>
-                                </td>
-                                <td class="order_price">$130.00</td>
-                                <td class="order_quantity">2</td>
-                                <td class="order_subtotal">$260.00</td>
-                            </tr>
-                            <tr>
-                                <td class="order_product">
-                                    <a href="product-default.html" class="image">
-                                        <img src="/app/images/products/product-2.jpg" alt="Product">
-                                    </a>
-                                    <div class="infor">
-                                        <a href="product-default.html" class="prd-name h6 fw-normal link">
-                                            Crystal Birthstone Eternity Circle Charm
-                                        </a>
-                                        <p class="prd-type">Rose Gold / 50</p>
-                                    </div>
-                                </td>
-                                <td class="order_price">$130.00</td>
-                                <td class="order_quantity">2</td>
-                                <td class="order_subtotal">$260.00</td>
-                            </tr>
-                            <tr>
-                                <td class="order_product">
-                                    <a href="product-default.html" class="image">
-                                        <img src="/app/images/products/product-3.jpg" alt="Product">
-                                    </a>
-                                    <div class="infor">
-                                        <a href="product-default.html" class="prd-name h6 fw-normal link">
-                                            Ball Bracelet
-                                        </a>
-                                        <p class="prd-type">Rose Gold / 48</p>
-                                    </div>
-                                </td>
-                                <td class="order_price">$130.00</td>
-                                <td class="order_quantity">2</td>
-                                <td class="order_subtotal">$260.00</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="order-total-wrap">
-                    <h5 class="text fw-normal text-uppercase">Total:</h5>
-                    <h5 class="order-total fw-normal">$780.00</h5>
-                </div>
-
-                <p class="privacy text-main-4 text-center">
-                    Not happy with the order? You can
-                    <a href="#" class="tf-btn-line style-line-2">
-                        <span class="text-body">
-                            Request a free return
-                        </span>
-                    </a> in 14 days
-                </p>
-            </div>
-        </div>
-    </div>
+<div class="modal modalCentered fade modal-order-detail" id="orderDetail" tabindex="-1" aria-hidden="true">
+    <!-- Content loaded via AJAX -->
 </div>
 <!-- /Order Detail -->
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.btn-action.link').on('click', function (e) {
+                e.preventDefault();
+                var orderId = $(this).data('order-id');
+
+                // Show loading state or clear previous content
+                $('#orderDetail').html('<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-body text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div></div></div>');
+                
+                // Show modal
+                var myModal = new bootstrap.Modal(document.getElementById('orderDetail'));
+                myModal.show();
+
+                $.ajax({
+                    url: '@Url.Action("GetOrderDetail", "Account")',
+                    type: 'GET',
+                    data: { id: orderId },
+                    success: function (result) {
+                        $('#orderDetail').html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                        $('#orderDetail').html('<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-body text-center py-5"><h5 class="text-danger">Failed to load order details.</h5></div></div></div></div>');
+                    }
+                });
+            });
+        });
+    </script>
+}

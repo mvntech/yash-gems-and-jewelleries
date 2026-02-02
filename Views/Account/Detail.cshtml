@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Yash_Gems___Jewelleries.Controllers
+@model AccountController.UserDetailModel
+
+@{
 	ViewData["Title"] = "My Account's Details";
 }
 
@@ -28,27 +31,27 @@
                 <div class="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
                     <ul class="my-account-nav">
                         <li>
-                            <a href="account-page.html" class="link-account">
+                            <a asp-action="Index" asp-controller="Account" class="link-account">
                                 <span class="text">Dashboard</span>
                             </a>
                         </li>
                         <li>
-                            <a href="account-orders-empty.html" class="link-account">
+                            <a asp-action="Order" asp-controller="Account" class="link-account">
                                 <span class="text">My Orders</span>
                             </a>
                         </li>
                         <li>
-                            <a href="wishlist.html" class="link-account">
+                            <a asp-action="Wishlist" asp-controller="Account" class="link-account">
                                 <span class="text">My Wishlist</span>
                             </a>
                         </li>
                         <li>
-                            <a href="account-addresses.html" class="link-account">
-                                <span class="text">Addresses</span>
+                            <a asp-action="Inquiries" asp-controller="Account" class="link-account">
+                                <span class="text">Inquiries</span>
                             </a>
                         </li>
                         <li>
-                            <a href="account-details.html" class="link-account active">
+                            <a asp-action="Detail" asp-controller="Account" class="link-account active">
                                 <span class="text">Detail</span>
                             </a>
                         </li>
@@ -67,39 +70,79 @@
             <div class="col-lg-8">
                 <div class="my-acount-content account-dashboard">
                     <h4 class="heading fw-normal">ACCOUNT DETAIL</h4>
-                    <form action="#" class="form-edit-account style-border">
+                    
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form asp-action="Detail" method="post" class="form-edit-account style-border">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
                         <div class="form-content-2">
                             <fieldset class="tf-field-2">
-                                <input class="tf-input" type="text" placeholder="" required>
-                                <label class="tf-lable">First name*</label>
+                                <input asp-for="FirstName" class="tf-input" placeholder="" required>
+                                <label asp-for="FirstName" class="tf-lable">First name*</label>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
                             </fieldset>
                             <fieldset class="tf-field-2">
-                                <input class="tf-input" type="text" placeholder="" required>
-                                <label class="tf-lable">Last name*</label>
+                                <input asp-for="LastName" class="tf-input" placeholder="" required>
+                                <label asp-for="LastName" class="tf-lable">Last name*</label>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
                             </fieldset>
                             <fieldset class="tf-field-2">
-                                <input class="tf-input" type="email" placeholder="" required>
-                                <label class="tf-lable">Email*</label>
+                                <input asp-for="UserName" class="tf-input" placeholder="" required>
+                                <label asp-for="UserName" class="tf-lable">Username*</label>
+                                <span asp-validation-for="UserName" class="text-danger"></span>
                             </fieldset>
                         </div>
-                        <h5 class="title-pass fw-normal">Password Change</h5>
-                        <div class="form-content-2">
-                            <fieldset class="tf-field-2 password-wrapper">
-                                <input class="tf-input password-field" type="password" placeholder="" required="">
-                                <label class="tf-lable">Current Password *</label>
-                                <span class=" toggle-pass icon-show-password"></span>
-                            </fieldset>
-                            <fieldset class="tf-field-2 password-wrapper">
-                                <input class="tf-input password-field" type="password" placeholder="" required="">
-                                <label class="tf-lable">New password *</label>
-                                <span class=" toggle-pass icon-show-password"></span>
-                            </fieldset>
-                            <fieldset class="tf-field-2 password-wrapper">
-                                <input class="tf-input password-field" type="password" placeholder="" required="">
-                                <label class="tf-lable">Confirm password *</label>
-                                <span class=" toggle-pass icon-show-password"></span>
-                            </fieldset>
-                        </div>
+
+                        @if (ViewBag.HasPassword == true)
+                        {
+                            <h5 class="title-pass fw-normal">Password Change</h5>
+                            <div class="form-content-2">
+                                <fieldset class="tf-field-2 password-wrapper">
+                                    <input asp-for="CurrentPassword" class="tf-input password-field" placeholder="">
+                                    <label asp-for="CurrentPassword" class="tf-lable">Current Password</label>
+                                    <span class="toggle-pass icon-show-password"></span>
+                                    <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                                </fieldset>
+                                <fieldset class="tf-field-2 password-wrapper">
+                                    <input asp-for="NewPassword" class="tf-input password-field" placeholder="">
+                                    <label asp-for="NewPassword" class="tf-lable">New password</label>
+                                    <span class="toggle-pass icon-show-password"></span>
+                                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                                </fieldset>
+                                <fieldset class="tf-field-2 password-wrapper">
+                                    <input asp-for="ConfirmPassword" class="tf-input password-field" placeholder="">
+                                    <label asp-for="ConfirmPassword" class="tf-lable">Confirm password</label>
+                                    <span class="toggle-pass icon-show-password"></span>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </fieldset>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-light border mt-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <iconify-icon icon="solar:shield-warning-bold-duotone" class="fs-24 text-warning me-2"></iconify-icon>
+                                    <h6 class="alert-heading fw-bold mb-0">Password Management</h6>
+                                </div>
+                                <p class="mb-0 text-muted small">Your account is linked to an external provider (e.g., Google or Facebook). Password changes are disabled for security. Please manage your password settings through your authentication provider.</p>
+                            </div>
+                        }
+
                         <button type="submit" class="tf-btn btn-fill animate-btn fw-medium">Save Changes</button>
                     </form>
                 </div>
