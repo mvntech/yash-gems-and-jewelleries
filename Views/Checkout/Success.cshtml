@@ -1,0 +1,276 @@
+@model Yash_Gems___Jewelleries.Models.Order
+@{
+    ViewData["Title"] = "Thank You";
+}
+
+<!-- Thank Your Order -->
+<section class="flat-spacing">
+    <div class="container">
+        <div class="thank-wrap flat-spacing pt-0">
+            <span class="icon d-block">
+                <i class="icon-check-3"></i>
+            </span>
+            <h2 class="title">THANK YOU FOR YOUR ORDER!</h2>
+            <p class="sub-title">You are awesome, @(Model.CustomerName.Split(' ')[0])! Thank you so much for your purchase.</p>
+        </div>
+        <div class="s-checkout place-order-wrap">
+            <div class="left-col">
+                <div class="table-order-finish">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="order_product h6 fw-normal">order number</th>
+                                <th class="order_price h6 fw-normal">order date</th>
+                                <th class="order_quantity h6 fw-normal">order total</th>
+                                <th class="order_subtotal h6 fw-normal">payment method</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="order_item">
+                                <td class="order_number">#@Model.OrderNumber</td>
+                                <td class="order_date">@Model.OrderDate.ToString("dd MMM yyyy")</td>
+                                <td class="order_total">@Model.TotalAmount.ToString("C")</td>
+                                <td class="order_payment">@Model.PaymentMethod</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flat-spacing">
+                    <div class="delivery-progress">
+                        <span class="checkout-bar"></span>
+                        <div class="delivery-step confirmed">
+                            <div class="box-icon">
+                                <i class="icon-check"></i>
+                            </div>
+                            <h6 class="title">Confirmed</h6>
+                            <p class="date text-caption">@Model.OrderDate.ToString("dd MMM yyyy")</p>
+                        </div>
+                        <div class="delivery-step @(Model.OrderStatus == "Shipped" || Model.OrderStatus == "Delivered" ? "confirmed" : "")">
+                            <div class="box-icon">
+                                <i class="icon-box"></i>
+                            </div>
+                            <h6 class="title">Shipped</h6>
+                            <p class="date text-caption">@(Model.OrderStatus == "Shipped" || Model.OrderStatus == "Delivered" ? Model.ModifiedDate?.ToString("dd MMM yyyy") : "N/A")</p>
+                        </div>
+                        <div class="delivery-step @(Model.OrderStatus == "Delivered" ? "confirmed" : "")">
+                            <div class="box-icon">
+                                <i class="icon-location-2"></i>
+                            </div>
+                            <h6 class="title">Delivered</h6>
+                            <p class="date text-caption">@(Model.ActualDeliveryDate.HasValue ? Model.ActualDeliveryDate.Value.ToString("dd MMM yyyy") : "N/A")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="map d-flex">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3310.5857104277184!2d151.04672747646993!3d-33.92606072202828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12bbff3cb96e71%3A0xad3243fb988463dc!2s15%20Yarran%20St%2C%20Punchbowl%20NSW%202196%2C%20Australia!5e0!3m2!1sen!2s!4v1745205637101!5m2!1sen!2s"
+                        width="100%" height="499" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <div class="flat-spacing-11">
+                    <div class="box-ship-address s-wrap flex-sm-nowrap">
+                        <div class="ship-address-item">
+                            <h6 class="address-title">Shipping address</h6>
+                            <ul class="list-address">
+                                <li>@Model.CustomerName</li>
+                                <li>@Model.ShippingAddress</li>
+                                <li>@Model.ShippingCity, @Model.ShippingState</li>
+                                <li>@Model.ShippingCountry</li>
+                                <li>@Model.ShippingPostalCode</li>
+                                <li>@Model.Email</li>
+                            </ul>
+                        </div>
+                        <div class="ship-address-item">
+                            <h6 class="address-title">Billing address</h6>
+                            <ul class="list-address">
+                                @if (Model.BillingAddressSameAsShipping)
+                                {
+                                    <li>@Model.CustomerName</li>
+                                    <li>@Model.ShippingAddress</li>
+                                    <li>@Model.ShippingCity, @Model.ShippingState</li>
+                                    <li>@Model.ShippingCountry</li>
+                                    <li>@Model.ShippingPostalCode</li>
+                                }
+                                else
+                                {
+                                    <li>@Model.CustomerName</li>
+                                    <li>@Model.BillingAddress</li>
+                                    <li>@Model.BillingCity, @Model.BillingState</li>
+                                    <li>@Model.BillingCountry</li>
+                                    <li>@Model.BillingPostalCode</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tes-slider-2 bg-linear-golden-cream">
+                    <div dir="ltr" class="swiper tf-swiper">
+                        <div class="swiper-wrapper">
+                            <!-- item 1 -->
+                            <div class="swiper-slide">
+                                <div class="box_testimonial--V05">
+                                    <span class="icon">
+                                        <i class="icon-quote-4"></i>
+                                    </span>
+                                    <h5 class="tes-title">HAPPY CUSTOMERS</h5>
+                                    <h6 class="tes-text">
+                                        "I’ve never felt more confident in my wardrobe! Every piece I’ve bought from here is high-quality,
+                                        trendy,
+                                        and fits perfectly. The entire shopping experience has been seamless from start to finish. Thank you
+                                        for
+                                        making fashion so easy!"
+                                    </h6>
+                                    <p class="tes-author">
+                                        Yash P
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- item 2 -->
+                            <div class="swiper-slide">
+                                <div class="box_testimonial--V05">
+                                    <span class="icon">
+                                        <i class="icon-quote-4"></i>
+                                    </span>
+                                    <h5 class="tes-title">HAPPY CUSTOMERS</h5>
+                                    <h6 class="tes-text">
+                                        "My closet has never looked better! The clothes I’ve gotten here are not only fashionable but also
+                                        incredibly comfortable. Shopping was a breeze — I’ll definitely be coming back for more!"
+                                    </h6>
+                                    <p class="tes-author">
+                                        Mas T
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- item 3 -->
+                        </div>
+                        <div class="sw-dot-default type-small tf-sw-pagination type-space-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-col">
+                <div class="tf-page-cart-sidebar">
+                    <h4 class="checkout-title">ORDER DETAIL</h4>
+                    <ul class="list-order-product">
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <li class="order-item">
+                                <div class="content">
+                                    <div class="img-product">
+                                        <img src="@(string.IsNullOrEmpty(item.ProductImageUrl) ? "/app/images/products/product-default.jpg" : item.ProductImageUrl)" alt="@item.ProductName" class="prd">
+                                        <span class="text-caption quantity">@item.Quantity</span>
+                                    </div>
+                                    <div class="info">
+                                        <p class="name">@item.ProductName</p>
+                                        <span class="variant">@item.GoldCarat / @item.StyleCode</span>
+                                    </div>
+                                </div>
+                                <h6 class="price">@item.UnitPrice.ToString("C")</h6>
+                            </li>
+                        }
+                    </ul>
+                    <span class="br-line"></span>
+                    <ul class="list-total">
+                        <li class="total-item">
+                            <span>SUBTOTAL:</span>
+                            <span>@Model.Subtotal.ToString("C") USD</span>
+                        </li>
+                        <li class="total-item">
+                            <span>DISCOUNT:</span>
+                            <span>-@Model.DiscountAmount.ToString("C") USD</span>
+                        </li>
+                        <li class="total-item">
+                            <span>SHIPPING:</span>
+                            <span>@Model.ShippingCharges.ToString("C") USD</span>
+                        </li>
+                        <li class="total-item">
+                            <span>TAXES:</span>
+                            <span>@Model.TaxAmount.ToString("C") USD</span>
+                        </li>
+                    </ul>
+                    <span class="br-line"></span>
+                    <h4 class="last-total d-flex justify-content-between">
+                        <span>TOTAL:</span>
+                        <span class="total-price-order">@Model.TotalAmount.ToString("C") USD</span>
+                    </h4>
+                    <a asp-controller="Shop" asp-action="Index" class="tf-btn btn-fill fw-medium animate-btn w-100">
+                        Continue Shopping
+                    </a>
+                </div>
+                <div class="feedback-sidebar s-wrap">
+                    <h4 class="checkout-title">GIVE US A FEEDBACK</h4>
+                    <p class="checkout-subtitle">
+                        Let us know what you think about the shopping experience, and get a gift coupon for the next shopping.
+                    </p>
+                    <form class="form-feedback style-border">
+                        <div class="form-content-2 mb_32">
+                            <fieldset class="tf-field-2">
+                                <input class="tf-input" type="text" id="name" placeholder="" required>
+                                <label class="tf-lable">Name*</label>
+                            </fieldset>
+                            <fieldset class="tf-field-2">
+                                <input class="tf-input" type="email" id="email" placeholder="" required>
+                                <label class="tf-lable">Email*</label>
+                            </fieldset>
+                            <div class="check-wrapper">
+                                <p class="text-main-6">How was your experience?</p>
+                                <div class="check-wrap-list">
+                                    <div class="checkbox-wrap type-2">
+                                        <input type="radio" id="exp-1y" class="tf-check-rounded" name="checkshipping" checked>
+                                        <label for="exp-1y">1</label>
+                                    </div>
+                                    <div class="checkbox-wrap type-2">
+                                        <input type="radio" id="exp-2y" class="tf-check-rounded" name="checkshipping">
+                                        <label for="exp-2y">2</label>
+                                    </div>
+                                    <div class="checkbox-wrap type-2">
+                                        <input type="radio" id="exp-3y" class="tf-check-rounded" name="checkshipping">
+                                        <label for="exp-3y">3</label>
+                                    </div>
+                                    <div class="checkbox-wrap type-2">
+                                        <input type="radio" id="exp-4y" class="tf-check-rounded" name="checkshipping">
+                                        <label for="exp-4y">4</label>
+                                    </div>
+                                    <div class="checkbox-wrap type-2">
+                                        <input type="radio" id="exp-5y" class="tf-check-rounded" name="checkshipping">
+                                        <label for="exp-5y">5</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset class="tf-field-2">
+                                <textarea class="tf-input d-flex" placeholder="" id="desc" style="height: 139px;"></textarea>
+                                <label class="tf-lable type-2">Share your exprience...</label>
+                            </fieldset>
+                        </div>
+                        <button class="tf-btn btn-fill fw-medium animate-btn w-100">
+                            SEND
+                        </button>
+                    </form>
+                    <h4 class="checkout-title">SHARE THE LOVE</h4>
+                    <ul class="tf-social-icon style-large">
+                        <li>
+                            <a href="https://www.facebook.com/" target="_blank" class="social-facebook">
+                                <span class="icon"><i class="icon-facebook"></i></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/" target="_blank" class="social-instagram">
+                                <span class="icon"><i class="icon-instagram"></i></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://x.com/" target="_blank" class="social-x">
+                                <span class="icon"><i class="icon-x"></i></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.snapchat.com/" target="_blank" class="social-snapchat">
+                                <span class="icon"><i class="icon-snapchat"></i></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Thank Your Order -->

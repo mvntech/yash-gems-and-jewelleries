@@ -1,0 +1,358 @@
+@model Yash_Gems___Jewelleries.Models.ViewModels.CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<!-- Page Title -->
+<section class="flat-spacing-2 pb-0">
+    <div class="container">
+        <div class="page-title">
+            <div class="breadcrumbs">
+                <ul class="bread-wrap">
+                    <li><a asp-controller="Home" asp-action="Index" class="text-main-4 link-secondary">Home</a></li>
+                    <li class="br-line w-12 bg-main"></li>
+                    <li><a asp-controller="Cart" asp-action="Index" class="text-main-4 link-secondary">Cart</a></li>
+                    <li class="br-line w-12 bg-main"></li>
+                    <li>Checkout</li>
+                </ul>
+                <h1 class="heading fw-normal text-uppercase">
+                    checkout
+                </h1>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Page Title -->
+<!-- Checkout -->
+<section class="flat-spacing">
+    <div class="container">
+        <div class="s-checkout flex-xl-nowrap">
+            <div class="left-col">
+                <div class="s-wrap">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div id="error-message" class="mb-3">
+                            <div asp-validation-summary="All"></div>
+                        </div>
+                    }
+                    <form asp-controller="Checkout" asp-action="PlaceOrder" method="post" class="form-checkout-cart-main style-border">
+                        @Html.AntiForgeryToken()
+                        <div class="box-ip-checkout">
+                            <h4 class="checkout-title">DELIVERY</h4>
+                            <div class="form-content-2">
+                                <div class="cols tf-grid-layout sm-col-2">
+                                    <fieldset class="tf-field-2">
+                                        <input class="tf-input" asp-for="FirstName" placeholder="">
+                                        <label class="tf-lable" asp-for="FirstName">First name</label>
+                                        <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                    </fieldset>
+                                    <fieldset class="tf-field-2">
+                                        <input class="tf-input" asp-for="LastName" placeholder="">
+                                        <label class="tf-lable" asp-for="LastName">Last name</label>
+                                        <span asp-validation-for="LastName" class="text-danger small"></span>
+                                    </fieldset>
+                                </div>
+                                <fieldset class="tf-field-2">
+                                    <input class="tf-input" asp-for="Country" placeholder="">
+                                    <label class="tf-lable" asp-for="Country">Country</label>
+                                    <span asp-validation-for="Country" class="text-danger small"></span>
+                                </fieldset>
+                                <fieldset class="tf-field-2">
+                                    <input class="tf-input" asp-for="Address" placeholder="">
+                                    <label class="tf-lable" asp-for="Address">Address</label>
+                                    <span asp-validation-for="Address" class="text-danger small"></span>
+                                </fieldset>
+                                <fieldset class="tf-field-2">
+                                    <input class="tf-input" asp-for="Apartment" placeholder="">
+                                    <label class="tf-lable" asp-for="Apartment">Apartment, suite, etc (optional)</label>
+                                </fieldset>
+                                <div class="cols tf-grid-layout sm-col-2 md-col-3">
+                                    <fieldset class="tf-field-2">
+                                        <input class="tf-input" asp-for="City" placeholder="">
+                                        <label class="tf-lable" asp-for="City">City</label>
+                                        <span asp-validation-for="City" class="text-danger small"></span>
+                                    </fieldset>
+                                    <fieldset class="tf-field-2">
+                                        <input class="tf-input" asp-for="State" placeholder="">
+                                        <label class="tf-lable" asp-for="State">State</label>
+                                    </fieldset>
+                                    <fieldset class="tf-field-2">
+                                        <input class="tf-input" asp-for="ZipCode" placeholder="">
+                                        <label class="tf-lable" asp-for="ZipCode">Zipcode/Postal</label>
+                                        <span asp-validation-for="ZipCode" class="text-danger small"></span>
+                                    </fieldset>
+                                </div>
+                                <fieldset class="tf-field-2">
+                                    <input class="tf-input" asp-for="Phone" type="text" placeholder="">
+                                    <label class="tf-lable" asp-for="Phone">Phone</label>
+                                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="box-ip-contact">
+                            <h4 class="checkout-title">
+                                CONTACT INFORMATION
+                            </h4>
+                            <fieldset class="tf-field-2">
+                                <input class="tf-input" asp-for="EmailOrPhone" placeholder="">
+                                <label class="tf-lable" asp-for="EmailOrPhone">Email or phone number</label>
+                                <span asp-validation-for="EmailOrPhone" class="text-danger small"></span>
+                            </fieldset>
+                        </div>
+                        <div class="box-ip-shipping">
+                            <h4 class="checkout-title">
+                                SHIPPING METHOD
+                            </h4>
+                            <div class="form-content-2">
+                                <label for="freeship" class="check-ship">
+                                    <input type="radio" id="freeship" class="tf-check-rounded" value="Free" asp-for="ShippingMethod" checked>
+                                    <span class="text">
+                                        <span>Free Shipping (Estimated in 5-10 business days)</span>
+                                        <span class="price">$00.00</span>
+                                    </span>
+                                </label>
+                                <label for="express-ship" class="check-ship">
+                                    <input type="radio" id="express-ship" class="tf-check-rounded" value="Express" asp-for="ShippingMethod">
+                                    <span class="text">
+                                        <span>Express Shipping (Estimated in 3-5 business days)</span>
+                                        <span class="price">$10.00</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="box-ip-payment">
+                            <h4 class="checkout-title mb_12">PAYMENT</h4>
+                            <p class="sub-title text-main-4">
+                                All transactions are secure and encrypted.
+                            </p>
+                            
+                            <div class="payment-method-box" id="payment-method-box">
+                                <div class="payment-item">
+                                    <label for="delivery" class="check-payment collapsed" data-bs-toggle="collapse"
+                                        data-bs-target="#delivery-payment" aria-controls="delivery-payment">
+                                        <input type="radio" asp-for="PaymentMethod" value="COD" class="tf-check-rounded" id="delivery">
+                                        <span class="pay-title">Cash on delivery</span>
+                                    </label>
+                                    <div id="delivery-payment" class="collapse" data-bs-parent="#payment-method-box"></div>
+                                </div>
+                                <div class="payment-item">
+                                    <label for="credit-card" class="check-payment" data-bs-toggle="collapse"
+                                        data-bs-target="#credit-card-payment" aria-controls="credit-card-payment">
+                                        <input type="radio" asp-for="PaymentMethod" value="Credit Card" class="tf-check-rounded" id="credit-card" checked>
+                                        <span class="pay-title">Credit card</span>
+                                    </label>
+                                    <div id="credit-card-payment" class="collapse show" data-bs-parent="#payment-method-box">
+                                        <div class="payment-body form-content-2">
+                                            <fieldset class="tf-field-2 ip-card">
+                                                <input class="tf-input" asp-for="CardNumber" placeholder="" id="card-number">
+                                                <label class="tf-lable" asp-for="CardNumber">Card number</label>
+                                                <img class="card-logo" id="card-logo" width="41" height="12" src="/app/images/payment/visa-3.svg" alt="card">
+                                                <span asp-validation-for="CardNumber" class="text-danger small"></span>
+                                            </fieldset>
+                                            <div class="cols tf-grid-layout sm-col-2">
+                                                <fieldset class="tf-field-2">
+                                                    <input class="tf-input" asp-for="ExpiryDate" placeholder="" id="expiry-date">
+                                                    <label class="tf-lable" asp-for="ExpiryDate">Expiration date (MM/YY) </label>
+                                                    <span asp-validation-for="ExpiryDate" class="text-danger small"></span>
+                                                </fieldset>
+                                                <fieldset class="tf-field-2">
+                                                    <input class="tf-input" asp-for="CVV" type="password" placeholder="" id="cvv">
+                                                    <label class="tf-lable" asp-for="CVV">Security code</label>
+                                                    <span asp-validation-for="CVV" class="text-danger small"></span>
+                                                </fieldset>
+                                            </div>
+                                            <fieldset class="tf-field-2">
+                                                <input class="tf-input" asp-for="CardHolderName" placeholder="" id="card-holder-name">
+                                                <label class="tf-lable" asp-for="CardHolderName">Name on card</label>
+                                                <span asp-validation-for="CardHolderName" class="text-danger small"></span>
+                                            </fieldset>
+                                            <div class="checkbox-wrap">
+                                                <input id="this-address" type="checkbox" asp-for="UseShippingAsBilling" class="tf-check style-4 p-0">
+                                                <label for="this-address">Use shipping address as billing address</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="payment-item">
+                                    <label for="paypal" class="check-payment collapsed" data-bs-toggle="collapse"
+                                        data-bs-target="#paypal-payment" aria-controls="paypal-payment">
+                                        <input type="radio" asp-for="PaymentMethod" value="PayPal" class="tf-check-rounded" id="paypal">
+                                        <span class="pay-title">PayPal
+                                            <img class="card-logo" width="78" height="20" src="/app/images/payment/paypal-2.svg" alt="apple">
+                                        </span>
+                                    </label>
+                                    <div id="paypal-payment" class="collapse" data-bs-parent="#payment-method-box"></div>
+                                </div>
+                            </div>
+                            <p class="text-main-4 mt-3">
+                                Your personal data will be used to process your order, support your experience throughout this website, and
+                                for other purposes described in our
+                                <a href="javascript:void(0);" class="fw-medium text-decoration-underline link">privacy policy.</a>
+                            </p>
+                            <button type="submit" class="tf-btn btn-fill fw-medium animate-btn w-100 mt-3">
+                                Place order
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="right-col sticky-top">
+                <div class="tf-page-cart-sidebar">
+                    <h4 class="checkout-title">YOUR CART</h4>
+                    <ul class="list-order-product">
+                        @foreach (var item in Model.Cart.Items)
+                        {
+                            <li class="order-item">
+                                <div class="content">
+                                    <div class="img-product">
+                                        <img src="@item.ProductImage" alt="" class="prd">
+                                        <span class="text-caption quantity">@item.Quantity</span>
+                                    </div>
+                                    <div class="info">
+                                        <p class="name">@item.ProductName</p>
+                                        <span class="variant">@item.ProductType</span>
+                                    </div>
+                                </div>
+                                <h6 class="price">@item.Price.ToString("C")</h6>
+                            </li>
+                        }
+                    </ul>
+                    <span class="br-line"></span>
+                    <ul class="list-total">
+                        <li class="total-item">
+                            <span>SUBTOTAL:</span>
+                            <span>@Model.Cart.Subtotal.ToString("C")</span>
+                        </li>
+                        <li class="total-item">
+                            <span>TAXES:</span>
+                            <span>@Model.Cart.Tax.ToString("C")</span>
+                        </li>
+                        <li class="total-item">
+                            <span>SHIPPING:</span>
+                            <span id="shipping-display">@Model.Cart.ShippingCost.ToString("C")</span>
+                        </li>
+                    </ul>
+                    <span class="br-line"></span>
+                    <h4 class="last-total d-flex justify-content-between">
+                        <span>TOTAL:</span>
+                        <span class="total-price-order" id="total-display">@Model.Cart.Total.ToString("C")</span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Checkout -->
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Shipping Method change logic
+            $('input[name="ShippingMethod"]').change(function() {
+                const method = $(this).val();
+                const subtotal = @Model.Cart.Subtotal;
+                const tax = @Model.Cart.Tax;
+                let shipping = 0;   
+                
+                if (method === "Express") {
+                    shipping = 10;
+                }
+                
+                const total = subtotal + tax + shipping;
+                
+                $('#shipping-display').text('$' + shipping.toFixed(2));
+                $('#total-display').text('$' + total.toFixed(2));
+            });
+
+            // Credit Card Validation & UX
+            const cardNumber = $('#card-number');
+            const expiryDate = $('#expiry-date');
+            const cvv = $('#cvv');
+            const cardLogo = $('#card-logo');
+
+            // Luhn Algorithm for card validation
+            function validateLuhn(number) {
+                let sum = 0;
+                let isSecond = false;
+                for (let i = number.length - 1; i >= 0; i--) {
+                    let d = parseInt(number.charAt(i));
+                    if (isSecond) {
+                        d *= 2;
+                        if (d > 9) d -= 9;
+                    }
+                    sum += d;
+                    isSecond = !isSecond;
+                }
+                return (sum % 10 === 0);
+            }
+
+            cardNumber.on('input', function() {
+                let val = $(this).val().replace(/\s+/g, '');
+                $(this).val(val);
+                if (val.startsWith('4')) {
+                    cardLogo.attr('src', '/app/images/payment/visa-3.svg');
+                } else if (val.startsWith('5')) {
+                    cardLogo.attr('src', '/app/images/payment/master-3.svg');
+                } else {
+                    cardLogo.attr('src', '/app/images/payment/visa-3.svg'); // Default
+                }
+
+                if (val.length >= 13 && !validateLuhn(val)) {
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            expiryDate.on('input', function() {
+                let val = $(this).val().replace(/[^\d/]/g, '');
+                if (val.length === 2 && !val.includes('/')) {
+                    val += '/';
+                }
+                $(this).val(val);
+                
+                const regex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+                if (val.length === 5 && !regex.test(val)) {
+                    $(this).addClass('is-invalid');
+                } else if (val.length === 5) {
+                    // check if expired
+                    const now = new Date();
+                    const parts = val.split('/');
+                    const expMonth = parseInt(parts[0]);
+                    const expYear = parseInt('20' + parts[1]);
+                    const currentMonth = now.getMonth() + 1;
+                    const currentYear = now.getFullYear();
+                    
+                    if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
+                        $(this).addClass('is-invalid');
+                    } else {
+                        $(this).removeClass('is-invalid');
+                    }
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            cvv.on('input', function() {
+                let val = $(this).val().replace(/[^\d]/g, '');
+                $(this).val(val);
+                if (val.length > 0 && val.length < 3) {
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            // Handle Payment Method Selection Toggle
+            $('input[name="PaymentMethod"]').change(function() {
+                const method = $(this).val();
+                if (method === 'Credit Card') {
+                    $('#card-number, #expiry-date, #cvv, #card-holder-name').prop('required', true);
+                } else {
+                    $('#card-number, #expiry-date, #cvv, #card-holder-name').prop('required', false);
+                }
+            });
+        });
+    </script>
+}

@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Yash_Gems___Jewelleries.Controllers
 {
@@ -19,19 +22,53 @@ namespace Yash_Gems___Jewelleries.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ILogger<AccountController> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ICompositeViewEngine _viewEngine;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ApplicationDbContext context,
             ILogger<AccountController> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ICompositeViewEngine viewEngine)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
             _logger = logger;
             _emailSender = emailSender;
+            _viewEngine = viewEngine;
+        }
+
+        // Render Partial View To String Method
+        private async Task<string> RenderPartialViewToString(string viewName, object? model)
+        {
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = _viewEngine.FindView(ControllerContext, viewName, false);
+                if (viewResult.View == null)
+                {
+                    viewResult = _viewEngine.GetView(null, viewName, false);
+                }
+
+                if (viewResult.View == null)
+                {
+                    throw new ArgumentNullException($"{viewName} does not match any available view");
+                }
+
+                var viewContext = new ViewContext(
+                    ControllerContext,
+                    viewResult.View,
+                    ViewData,
+                    TempData,
+                    sw,
+                    new HtmlHelperOptions()
+                );
+
+                await viewResult.View.RenderAsync(viewContext);
+                return sw.ToString();
+            }
         }
 
         // GET: /Account/Login (Login)
@@ -577,8 +614,6 @@ namespace Yash_Gems___Jewelleries.Controllers
                 .FirstOrDefaultAsync(w => w.UserId == user.Id && w.StyleCode == styleCode);
 
             bool added;
-            int count;
-
             if (existingItem != null)
             {
                 _context.Wishlists.Remove(existingItem);
@@ -586,21 +621,24 @@ namespace Yash_Gems___Jewelleries.Controllers
             }
             else
             {
-                var wishlistItem = new Wishlist
+                _context.Wishlists.Add(new Wishlist
                 {
                     UserId = user.Id,
                     StyleCode = styleCode,
                     AddedDate = DateTime.UtcNow
-                };
-                _context.Wishlists.Add(wishlistItem);
+                });
                 added = true;
             }
 
             await _context.SaveChangesAsync();
+            var count = await _context.Wishlists.CountAsync(w => w.UserId == user.Id);
 
-            count = await _context.Wishlists.CountAsync(w => w.UserId == user.Id);
-
-            return Json(new { success = true, added = added, count = count });
+            return Json(new { 
+                success = true, 
+                added = added, 
+                count = count,
+                indicatorHtml = await RenderPartialViewToString("_WishlistIndicatorPartial", count)
+            });
         }
 
         // POST: /Account/RemoveFromWishlist
@@ -624,10 +662,22 @@ namespace Yash_Gems___Jewelleries.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            var count = await _context.Wishlists.CountAsync(w => w.UserId == user.Id);
-            return Json(new { success = true, count = count });
+            var wishlistItems = await _context.Wishlists
+                .Include(w => w.Item)
+                .Where(w => w.UserId == user.Id)
+                .ToListAsync();
+
+            var count = wishlistItems.Count;
+
+            return Json(new { 
+                success = true, 
+                count = count,
+                itemsHtml = await RenderPartialViewToString("_WishlistItemsPartial", wishlistItems),
+                indicatorHtml = await RenderPartialViewToString("_WishlistIndicatorPartial", count)
+            });
         }
 
+        // GET: /Account/GetWishlistCount
         [HttpGet]
         public async Task<IActionResult> GetWishlistCount()
         {
@@ -637,7 +687,11 @@ namespace Yash_Gems___Jewelleries.Controllers
             {
                 count = await _context.Wishlists.CountAsync(w => w.UserId == user.Id);
             }
-            return Json(new { success = true, count = count });
+            return Json(new { 
+                success = true, 
+                count = count,
+                indicatorHtml = await RenderPartialViewToString("_WishlistIndicatorPartial", count)
+            });
         }
     }
 }
