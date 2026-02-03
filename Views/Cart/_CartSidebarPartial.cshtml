@@ -1,0 +1,76 @@
+@model Yash_Gems___Jewelleries.Models.ViewModels.CartViewModel
+
+<div class="canvas-header">
+    <h3 class="title fw-normal text-uppercase">shopping cart</h3>
+    <span class="icon-close link icon-close-popup" data-bs-dismiss="offcanvas"></span>
+</div>
+<div class="wrap list-file-delete">
+    <div class="tf-mini-cart-threshold">
+        <div class="tf-number-count">
+            <p class="text-uppercase"><span class="prd-count">@Model.Items.Sum(i => i.Quantity)</span> products</p>
+
+            @if (Model.Items.Any())
+            {
+                <a href="javascript:void(0)" class="tf-btn-line style-line-2 clear-file-delete btn-clear-cart">
+                    <span class="text-body">
+                        Empty cart
+                    </span>
+                </a>
+            }
+        </div>
+    </div>
+    <div class="tf-mini-cart-wrap">
+        <div class="tf-mini-cart-main">
+            <div class="tf-mini-cart-sroll">
+                <ul class="tf-mini-cart-items">
+                    @if (!Model.Items.Any())
+                    {
+                        <li class="p-3 text-center text-main-4">Your cart is empty</li>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.Items)
+                        {
+                            <li class="tf-mini-cart-item file-delete">
+                                <div class="tf-mini-cart-image">
+                                    <img src="@(!string.IsNullOrEmpty(item.ProductImage) ? item.ProductImage : "/app/images/products/product-default.jpg")" alt="@item.ProductName">
+                                </div>
+                                <div class="tf-mini-cart-info">
+                                    <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="prd-name link">@item.ProductName</a>
+                                    <p class="type-select text-main-4">@item.ProductType / @item.StyleCode</p>
+                                    <div class="prd-quantity">
+                                        <p class="text-caption">Qty: @item.Quantity</p>
+                                    </div>
+                                    <a href="javascript:void(0)" class="tf-btn-line style-line-2 remove" data-cartitemid="@item.CartItemId" data-stylecode="@item.StyleCode">
+                                        <span class="text-caption">Remove</span>
+                                    </a>
+                                </div>
+                                <p class="tf-mini-card-price h6 fw-normal">@item.Subtotal.ToString("C")</p>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="tf-mini-cart-bottom">
+            <div class="tf-mini-cart-bottom-wrap">
+                <div class="tf-cart-totals-discounts">
+                    <h6 class="tf-cart-total-text fw-normal text-uppercase">total:</h6>
+                    <div class="tf-totals-total-value h6 fw-normal">@Model.Total.ToString("C")</div>
+                </div>
+                <div class="tf-mini-cart-view-checkout">
+                    <a asp-controller="Cart" asp-action="Index" class="tf-btn w-100 style-2">
+                        <span class="fw-medium">
+                            GO TO CART
+                        </span>
+                    </a>
+                    <a asp-controller="Checkout" asp-action="Index" class="tf-btn btn-fill animate-btn w-100">
+                        <span class="fw-medium">
+                            CHECKOUT
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

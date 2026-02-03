@@ -1,0 +1,32 @@
+@model Yash_Gems___Jewelleries.Models.ViewModels.CartViewModel
+
+@foreach (var item in Model.Items)
+{
+    <tr class="file-delete order_item each-prd" data-stylecode="@item.StyleCode">
+        <td>
+            <div class="order_product">
+                <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="image">
+                    <img src="@(!string.IsNullOrEmpty(item.ProductImage) ? item.ProductImage : "/app/images/products/product-default.jpg")" alt="@item.ProductName">
+                </a>
+                <div class="infor">
+                    <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="prd-name h6 fw-normal link">
+                        @item.ProductName
+                    </a>
+                    <p class="prd-type">@item.ProductType / @item.StyleCode</p>
+                </div>
+            </div>
+        </td>
+        <td class="order_price each-price">$@item.Price.ToString("N2")</td>
+        <td>
+            <div class="order_quantity">
+                <div class="wg-quantity style-2">
+                    <span class="btn-quantity js-cart-qty-btn js-qty-minus"><i class="icon-minus"></i></span>
+                    <input class="quantity-product cart-qty-input" type="number" name="number" value="@item.Quantity" min="1" max="@item.MaxStock" data-cartitemid="@item.CartItemId" data-stylecode="@item.StyleCode">
+                    <span class="btn-quantity js-cart-qty-btn js-qty-plus"><i class="icon-plus"></i></span>
+                </div>
+                <span class="remove tf-btn-line style-line-2 fw-normal btn-remove-cart-item pointer" data-cartitemid="@item.CartItemId" data-stylecode="@item.StyleCode">Remove</span>
+            </div>
+        </td>
+        <td class="order_subtotal each-subtotal-price item-subtotal">$@item.Subtotal.ToString("N2")</td>
+    </tr>
+}

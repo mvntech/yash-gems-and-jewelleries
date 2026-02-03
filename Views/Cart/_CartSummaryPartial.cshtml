@@ -1,0 +1,39 @@
+@model Yash_Gems___Jewelleries.Models.ViewModels.CartViewModel
+
+<div class="checkout-sidebar">
+    <form class="form-checkout-sidebar">
+        <div class="form-content">
+            <h4 class="title-total">
+                TOTAL:
+                <span class="each-total-price cart-total">@Model.Total.ToString("C")</span>
+            </h4>
+            <p class="tax-text">
+                Taxes and shipping calculated at checkout
+            </p>
+            <span class="br-line"></span>
+            <div class="checkbox-wrap">
+                <input id="agree-term" type="checkbox" class="tf-check style-4" required>
+                <label for="agree-term">I agree to Terms and conditions</label>
+            </div>
+        </div>
+        @if (Model.Items.Any())
+        {
+            <a asp-controller="Checkout" asp-action="Index" id="checkout-btn" class="tf-btn btn-fill fw-medium animate-btn w-100">
+                CHECKOUT
+            </a>
+        }
+        else
+        {
+            <button type="button" class="tf-btn btn-fill fw-medium animate-btn w-100 opacity-50" disabled>
+                CHECKOUT
+            </button>
+        }
+    </form>
+    <p class="text-caption text-center text-we-accept">We accept</p>
+    <ul class="paymend-method-list justify-content-center">
+        <li><a href="#"><img src="/app/images/payment/visa-2.svg" alt=""></a></li>
+        <li><a href="#"><img src="/app/images/payment/dinner-2.svg" alt=""></a></li>
+        <li><a href="#"><img src="/app/images/payment/master-3.svg" alt=""></a></li>
+        <li><a href="#"><img src="/app/images/payment/paypal.svg" alt=""></a></li>
+    </ul>
+</div>

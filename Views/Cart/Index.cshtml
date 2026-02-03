@@ -1,5 +1,6 @@
-﻿@{
-	ViewData["Title"] = "My Cart";
+﻿@model Yash_Gems___Jewelleries.Models.ViewModels.CartViewModel
+@{
+    ViewData["Title"] = "My Cart";
 }
 
 <!-- Page Title -->
@@ -8,7 +9,7 @@
         <div class="page-title">
             <div class="breadcrumbs">
                 <ul class="bread-wrap">
-                    <li><a href="index-2.html" class="text-main-4 link">Home</a></li>
+                    <li><a asp-controller="Home" asp-action="Index" class="text-main-4 link">Home</a></li>
                     <li class="br-line w-12 bg-main"></li>
                     <li>Cart</li>
                 </ul>
@@ -16,28 +17,17 @@
                     shopping cart
                 </h1>
             </div>
-            <div class="box-delivery">
-                <h6 class="text fw-normal text-uppercase">
-                    Spend <span class="fw-medium">$100</span> more to get
-                    <span class="fw-medium">
-                        Free
-                        Shipping
-                    </span>
-                </h6>
-                <div class="progress-cart tf-progress-ship">
-                    <div class="value" style="width: 0%;" data-progress="66">
-                        <i class="icon icon-delivery"></i>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
 <!-- /Page Title -->
+
 <!-- Shop Cart -->
 <section class="flat-spacing s-shop-cart each-list-prd">
-    <div class="container">
+    <div class="container" id="cart-main-container">
         <div class="row">
+        @if (Model.Items.Any())
+        {
             <div class="col-xl-8">
                 <div class="left mb-xl-0">
                     <div class="table-shop-cart table-order-detail">
@@ -50,95 +40,12 @@
                                     <th class="order_subtotal h6 fw-normal">subtotal</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr class="file-delete order_item each-prd">
-                                    <td>
-                                        <div class="order_product">
-                                            <a href="#" class="image">
-                                                <img src="/app/images/products/product-1.jpg" alt="">
-                                            </a>
-                                            <div class="infor">
-                                                <a href="#" class="prd-name h6 fw-normal link">
-                                                    Crystal Birthstone Eternity Circle Charm
-                                                </a>
-                                                <p class="prd-type">Rose Gold / 50</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="order_price each-price">$130.00</td>
-                                    <td>
-                                        <div class="order_quantity">
-                                            <div class="wg-quantity style-2">
-                                                <button class="btn-quantity minus-quantity"><i class="icon-minus"></i></button>
-                                                <input class="quantity-product" type="text" name="number" value="1">
-                                                <button class="btn-quantity plus-quantity"><i class="icon-plus"></i></button>
-                                            </div>
-                                            <span class="remove tf-btn-line style-line-2 fw-normal">Remove</span>
-                                        </div>
-                                    </td>
-                                    <td class="order_subtotal each-subtotal-price"></td>
-                                </tr>
-                                <tr class="file-delete order_item each-prd">
-                                    <td>
-                                        <div class="order_product">
-                                            <a href="#" class="image">
-                                                <img src="/app/images/products/product-2.jpg" alt="">
-                                            </a>
-                                            <div class="infor">
-                                                <a href="#" class="prd-name h6 fw-normal link">
-                                                    Engagement Ring in 18k Yellow Gold
-                                                </a>
-                                                <p class="prd-type">Rose Gold / 50</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="order_price each-price">$130.00</td>
-                                    <td>
-                                        <div class="order_quantity">
-                                            <div class="wg-quantity style-2">
-                                                <button class="btn-quantity minus-quantity"><i class="icon-minus"></i></button>
-                                                <input class="quantity-product" type="text" name="number" value="1">
-                                                <button class="btn-quantity plus-quantity"><i class="icon-plus"></i></button>
-                                            </div>
-                                            <span class="remove tf-btn-line style-line-2 fw-normal">Remove</span>
-                                        </div>
-                                    </td>
-                                    <td class="order_subtotal each-subtotal-price"></td>
-                                </tr>
-                                <tr class="file-delete order_item each-prd">
-                                    <td>
-                                        <div class="order_product">
-                                            <a href="#" class="image">
-                                                <img src="/app/images/products/product-3.jpg" alt="">
-                                            </a>
-                                            <div class="infor">
-                                                <a href="#" class="prd-name h6 fw-normal link">
-                                                    Ball Bracelet
-                                                </a>
-                                                <p class="prd-type">Rose Gold / 50</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="order_price each-price">$130.00</td>
-                                    <td>
-                                        <div class="order_quantity">
-                                            <div class="wg-quantity style-2">
-                                                <button class="btn-quantity minus-quantity"><i class="icon-minus"></i></button>
-                                                <input class="quantity-product" type="text" name="number" value="1">
-                                                <button class="btn-quantity plus-quantity"><i class="icon-plus"></i></button>
-                                            </div>
-                                            <span class="remove tf-btn-line style-line-2 fw-normal">Remove</span>
-                                        </div>
-                                    </td>
-                                    <td class="order_subtotal each-subtotal-price"></td>
-                                </tr>
+                            <tbody id="cart-items-container">
+                                <partial name="~/Views/Cart/_CartItemsPartial.cshtml" model="Model" />
                             </tbody>
                         </table>
                     </div>
-                    <div class="checkbox-wrap">
-                        <input id="add-gift" type="checkbox" class="tf-check style-4">
-                        <label for="add-gift">Add gift packaging ($10.00)</label>
-                    </div>
+                    
                     <form class="style-border">
                         <fieldset>
                             <label class="label-text">Special instructions for seller</label>
@@ -147,103 +54,27 @@
                     </form>
                 </div>
             </div>
-            <div class="col-xl-4">
-                <div class="right">
-                    <div class="checkout-sidebar">
-                        <form class="form-checkout-sidebar">
-                            <div class="form-content">
-                                <h4 class="title-total">
-                                    TOTAL:
-                                    <span class="each-total-price"></span>
-                                </h4>
-                                <p class="tax-text">
-                                    Taxes and shipping calculated at checkout
-                                </p>
-                                <span class="br-line"></span>
-                                <div class="checkbox-wrap">
-                                    <input id="agree-term" type="checkbox" class="tf-check style-4" required>
-                                    <label for="agree-term">I argee Terms and conditions</label>
-                                </div>
-                            </div>
-                            <button type="button" id="checkout-btn" class="tf-btn btn-fill fw-medium animate-btn w-100">
-                                CHECKOUT
-                            </button>
-                        </form>
-                        <p class="text-caption text-center text-we-accept">We accept</p>
-                        <ul class="paymend-method-list justify-content-center">
-                            <li><a href="#"><img src="/app/images/payment/visa-2.svg" alt=""></a></li>
-                            <li><a href="#"><img src="/app/images/payment/dinner-2.svg" alt=""></a></li>
-                            <li><a href="#"><img src="/app/images/payment/master-3.svg" alt=""></a></li>
-                            <li><a href="#"><img src="/app/images/payment/stripe.svg" alt=""></a></li>
-                            <li><a href="#"><img src="/app/images/payment/paypal.svg" alt=""></a></li>
-                            <li><a href="#"><img src="/app/images/payment/gg-pay-2.svg" alt=""></a></li>
-                            <li><a href="#"><img src="/app/images/payment/apple-pay-2.svg" alt=""></a></li>
-                        </ul>
-                    </div>
-                    <div class="tes-slider tf-btn-swiper-item">
-                        <div dir="ltr" class="swiper tf-swiper" data-space-lg="30" data-space-md="20" data-space="15">
-                            <div class="swiper-wrapper">
-                                <!-- item 1 -->
-                                <div class="swiper-slide">
-                                    <div class="box_testimonial--V04">
-                                        <div class="tes-top">
-                                            <i class="icon icon-quote-3 text-primary"></i>
-                                            <ul class="rate-wrap">
-                                                <li><i class="icon-star"></i></li>
-                                                <li><i class="icon-star"></i></li>
-                                                <li><i class="icon-star"></i></li>
-                                                <li><i class="icon-star"></i></li>
-                                                <li><i class="icon-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <p class="tes-text">
-                                            I was blown away by the craftsmanship and detail of my necklace. It’s even more stunning in
-                                            person! Yash truly delivers timeless elegance.
-                                        </p>
-                                        <div class="tes-author">
-                                            <div class="author-avt">
-                                                <img src="/app/images/avatar/avt-5.jpg" alt="">
-                                            </div>
-                                            <span class="author-name fw-medium">Vincent P.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item 2 -->
-                                <div class="swiper-slide">
-                                    <div class="box_testimonial--V04">
-                                        <div class="tes-top">
-                                            <i class="icon icon-quote-3 text-primary"></i>
-                                            <ul class="rate-wrap">
-                                                <li><i class="icon-star"></i></li>
-                                                <li><i class="icon-star"></i></li>
-                                                <li><i class="icon-star"></i></li>
-                                                <li><i class="icon-star"></i></li>
-                                                <li><i class="icon-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <p class="tes-text">
-                                            These minimalist hoops add the perfect touch of elegance to any outfit. Designed for everyday wear
-                                            with a
-                                            sleek, modern finish — your new go-to accessory for effortless sophistication
-                                        </p>
-                                        <div class="tes-author">
-                                            <div class="author-avt">
-                                                <img src="/app/images/avatar/avt-4.jpg" alt="">
-                                            </div>
-                                            <span class="author-name fw-medium">Mas S.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- item 3 -->
-                            </div>
-                            <div class="group-btn-slider">
-                                <i class="tf-sw-nav icon-arrow-left nav-prev-swiper"></i>
-                                <i class="tf-sw-nav icon-arrow-right nav-next-swiper"></i>
-                            </div>
+            <div class="col-xl-4" id="cart-summary-container">
+                <partial name="~/Views/Cart/_CartSummaryPartial.cshtml" model="Model" />
+            </div>
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="d-flex justify-content-center">
+                    <div class="my-acount-content account-order empty">
+                        <div class="ic-img">
+                            <img src="/app/images/section/empty-cart.svg" alt="Empty Cart">
                         </div>
+                        <p class="title text-lg-2">Your cart is empty</p>
+                        <p class="sub-title">It's time to fill it with your favorites!</p>
+                        <a asp-action="Index" asp-controller="Shop" class="tf-btn fw-medium btn-out-line">
+                            SHOPPING
+                        </a>
                     </div>
                 </div>
             </div>
+        }
         </div>
     </div>
 </section>
@@ -270,7 +101,7 @@
                 <div class="swiper-slide">
                     <div class="card_product--V01">
                         <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
+                                <a asp-controller="Shop" asp-action="Index" class="product-img">
                                 <img src="/app/images/products/product-22.jpg" data-src="/app/images/products/product-22.jpg" alt="Image Product"
                                      class="lazyload img-product">
                                 <img src="/app/images/products/product-23.jpg" data-src="/app/images/products/product-23.jpg" alt="Image Product"
@@ -295,17 +126,10 @@
                                         <span class="tooltip">Quick View</span>
                                     </a>
                                 </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                         <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                            <a asp-controller="Shop" asp-action="Index" class="name-product h5 fw-normal link text-line-clamp-2">
                                 Open Heart Bangle
                             </a>
                             <div class="price-wrap">
@@ -319,7 +143,7 @@
                 <div class="swiper-slide">
                     <div class="card_product--V01">
                         <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
+                                <a asp-controller="Shop" asp-action="Index" class="product-img">
                                 <img src="/app/images/products/product-24.jpg" data-src="/app/images/products/product-24.jpg" alt="Image Product"
                                      class="lazyload img-product">
                                 <img src="/app/images/products/product-25.jpg" data-src="/app/images/products/product-25.jpg" alt="Image Product"
@@ -344,17 +168,10 @@
                                         <span class="tooltip">Quick View</span>
                                     </a>
                                 </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                         <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                            <a asp-controller="Shop" asp-action="Index" class="name-product h5 fw-normal link text-line-clamp-2">
                                 Crystal Birthstone Eternity Circle Charm
                             </a>
                             <div class="price-wrap">
@@ -368,7 +185,7 @@
                 <div class="swiper-slide">
                     <div class="card_product--V01">
                         <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
+                                <a asp-controller="Shop" asp-action="Index" class="product-img">
                                 <img src="/app/images/products/product-26.jpg" data-src="/app/images/products/product-26.jpg" alt="Image Product"
                                      class="lazyload img-product">
                                 <img src="/app/images/products/product-27.jpg" data-src="/app/images/products/product-27.jpg" alt="Image Product"
@@ -393,17 +210,10 @@
                                         <span class="tooltip">Quick View</span>
                                     </a>
                                 </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                         <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                            <a asp-controller="Shop" asp-action="Index" class="name-product h5 fw-normal link text-line-clamp-2">
                                 Ball Bracelet
                             </a>
                             <div class="price-wrap">
@@ -417,7 +227,7 @@
                 <div class="swiper-slide">
                     <div class="card_product--V01">
                         <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
+                                <a asp-controller="Shop" asp-action="Index" class="product-img">
                                 <img src="/app/images/products/product-28.jpg" data-src="/app/images/products/product-28.jpg" alt="Image Product"
                                      class="lazyload img-product">
                                 <img src="/app/images/products/product-29.jpg" data-src="/app/images/products/product-29.jpg" alt="Image Product"
@@ -442,17 +252,10 @@
                                         <span class="tooltip">Quick View</span>
                                     </a>
                                 </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                         <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                            <a asp-controller="Shop" asp-action="Index" class="name-product h5 fw-normal link text-line-clamp-2">
                                 Engagement Ring in 18k Yellow Gold
                             </a>
                             <div class="price-wrap">
@@ -466,7 +269,7 @@
                 <div class="swiper-slide">
                     <div class="card_product--V01">
                         <div class="card_product-wrapper">
-                            <a href="product-default.html" class="product-img">
+                                <a asp-controller="Shop" asp-action="Index" class="product-img">
                                 <img src="/app/images/products/product-22.jpg" data-src="/app/images/products/product-22.jpg" alt="Image Product"
                                      class="lazyload img-product">
                                 <img src="/app/images/products/product-23.jpg" data-src="/app/images/products/product-23.jpg" alt="Image Product"
@@ -491,17 +294,10 @@
                                         <span class="tooltip">Quick View</span>
                                     </a>
                                 </li>
-                                <li class="compare">
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                       class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Add to Compare</span>
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                         <div class="card_product-info">
-                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
+                            <a asp-controller="Shop" asp-action="Index" class="name-product h5 fw-normal link text-line-clamp-2">
                                 Open Heart Bangle
                             </a>
                             <div class="price-wrap">
