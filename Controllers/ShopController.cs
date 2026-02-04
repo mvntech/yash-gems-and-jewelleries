@@ -57,7 +57,6 @@ namespace Yash_Gems___Jewelleries.Controllers
                 .Include(i => i.GoldKarat)
                 .Include(i => i.StoneDetails).ThenInclude(s => s.StoneQuality)
                 .Where(i => i.IsActive)
-                .Where(i => i.IsActive)
                 .AsQueryable();
 
             // Apply Search Filter First
@@ -227,25 +226,18 @@ namespace Yash_Gems___Jewelleries.Controllers
 
                 if (!hasReviewed)
                 {
-                    // Check if user has a delivered order with this product
-                    var hasDeliveredOrder = await _context.Orders
+                    // Check if user has a valid order with this product
+                    var hasActiveOrder = await _context.Orders
                         .Where(o => o.UserId == user.Id && o.OrderStatus == "Delivered" && o.IsActive)
                         .AnyAsync(o => o.OrderItems.Any(oi => oi.StyleCode == item.StyleCode));
 
-                    if (hasDeliveredOrder)
+                    if (hasActiveOrder)
                     {
                         ViewBag.CanReview = true;
                     }
                     else
                     {
-                        // Check if user has purchased but not yet delivered
-                        var hasPurchased = await _context.Orders
-                            .Where(o => o.UserId == user.Id && o.IsActive)
-                            .AnyAsync(o => o.OrderItems.Any(oi => oi.StyleCode == item.StyleCode));
-
-                        ViewBag.ReviewEligibilityReason = hasPurchased
-                            ? "You can review this product once your order is delivered"
-                            : "You must purchase this product to leave a review";
+                        ViewBag.ReviewEligibilityReason = "You must have a valid order to leave a review";
                     }
                 }
                 else
@@ -371,6 +363,41 @@ namespace Yash_Gems___Jewelleries.Controllers
             };
 
             return Json(result);
+        }
+        // GET: Shop/QuickView/{id}
+        [HttpGet]
+        public async Task<IActionResult> QuickView(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid product ID");
+            }
+
+            var item = await _context.Items
+                .Include(i => i.Brand)
+                .Include(i => i.Category)
+                .Include(i => i.ProductType)
+                .Include(i => i.GoldKarat)
+                .Include(i => i.DiamondDetails).ThenInclude(d => d.DiamondQuality)
+                .Include(i => i.StoneDetails).ThenInclude(s => s.StoneQuality)
+                .FirstOrDefaultAsync(i => i.StyleCode == id && i.IsActive);
+
+            if (item == null)
+            {
+                return NotFound("Product not found");
+            }
+
+            // Check if wishlisted
+            var user = await _userManager.GetUserAsync(User);
+            bool isWishlisted = false;
+            if (user != null)
+            {
+                isWishlisted = await _context.Wishlists.AnyAsync(w => w.UserId == user.Id && w.StyleCode == item.StyleCode);
+            }
+
+            ViewBag.IsWishlisted = isWishlisted;
+
+            return PartialView("_QuickViewPartial", item);
         }
     }
 }

@@ -1,0 +1,134 @@
+@model Yash_Gems___Jewelleries.Models.Item
+@{
+    bool isWishlisted = ViewBag.IsWishlisted ?? false;
+    var images = new List<string>();
+    if (!string.IsNullOrEmpty(Model.PrimaryImageUrl)) images.Add(Model.PrimaryImageUrl);
+    if (!string.IsNullOrEmpty(Model.SecondaryImageUrl)) images.Add(Model.SecondaryImageUrl);
+    if (!string.IsNullOrEmpty(Model.TertiaryImageUrl)) images.Add(Model.TertiaryImageUrl);
+    
+    if (!images.Any()) images.Add("/app/images/products/product-default.jpg");
+}
+
+<div class="modal-content">
+    <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+    <div class="tf-product-media-wrap tf-btn-swiper-item">
+        <div dir="ltr" class="swiper tf-single-slide">
+            <div class="swiper-wrapper">
+                @foreach (var img in images)
+                {
+                    <div class="swiper-slide">
+                        <div class="item">
+                            <img class="ls-is-cached lazyloaded" data-src="@img" src="@img" alt="@Model.ItemName">
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="nav-swiper-group style-3">
+                <div class=" nav-thumbs thumbs-prev single-slide-prev">
+                    <span class="fw-normal">PRE</span>
+                </div>
+                <span class="text-main">/</span>
+                <div class=" nav-thumbs thumbs-next single-slide-next">
+                    <span class="fw-normal">NEXT</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tf-product-info-wrap">
+        <form asp-controller="Cart" asp-action="AddToCart" class="tf-product-info-inner tf-product-info-list" id="quickViewForm">
+            <div class="tf-product-info-heading">
+                <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@Model.StyleCode" class="product-info-name h4 fw-normal text-uppercase link">
+                    @Model.ItemName
+                </a>
+                <div class="product-info-price">
+                    <div class="price-wrap">
+                        <span class="price-new @(Model.IsOnSale || Model.DiscountPercentage > 0 ? "price-on-sale" : "") h4">@Model.SellingPrice.ToString("C")</span>
+                        @if (Model.IsOnSale || Model.DiscountPercentage > 0)
+                        {
+                            <span class="price-old compare-at-price fw-normal h6">@Model.MRP.ToString("C")</span>
+                            <p class="badges-on-sale">
+                                <i class="icon-tag"></i>
+                                <span class="number-sale">
+                                    @Math.Round(Model.DiscountPercentage)% OFF
+                                </span>
+                            </p>
+                        }
+                    </div>
+                </div>
+                <p class="product-infor-sub text-main-4">
+                    @(Model.Description ?? "No description available.")
+                </p>
+            </div>
+            <div class="tf-product-info-variant">
+                @if (Model.GoldKarat != null)
+                {
+                    <div class="variant-picker-item variant-color">
+                        <div class="variant-picker-label h6 fw-normal">
+                            Material:
+                            <span class="variant-picker-label-value value-currentColor">@Model.GoldKarat.GoldCarat</span>
+                        </div>
+                    </div>
+                }
+                @if (Model.ProductType != null)
+                {
+                    <div class="variant-picker-item variant-size">
+                        <div class="variant-picker-label h6 fw-normal">
+                            Type:
+                            <span class="variant-picker-label-value value-currentSize">@Model.ProductType.ProductTypeName</span>
+                        </div>
+                    </div>
+                }
+                <div class="variant-picker-item">
+                    <div class="variant-picker-label h6 fw-normal">Quantity</div>
+                    <div class="variant-picker-values">
+                        <div class="wg-quantity">
+                            <button type="button" class="btn-quantity btn-decrease"><i class="icon-minus"></i></button>
+                            <input class="quantity-product" type="text" name="number" value="1">
+                            <button type="button" class="btn-quantity btn-increase"><i class="icon-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tf-product-total-quantity">
+                <div class="group-btn">
+                    @if (Model.Quantity > 0)
+                    {
+                        <a href="javascript:void(0);" class="tf-btn btn-fill-2 animate-btn text-uppercase fw-medium btn-add-to-cart" 
+                           data-stylecode="@Model.StyleCode"
+                           data-unit-price="@Model.SellingPrice">
+                            <span class="text-line-clamp-1">
+                                add to bag
+                            </span>
+                            <i class="icon-minus d-none d-sm-block"></i>
+                            <span class="price-add d-none d-sm-block">@Model.SellingPrice.ToString("C")</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="javascript:void(0);" class="tf-btn btn-fill-2 animate-btn text-uppercase fw-medium disabled">
+                            <span class="text-line-clamp-1">OUT OF STOCK</span>
+                        </a>
+                    }
+                    <div class="group-btn-action">
+                        <a href="javascript:void(0);" class="tf-btn-icon hover-tooltip btn-add-wishlist @(isWishlisted ? "active" : "")" 
+                           data-stylecode="@Model.StyleCode" 
+                           title="@(isWishlisted ? "Remove from Wishlist" : "Add to Wishlist")">
+                            <span class="icon @(isWishlisted ? "icon-trash" : "icon-heart-2")"></span>
+                            <span class="tooltip">@(isWishlisted ? "Remove from Wishlist" : "Add to Wishlist")</span>
+                        </a>
+                    </div>
+                </div>
+                @if (Model.Quantity > 0)
+                {
+                    <a href="javascript:void(0);" class="tf-btn w-100 text-uppercase fw-medium btn-buy-now" data-stylecode="@Model.StyleCode">
+                        buy it now
+                    </a>
+                }
+            </div>
+            <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@Model.StyleCode" class="tf-btn-line">
+                <span class="text-body">View full details</span>
+                <i class="icon icon-arrow-top-right"></i>
+            </a>
+        </form>
+    </div>
+</div>
