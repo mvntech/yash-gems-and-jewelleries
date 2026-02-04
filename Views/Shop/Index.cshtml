@@ -1,27 +1,6 @@
-﻿@model IEnumerable<Yash_Gems___Jewelleries.Models.Item>
+﻿@model Yash_Gems___Jewelleries.Models.ViewModels.ShopFilterViewModel
 @{
-    ViewData["Title"] = "Products";
-    var categories = ViewBag.Categories as IEnumerable<Yash_Gems___Jewelleries.Models.Masters.Category> ?? Array.Empty<Yash_Gems___Jewelleries.Models.Masters.Category>();
-    var brands = ViewBag.Brands as IEnumerable<Yash_Gems___Jewelleries.Models.Masters.Brand> ?? Array.Empty<Yash_Gems___Jewelleries.Models.Masters.Brand>();
-    var productTypes = ViewBag.ProductTypes as IEnumerable<Yash_Gems___Jewelleries.Models.Masters.ProductType> ?? Array.Empty<Yash_Gems___Jewelleries.Models.Masters.ProductType>();
-    var goldKarats = ViewBag.GoldKarats as IEnumerable<Yash_Gems___Jewelleries.Models.Masters.GoldKarat> ?? Array.Empty<Yash_Gems___Jewelleries.Models.Masters.GoldKarat>();
-
-    var selectedCategoryIds = ViewBag.SelectedCategories as int[] ?? Array.Empty<int>();
-    var selectedBrandIds = ViewBag.SelectedBrands as int[] ?? Array.Empty<int>();
-    var selectedProductTypeIds = ViewBag.SelectedProductTypes as int[] ?? Array.Empty<int>();
-    var selectedGoldTypeIds = ViewBag.SelectedGoldTypes as int[] ?? Array.Empty<int>();
-
-    var currentPage = (int)(ViewBag.CurrentPage ?? 1);
-    var totalPages = (int)(ViewBag.TotalPages ?? 1);
-    var totalItems = (int)(ViewBag.TotalItems ?? 0);
-    var sortBy = (string?)ViewBag.SortBy;
-
-    string breadcrumbText = "Shop";
-    if (selectedCategoryIds.Length == 1)
-    {
-        var cat = categories.FirstOrDefault(c => c.CategoryId == selectedCategoryIds[0]);
-        if (cat != null) breadcrumbText = cat.CategoryName;
-    }
+    ViewData["Title"] = "Shop";
 }
 
 <!-- Page Title -->
@@ -33,21 +12,19 @@
                     <li><a asp-controller="Home" asp-action="Index" class="text-main-4 link-secondary">Home</a></li>
                     <li class="br-line w-12 bg-main"></li>
                     <li>
-                        <p>@breadcrumbText</p>
+                        <p>Shop</p>
                     </li>
                 </ul>
                 <h1 class="heading fw-normal text-uppercase">
-                    @breadcrumbText
-                    <span class="number-count">
-                        @totalItems
+                    Shop
+                    <span class="number-count" id="total-count-display">
+                        @Model.TotalItems
                     </span>
                 </h1>
             </div>
             <div class="box-text">
                 <p class="text-main-4">
-                    Discover our exquisite collection of jewellery. From elegant rings and bracelets to stunning necklaces, 
-                    crafted with the finest materials to celebrate your special moments. 
-                    Explore our curated selection of @breadcrumbText to find your perfect match.
+                    Discover our jewellery collection to find the latest addition to your jewellery box. From crown, heart and flower rings adorned with clear crystals to simple beaded and wishbone styles, our rings for women collection has it all. Refine your style with a  sterling silver,  14k gold-plated, 14k rose gold-plated or 14k gold ring.
                 </p>
             </div>
         </div>
@@ -60,18 +37,17 @@
         <div class="swiper tf-swiper" data-preview="5" data-tablet="4" data-mobile-sm="3" data-mobile="2" data-space-lg="30"
              data-space-md="20" data-space="15" data-pagination="2" data-pagination-sm="3" data-pagination-md="4" data-pagination-lg="5">
             <div class="swiper-wrapper">
-                @foreach (var cat in categories.Where(c => c.IsActive))
+                @foreach (var cat in Model.Categories)
                 {
                     <div class="swiper-slide">
                         <div class="box_collection--V01 style_2 hover-img">
-                            <a asp-action="Index" asp-route-categoryIds="@cat.CategoryId" class="image img-style">
-                                <img src="@(string.IsNullOrEmpty(cat.ImageUrl) ? "/app/images/collections/cls-13.jpg" : cat.ImageUrl)" 
-                                     data-src="@(string.IsNullOrEmpty(cat.ImageUrl) ? "/app/images/collections/cls-13.jpg" : cat.ImageUrl)" 
-                                     alt="@cat.CategoryName" class="lazyload">
+                            <a asp-action="Index" asp-route-categoryIds="@cat.Id" class="image img-style">
+                                <img src="@cat.ImageUrl" 
+                                     alt="@cat.Label" class="lazyload">
                             </a>
-                            <a asp-action="Index" asp-route-categoryIds="@cat.CategoryId" class="name-cls link">
+                            <a asp-action="Index" asp-route-categoryIds="@cat.Id" class="name-cls link">
                                 <span class="h5 fw-normal text-uppercase">
-                                    @cat.CategoryName
+                                    @cat.Label
                                 </span>
                             </a>
                         </div>
@@ -93,183 +69,41 @@
                     <span class="text">FILTER</span>
                 </a>
                 <div class="meta-filter-shop">
-                    <!-- <div id="product-count-grid" class="count-text"></div> -->
-                    <!-- <div id="product-count-list" class="count-text"></div> -->
-                    <div id="applied-filters"></div>
+                    <div id="applied-filters" class="d-flex flex-wrap gap-2">
+                        <!-- Dynamic Tags -->
+                    </div>
                 </div>
             </div>
             <div class="tf-group-layout">
-                <ul class="tf-control-layout">
-                    <li class="tf-view-layout-switch sw-layout-2 d-none d-md-flex" data-value-layout="tf-col-2">
-                        <div class="item icon-grid-2">
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </li>
-                    <li class="tf-view-layout-switch sw-layout-3 d-none d-md-flex" data-value-layout="tf-col-3">
-                        <div class="item icon-grid-3">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </li>
-                    <li class="tf-view-layout-switch sw-layout-4 active d-none d-xl-flex" data-value-layout="tf-col-4">
-                        <div class="item icon-grid-4">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </li>
-
-                </ul>
-                <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
-                    <div class="btn-select">
-                        <span class="text-sort-value">@(sortBy switch { "price_asc" => "Price, low to high", "price_desc" => "Price, high to low", "name_asc" => "Alphabetically, A-Z", "name_desc" => "Alphabetically, Z-A", "newest" => "Newest", _ => "Best selling" })</span>
+                <div class="tf-dropdown-sort dropdown" id="sort-dropdown">
+                    <div class="btn-select" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="text-sort-value">@(Model.SortBy switch { "price_asc" => "Price, low to high", "price_desc" => "Price, high to low", "name_asc" => "Alphabetically, A-Z", "name_desc" => "Alphabetically, Z-A", "newest" => "Newest", _ => "Best selling" })</span>
                         <span class="icon icon-arrow-angle-down"></span>
                     </div>
                     <div class="dropdown-menu">
-                        <a asp-action="Index" asp-route-sortBy="best-selling" class="select-item @(sortBy == "best-selling" || string.IsNullOrEmpty(sortBy) ? "active" : "")">
+                        <a href="javascript:void(0)" data-sort="best-selling" class="select-item sort-link @(Model.SortBy == "best-selling" || string.IsNullOrEmpty(Model.SortBy) ? "active" : "")">
                             <span class="text-value-item">Best selling</span>
                         </a>
-                        <a asp-action="Index" asp-route-sortBy="name_asc" class="select-item @(sortBy == "name_asc" ? "active" : "")">
+                        <a href="javascript:void(0)" data-sort="name_asc" class="select-item sort-link @(Model.SortBy == "name_asc" ? "active" : "")">
                             <span class="text-value-item">Alphabetically, A-Z</span>
                         </a>
-                        <a asp-action="Index" asp-route-sortBy="name_desc" class="select-item @(sortBy == "name_desc" ? "active" : "")">
+                        <a href="javascript:void(0)" data-sort="name_desc" class="select-item sort-link @(Model.SortBy == "name_desc" ? "active" : "")">
                             <span class="text-value-item">Alphabetically, Z-A</span>
                         </a>
-                        <a asp-action="Index" asp-route-sortBy="price_asc" class="select-item @(sortBy == "price_asc" ? "active" : "")">
+                        <a href="javascript:void(0)" data-sort="price_asc" class="select-item sort-link @(Model.SortBy == "price_asc" ? "active" : "")">
                             <span class="text-value-item">Price, low to high</span>
                         </a>
-                        <a asp-action="Index" asp-route-sortBy="price_desc" class="select-item @(sortBy == "price_desc" ? "active" : "")">
+                        <a href="javascript:void(0)" data-sort="price_desc" class="select-item sort-link @(Model.SortBy == "price_desc" ? "active" : "")">
                             <span class="text-value-item">Price, high to low</span>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="wrapper-control-shop gridLayout-wrapper">
-            <div class="wrapper-shop tf-grid-layout tf-col-4" id="gridLayout">
-                @foreach (var item in Model)
-                {
-                    <div class="loadItem card_product--V01 grid @(item.Quantity <= 0 ? "out-of-stock" : "")" 
-                         data-availability="@(item.Quantity > 0 ? "In stock" : "Out of stock")" 
-                         data-category="@item.CategoryId" 
-                         data-brand="@item.BrandId">
-                        <div class="card_product-wrapper">
-                            <a asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="product-img">
-                                <img src="@(string.IsNullOrEmpty(item.PrimaryImageUrl) ? "/app/images/products/product-1.jpg" : item.PrimaryImageUrl)" 
-                                     data-src="@(string.IsNullOrEmpty(item.PrimaryImageUrl) ? "/app/images/products/product-1.jpg" : item.PrimaryImageUrl)" 
-                                     alt="@item.ItemName" class="lazyload img-product">
-                                @if (!string.IsNullOrEmpty(item.SecondaryImageUrl))
-                                {
-                                    <img src="@item.SecondaryImageUrl" data-src="@item.SecondaryImageUrl" alt="@item.ItemName" class="lazyload img-hover">
-                                }
-                            </a>
-                            <ul class="list-product-btn">
-                                <li class="wishlist">
-                                    <a href="javascript:void(0);" class="hover-tooltip tooltip-left box-icon">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </li>
-                                @if (item.Quantity > 0)
-                                {
-                                    <li>
-                                        <a href="javascript:void(0);" 
-                                           class="hover-tooltip tooltip-left box-icon btn-add-to-cart" 
-                                           data-stylecode="@item.StyleCode" 
-                                           data-quantity="1">
-                                            <span class="icon icon-shop-cart"></span>
-                                            <span class="tooltip">Add to Cart</span>
-                                        </a>
-                                    </li>
-                                }
-                                <li>
-                                    <a href="#quickView" data-bs-toggle="modal" class="hover-tooltip tooltip-left box-icon quickview" data-stylecode="@item.StyleCode">
-                                        <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
-                                    </a>
-                                </li>
-                            </ul>
-                            @if (item.IsNewLaunch)
-                            {
-                                <div class="badge-box">
-                                    <span class="badge-item new">NEW IN</span>
-                                </div>
-                            }
-                            else if (item.IsOnSale || item.DiscountPercentage > 0)
-                            {
-                                <div class="badge-box">
-                                    <span class="badge-item sale">@(item.DiscountPercentage > 0 ? $"{(int)item.DiscountPercentage}% OFF" : "SALE")</span>
-                                </div>
-                            }
-
-                            @if (item.Quantity <= 0)
-                            {
-                                <a href="#unavailable" data-bs-toggle="modal" class="variant-box stock bg-main link text-white">
-                                    <p class="text-center d-none d-md-block">Notify Me When Available</p>
-                                    <p class="text-center d-md-none">Notify Me</p>
-                                </a>
-                            }
-                        </div>
-                        <div class="card_product-info">
-                            <a asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="name-product h5 fw-normal link text-line-clamp-2">
-                                @item.ItemName
-                            </a>
-                            <div class="price-wrap">
-                                <span class="price-new h5">@item.SellingPrice.ToString("C")</span>
-                                @if (item.MRP > item.SellingPrice)
-                                {
-                                    <span class="price-old fw-normal">@item.MRP.ToString("C")</span>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                }
-
-                <!-- Pagination -->
-                @if (totalPages > 1)
-                {
-                    <div class="wd-full tempo">
-                        <div class="wg-show-more">
-                            <p>Showing @(((currentPage - 1) * 12) + 1) to @(Math.Min(currentPage * 12, totalItems)) of @totalItems products</p>
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center">
-                                    @for (int i = 1; i <= totalPages; i++)
-                                    {
-                                        var routeData = new Dictionary<string, string>
-                                        {
-                                            { "page", i.ToString() },
-                                            { "sortBy", sortBy ?? "" }
-                                        };
-                                        <li class="page-item @(i == currentPage ? "active" : "")">
-                                            <a class="page-link" asp-action="Index" 
-                                               asp-all-route-data="routeData"
-                                               asp-route-categoryIds="@(string.Join(",", selectedCategoryIds))"
-                                               asp-route-brandIds="@(string.Join(",", selectedBrandIds))">@i</a>
-                                        </li>
-                                    }
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                }
-                else if (totalItems > 0)
-                {
-                    <div class="wd-full tempo">
-                        <div class="wg-show-more">
-                            <p>Showing all @totalItems products</p>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="wd-full tempo text-center">
-                        <h4>No products found matching your criteria.</h4>
-                        <a asp-action="Index" class="tf-btn fw-medium">CLEAR ALL FILTERS</a>
-                    </div>
-                }
+        
+        <div class="wrapper-control-shop gridLayout-wrapper ">
+            <div class="wrapper-shop tf-grid-layout tf-col-2 md-col-3 xl-col-4" id="gridLayout">
+                <partial name="_ProductListPartial" model="Model" />
             </div>
         </div>
     </div>
@@ -284,58 +118,49 @@
             <span class="icon-close link icon-close-popup" data-bs-dismiss="offcanvas"></span>
         </div>
         <div class="canvas-body">
-            <form id="filterForm" asp-action="Index" method="get">
-                <input type="hidden" name="sortBy" value="@sortBy" />
-                
+            <form id="filterForm">
+                <input type="hidden" name="sortBy" id="sortByInput" value="@Model.SortBy" />
+                <input type="hidden" name="searchQuery" value="@Model.SearchQuery" />
+                <input type="hidden" name="page" id="pageInput" value="@Model.Page" />
+
                 <div class="apply-filter-wrap">
                     <p class="title h6 fw-normal text-uppercase">Applied Filters</p>
-                    <div id="product-count-grid" class="count-text text-main-4">
-                        @if (selectedBrandIds.Any() || selectedCategoryIds.Any())
-                        {
-                            <span>Filters Applied</span>
-                        }
-                        else
-                        {
-                            <span>No Filter Selected</span>
-                        }
-                    </div>
-                    <div class="meta-filter-shop">
-                        <div id="applied-filters">
-                            @foreach (var brandId in selectedBrandIds)
-                            {
-                                var brand = brands.FirstOrDefault(b => b.BrandId == brandId);
-                                if (brand != null)
-                                {
-                                    var otherBrands = selectedBrandIds.Where(id => id != brandId).ToList();
-                                    <span class="tag">@brand.BrandType 
-                                        <a asp-action="Index" 
-                                           asp-route-brandIds="@(string.Join(",", otherBrands))"
-                                           asp-route-categoryIds="@(string.Join(",", selectedCategoryIds))"
-                                           asp-route-sortBy="@sortBy" 
-                                           class="icon-close"></a>
-                                    </span>
-                                }
-                            }
-                            @foreach (var catId in selectedCategoryIds)
-                            {
-                                var cat = categories.FirstOrDefault(c => c.CategoryId == catId);
-                                if (cat != null)
-                                {
-                                    var otherCats = selectedCategoryIds.Where(id => id != catId).ToList();
-                                    <span class="tag">@cat.CategoryName 
-                                        <a asp-action="Index" 
-                                           asp-route-categoryIds="@(string.Join(",", otherCats))"
-                                           asp-route-brandIds="@(string.Join(",", selectedBrandIds))"
-                                           asp-route-sortBy="@sortBy" 
-                                           class="icon-close"></a>
-                                    </span>
-                                }
-                            }
-                        </div>
+                    <div id="applied-filters-sidebar" class="meta-filter-shop mt-2 d-flex flex-wrap gap-2">
+                        <div class="count-text text-main-4">No Filter Selected</div>
                     </div>
                 </div>
 
-                <!-- Categories -->
+                <!-- Availability -->
+                <div class="widget-facet">
+                    <div class="facet-title h6 fw-normal" data-bs-target="#availability" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="availability">
+                        <span class="h6 fw-normal text-uppercase">availability</span>
+                        <span class="icon ic-accordion-custom"></span>
+                    </div>
+                    <div id="availability" class="collapse show">
+                        <ul class="collapse-body filter-group-check current-scrollbar">
+                            <li class="list-item">
+                                <input type="radio" name="availability" value="" class="tf-check style-2" id="allStock" @(string.IsNullOrEmpty(Model.Availability) ? "checked" : "")>
+                                <label for="allStock" class="label">
+                                    <span>All</span><span class="count-wrap">[ <span class="count">@Model.TotalItems</span> ]</span>
+                                </label>
+                            </li>
+                            <li class="list-item">
+                                <input type="radio" name="availability" value="inStock" class="tf-check style-2" id="inStock" @(Model.Availability == "inStock" ? "checked" : "")>
+                                <label for="inStock" class="label">
+                                    <span>In Stock</span><span class="count-wrap">[ <span class="count">@Model.InStockCount</span> ]</span>
+                                </label>
+                            </li>
+                            <li class="list-item">
+                                <input type="radio" name="availability" value="outStock" class="tf-check style-2" id="outStock" @(Model.Availability == "outStock" ? "checked" : "")>
+                                <label for="outStock" class="label">
+                                    <span>Out of Stock</span><span class="count-wrap">[ <span class="count">@Model.OutOfStockCount</span> ]</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Category -->
                 <div class="widget-facet">
                     <div class="facet-title h6 fw-normal" data-bs-target="#categories" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="categories">
                         <span class="h6 fw-normal text-uppercase">category</span>
@@ -343,12 +168,12 @@
                     </div>
                     <div id="categories" class="collapse show">
                         <ul class="collapse-body filter-group-check current-scrollbar">
-                            @foreach (var cat in categories)
+                            @foreach (var cat in Model.Categories)
                             {
                                 <li class="list-item">
-                                    <input type="checkbox" name="categoryIds" value="@cat.CategoryId" class="tf-check style-2" id="cat-@cat.CategoryId" @(selectedCategoryIds.Contains(cat.CategoryId) ? "checked" : "") onchange="this.form.submit()">
-                                    <label for="cat-@cat.CategoryId" class="label">
-                                        <span>@cat.CategoryName</span>
+                                    <input type="checkbox" name="categoryIds" value="@cat.Id" class="tf-check style-2" id="cat-@cat.Id" @(cat.IsSelected ? "checked" : "")>
+                                    <label for="cat-@cat.Id" class="label">
+                                        <span>@cat.Label</span><span class="count-wrap">[ <span class="count">@cat.Count</span> ]</span>
                                     </label>
                                 </li>
                             }
@@ -358,18 +183,18 @@
 
                 <!-- Brands -->
                 <div class="widget-facet">
-                    <div class="facet-title h6 fw-normal" data-bs-target="#brands" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="brands">
+                    <div class="facet-title h6 fw-normal" data-bs-target="#brands" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="brands">
                         <span class="h6 fw-normal text-uppercase">Brands</span>
                         <span class="icon ic-accordion-custom"></span>
                     </div>
-                    <div id="brands" class="collapse show">
+                    <div id="brands" class="collapse">
                         <ul class="collapse-body filter-group-check current-scrollbar">
-                            @foreach (var brand in brands)
+                            @foreach (var brand in Model.Brands)
                             {
                                 <li class="list-item">
-                                    <input type="checkbox" name="brandIds" value="@brand.BrandId" class="tf-check style-2" id="brand-@brand.BrandId" @(selectedBrandIds.Contains(brand.BrandId) ? "checked" : "") onchange="this.form.submit()">
-                                    <label for="brand-@brand.BrandId" class="label">
-                                        <span>@brand.BrandType</span>
+                                    <input type="checkbox" name="brandIds" value="@brand.Id" class="tf-check style-2" id="brand-@brand.Id" @(brand.IsSelected ? "checked" : "")>
+                                    <label for="brand-@brand.Id" class="label">
+                                        <span>@brand.Label</span><span class="count-wrap">[ <span class="count">@brand.Count</span> ]</span>
                                     </label>
                                 </li>
                             }
@@ -377,20 +202,20 @@
                     </div>
                 </div>
 
-                <!-- Gold Karats -->
+                <!-- Material (Gold Karat) -->
                 <div class="widget-facet">
-                    <div class="facet-title h6 fw-normal" data-bs-target="#gold-karats" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="gold-karats">
-                        <span class="h6 fw-normal text-uppercase">Gold Karat</span>
+                    <div class="facet-title h6 fw-normal" data-bs-target="#materials" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="materials">
+                        <span class="h6 fw-normal text-uppercase">Material</span>
                         <span class="icon ic-accordion-custom"></span>
                     </div>
-                    <div id="gold-karats" class="collapse">
+                    <div id="materials" class="collapse show">
                         <ul class="collapse-body filter-group-check current-scrollbar">
-                            @foreach (var karat in goldKarats)
+                            @foreach (var material in Model.Materials)
                             {
                                 <li class="list-item">
-                                    <input type="checkbox" name="goldTypeIds" value="@karat.GoldTypeId" class="tf-check style-2" id="karat-@karat.GoldTypeId" onchange="this.form.submit()">
-                                    <label for="karat-@karat.GoldTypeId" class="label">
-                                        <span>@karat.GoldCarat</span>
+                                    <input type="checkbox" name="goldTypeIds" value="@material.Id" class="tf-check style-2" id="mat-@material.Id" @(material.IsSelected ? "checked" : "")>
+                                    <label for="mat-@material.Id" class="label">
+                                        <span>@material.Label</span><span class="count-wrap">[ <span class="count">@material.Count</span> ]</span>
                                     </label>
                                 </li>
                             }
@@ -398,40 +223,85 @@
                     </div>
                 </div>
 
-                <!-- Product Types -->
+                <!-- Stone Color -->
                 <div class="widget-facet">
-                    <div class="facet-title h6 fw-normal" data-bs-target="#product-types" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="product-types">
-                        <span class="h6 fw-normal text-uppercase">Product Type</span>
+                    <div class="facet-title h6 fw-normal" data-bs-target="#stone-color" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="stone-color">
+                        <span class="h6 fw-normal text-uppercase">stone colour</span>
                         <span class="icon ic-accordion-custom"></span>
                     </div>
-                    <div id="product-types" class="collapse">
+                    <div id="stone-color" class="collapse show">
                         <ul class="collapse-body filter-group-check current-scrollbar">
-                            @foreach (var type in productTypes)
+                            @foreach (var color in Model.StoneColorsList)
                             {
                                 <li class="list-item">
-                                    <input type="checkbox" name="productTypeIds" value="@type.ProductTypeId" class="tf-check style-2" id="type-@type.ProductTypeId" onchange="this.form.submit()">
-                                    <label for="type-@type.ProductTypeId" class="label">
-                                        <span>@type.ProductTypeName</span>
+                                    <input type="checkbox" name="stoneColors" value="@color.Value" class="tf-check style-2" id="color-@color.Value" @(color.IsSelected ? "checked" : "")>
+                                    <label for="color-@color.Value" class="label">
+                                        <span>@color.Label</span><span class="count-wrap">[ <span class="count">@color.Count</span> ]</span>
                                     </label>
                                 </li>
                             }
                         </ul>
+                    </div>
+                </div>
+
+                <!-- Price -->
+                <div class="widget-facet">
+                    <div class="facet-title h6 fw-normal" data-bs-target="#price" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="price">
+                        <span class="h6 fw-normal text-uppercase">price</span>
+                        <span class="icon ic-accordion-custom"></span>
+                    </div>
+                    <div id="price" class="collapse show">
+                        <ul class="collapse-body filter-group-check current-scrollbar">
+                             <li class="list-item">
+                                <input type="radio" name="priceRange" value="" class="tf-check style-2 price-radio" id="all-price" @(!Model.MinPrice.HasValue && !Model.MaxPrice.HasValue ? "checked" : "")>
+                                <label for="all-price" class="label">
+                                    <span>All Prices</span>
+                                </label>
+                            </li>
+                            <li class="list-item">
+                                <input type="radio" name="priceRange" value="0-500" class="tf-check style-2 price-radio" id="u-500" @(Model.MaxPrice == 500 ? "checked" : "")>
+                                <label for="u-500" class="label">
+                                    <span>Under $500</span>
+                                </label>
+                            </li>
+                            <li class="list-item">
+                                <input type="radio" name="priceRange" value="0-1000" class="tf-check style-2 price-radio" id="u-1000" @(Model.MaxPrice == 1000 ? "checked" : "")>
+                                <label for="u-1000" class="label">
+                                    <span>Under $1000</span>
+                                </label>
+                            </li>
+                            <li class="list-item">
+                                <input type="radio" name="priceRange" value="0-2000" class="tf-check style-2 price-radio" id="u-2000" @(Model.MaxPrice == 2000 ? "checked" : "")>
+                                <label for="u-2000" class="label">
+                                    <span>Under $2000</span>
+                                </label>
+                            </li>
+                            <li class="list-item">
+                                <input type="radio" name="priceRange" value="2000-999999" class="tf-check style-2 price-radio" id="up-2000" @(Model.MinPrice == 2000 ? "checked" : "")>
+                                <label for="up-2000" class="label">
+                                    <span>Over $2000</span>
+                                </label>
+                            </li>
+                        </ul>
+                        <input type="hidden" name="minPrice" id="minPriceInput" value="@Model.MinPrice" />
+                        <input type="hidden" name="maxPrice" id="maxPriceInput" value="@Model.MaxPrice" />
                     </div>
                 </div>
 
                 <div class="canvas-bottom">
-                    <button type="submit" class="tf-btn btn-fill animate-btn w-100 justify-content-center">
-                        <span>Apply Filters</span>
+                    <button type="button" class="tf-btn btn-reset btn-clear-all-filters">
+                        <span class=" fw-medium">CLEAR ALL</span>
                     </button>
-                    <a asp-action="Index" class="tf-btn btn-outline animate-btn w-100 justify-content-center mt-3">
-                        <span>Clear All</span>
-                    </a>
+                    <button type="submit" class="tf-btn btn-fill animate-btn" data-bs-dismiss="offcanvas">
+                        <span class=" fw-medium">APPLY</span>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <!-- /Filter Sidebar -->
+
 <!-- Icon Box -->
 <div class="flat-spacing-8 bg-main">
     <div class="container">
@@ -492,3 +362,7 @@
     </div>
 </div>
 <!-- /Icon Box -->
+
+@section Scripts {
+    <script src="/app/js/shop-filter.js"></script>
+}

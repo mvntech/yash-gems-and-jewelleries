@@ -1,69 +1,101 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Yash_Gems___Jewelleries.Models;
+using Yash_Gems___Jewelleries.Models.ViewModels;
 using Yash_Gems___Jewelleries.Data;
 
 namespace Yash_Gems___Jewelleries.Controllers
 {
     public class ShopController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public ShopController(ApplicationDbContext context)
+        public ShopController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
-        // GET: Shop - Product Listing with Filters
+        // GET: Shop/Index
         public async Task<IActionResult> Index(
             int[]? brandIds,
             int[]? categoryIds,
             int[]? goldTypeIds,
-            int[]? productTypeIds,
+            string[]? stoneColors,
             decimal? minPrice,
             decimal? maxPrice,
+            string? availability,
             string? sortBy,
+            string? searchQuery,
             int page = 1)
         {
             int pageSize = 12;
+
+            var viewModel = new ShopFilterViewModel
+            {
+                BrandIds = brandIds,
+                CategoryIds = categoryIds,
+                GoldTypeIds = goldTypeIds,
+                StoneColors = stoneColors,
+                MinPrice = minPrice,
+                MaxPrice = maxPrice,
+                Availability = availability,
+                SortBy = sortBy,
+                SearchQuery = searchQuery,
+                Page = page,
+                PageSize = pageSize
+            };
 
             var query = _context.Items
                 .Include(i => i.Brand)
                 .Include(i => i.Category)
                 .Include(i => i.ProductType)
                 .Include(i => i.GoldKarat)
+                .Include(i => i.StoneDetails).ThenInclude(s => s.StoneQuality)
+                .Where(i => i.IsActive)
                 .Where(i => i.IsActive)
                 .AsQueryable();
 
+            // Apply Search Filter First
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                var q = searchQuery.Trim().ToLower();
+                query = query.Where(i => 
+                    i.ItemName.Contains(q) || 
+                    i.StyleCode.Contains(q) || 
+                    i.Category.CategoryName.Contains(q) || 
+                    i.Brand.BrandType.Contains(q) ||
+                    i.GoldKarat.GoldCarat.Contains(q)
+                );
+            }
+
             // Apply filters
-            if (brandIds != null && brandIds.Length > 0)
-            {
+            if (brandIds?.Any() == true)
                 query = query.Where(i => brandIds.Contains(i.BrandId));
-            }
 
-            if (categoryIds != null && categoryIds.Length > 0)
-            {
+            if (categoryIds?.Any() == true)
                 query = query.Where(i => categoryIds.Contains(i.CategoryId));
-            }
 
-            if (goldTypeIds != null && goldTypeIds.Length > 0)
-            {
+            if (goldTypeIds?.Any() == true)
                 query = query.Where(i => goldTypeIds.Contains(i.GoldTypeId));
-            }
 
-            if (productTypeIds != null && productTypeIds.Length > 0)
-            {
-                query = query.Where(i => productTypeIds.Contains(i.ProductTypeId));
-            }
+            if (stoneColors?.Any() == true)
+                query = query.Where(i => i.StoneDetails.Any(sd => sd.StoneQuality != null && stoneColors.Contains(sd.StoneQuality.Color)));
 
             if (minPrice.HasValue)
-            {
                 query = query.Where(i => i.SellingPrice >= minPrice.Value);
-            }
 
             if (maxPrice.HasValue)
-            {
                 query = query.Where(i => i.SellingPrice <= maxPrice.Value);
-            }
+
+            if (availability == "inStock")
+                query = query.Where(i => i.Quantity > 0);
+            else if (availability == "outStock")
+                query = query.Where(i => i.Quantity <= 0);
 
             // Apply sorting
             query = sortBy switch
@@ -73,36 +105,81 @@ namespace Yash_Gems___Jewelleries.Controllers
                 "name_asc" => query.OrderBy(i => i.ItemName),
                 "name_desc" => query.OrderByDescending(i => i.ItemName),
                 "newest" => query.OrderByDescending(i => i.CreatedDate),
-                _ => query.OrderByDescending(i => i.CreatedDate) // Default: newest first
+                _ => query.OrderByDescending(i => i.CreatedDate)
             };
 
-            var totalItems = await query.CountAsync();
-            var items = await query
+            viewModel.TotalItems = await query.CountAsync();
+            viewModel.Items = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            // Load filter dropdowns
-            ViewBag.Brands = await _context.Brands.Where(b => b.IsActive).ToListAsync();
-            ViewBag.Categories = await _context.Categories.Where(c => c.IsActive).ToListAsync();
-            ViewBag.GoldKarats = await _context.GoldKarats.Where(g => g.IsActive).ToListAsync();
-            ViewBag.ProductTypes = await _context.ProductTypes.Where(p => p.IsActive).ToListAsync();
+            var baseQuery = _context.Items.Where(i => i.IsActive);
+            
+            viewModel.Categories = await _context.Categories
+                .Where(c => c.IsActive)
+                .Select(c => new FilterOption {
+                    Id = c.CategoryId,
+                    Label = c.CategoryName,
+                    Count = baseQuery.Count(i => i.CategoryId == c.CategoryId),
+                    IsSelected = categoryIds != null && categoryIds.Contains(c.CategoryId)
+                }).ToListAsync();
 
-            // Pagination
-            ViewBag.TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalItems = totalItems;
+            viewModel.Brands = await _context.Brands
+                .Where(b => b.IsActive)
+                .Select(b => new FilterOption {
+                    Id = b.BrandId,
+                    Label = b.BrandType,
+                    Count = baseQuery.Count(i => i.BrandId == b.BrandId),
+                    IsSelected = brandIds != null && brandIds.Contains(b.BrandId)
+                }).ToListAsync();
 
-            // Maintain filter state
-            ViewBag.SelectedBrands = brandIds ?? Array.Empty<int>();
-            ViewBag.SelectedCategories = categoryIds ?? Array.Empty<int>();
-            ViewBag.SelectedGoldTypes = goldTypeIds ?? Array.Empty<int>();
-            ViewBag.SelectedProductTypes = productTypeIds ?? Array.Empty<int>();
-            ViewBag.MinPrice = minPrice;
-            ViewBag.MaxPrice = maxPrice;
-            ViewBag.SortBy = sortBy;
+            viewModel.Materials = await _context.GoldKarats
+                .Where(g => g.IsActive)
+                .Select(g => new FilterOption {
+                    Id = g.GoldTypeId,
+                    Label = g.GoldCarat,
+                    Count = baseQuery.Count(i => i.GoldTypeId == g.GoldTypeId),
+                    IsSelected = goldTypeIds != null && goldTypeIds.Contains(g.GoldTypeId)
+                }).ToListAsync();
 
-            return View(items);
+            // Stone Color counts
+            var stoneColorsData = await _context.StoneQualities
+                .Where(sq => sq.IsActive && !string.IsNullOrEmpty(sq.Color))
+                .Select(sq => sq.Color)
+                .Distinct()
+                .ToListAsync();
+
+            foreach (var color in stoneColorsData)
+            {
+                if (string.IsNullOrEmpty(color)) continue;
+                viewModel.StoneColorsList.Add(new FilterOption {
+                    Value = color,
+                    Label = color,
+                    Count = baseQuery.Count(i => i.StoneDetails.Any(sd => sd.StoneQuality != null && sd.StoneQuality.Color == color)),
+                    IsSelected = stoneColors != null && stoneColors.Contains(color)
+                });
+            }
+
+            viewModel.InStockCount = await baseQuery.CountAsync(i => i.Quantity > 0);
+            viewModel.OutOfStockCount = await baseQuery.CountAsync(i => i.Quantity <= 0);
+
+            // Wishlist
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                viewModel.WishlistStyleCodes = await _context.Wishlists
+                    .Where(w => w.UserId == user.Id)
+                    .Select(w => w.StyleCode)
+                    .ToListAsync();
+            }
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_ProductListPartial", viewModel);
+            }
+
+            return View(viewModel);
         }
 
         // GET: Shop/ProductDetail/{styleCode}
@@ -130,13 +207,56 @@ namespace Yash_Gems___Jewelleries.Controllers
                 return NotFound();
             }
 
-            // Calculate average rating
-            var averageRating = item.Reviews.Any() 
-                ? item.Reviews.Average(r => r.Rating) 
-                : 0;
+            // Calculate average rating and review count
+            ViewBag.AverageRating = item.AverageRating;
+            ViewBag.ReviewCount = item.ReviewCount;
 
-            ViewBag.AverageRating = averageRating;
-            ViewBag.ReviewCount = item.Reviews.Count;
+            // Check review eligibility for authenticated users
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.CanReview = false;
+            ViewBag.ReviewEligibilityReason = "";
+            ViewBag.HasReviewed = false;
+
+            if (user != null)
+            {
+                // Check if user has already reviewed this product
+                var hasReviewed = await _context.Reviews
+                    .AnyAsync(r => r.UserId == user.Id && r.StyleCode == item.StyleCode && r.IsActive);
+
+                ViewBag.HasReviewed = hasReviewed;
+
+                if (!hasReviewed)
+                {
+                    // Check if user has a delivered order with this product
+                    var hasDeliveredOrder = await _context.Orders
+                        .Where(o => o.UserId == user.Id && o.OrderStatus == "Delivered" && o.IsActive)
+                        .AnyAsync(o => o.OrderItems.Any(oi => oi.StyleCode == item.StyleCode));
+
+                    if (hasDeliveredOrder)
+                    {
+                        ViewBag.CanReview = true;
+                    }
+                    else
+                    {
+                        // Check if user has purchased but not yet delivered
+                        var hasPurchased = await _context.Orders
+                            .Where(o => o.UserId == user.Id && o.IsActive)
+                            .AnyAsync(o => o.OrderItems.Any(oi => oi.StyleCode == item.StyleCode));
+
+                        ViewBag.ReviewEligibilityReason = hasPurchased
+                            ? "You can review this product once your order is delivered"
+                            : "You must purchase this product to leave a review";
+                    }
+                }
+                else
+                {
+                    ViewBag.ReviewEligibilityReason = "You have already reviewed this product";
+                }
+            }
+            else
+            {
+                ViewBag.ReviewEligibilityReason = "Please log in to write a review";
+            }
 
             // SEO and Meta
             ViewData["Title"] = item.ItemName;
@@ -179,6 +299,17 @@ namespace Yash_Gems___Jewelleries.Controllers
 
             ViewBag.RecentlyViewedItems = sortedRecentlyViewed;
 
+            // Fetch user wishlist
+            var wishlistStyleCodes = new List<string>();
+            if (user != null)
+            {
+                wishlistStyleCodes = await _context.Wishlists
+                    .Where(w => w.UserId == user.Id)
+                    .Select(w => w.StyleCode)
+                    .ToListAsync();
+            }
+            ViewBag.WishlistStyleCodes = wishlistStyleCodes;
+
             return View(item);
         }
 
@@ -205,6 +336,14 @@ namespace Yash_Gems___Jewelleries.Controllers
                 return NotFound("Product not found");
             }
 
+            // Check if wishlisted
+            var user = await _userManager.GetUserAsync(User);
+            bool isWishlisted = false;
+            if (user != null)
+            {
+                isWishlisted = await _context.Wishlists.AnyAsync(w => w.UserId == user.Id && w.StyleCode == item.StyleCode);
+            }
+
             // Map to a clean anonymous object to prevent over-fetching and circular references
             var result = new
             {
@@ -227,7 +366,8 @@ namespace Yash_Gems___Jewelleries.Controllers
                             .Where(img => !string.IsNullOrEmpty(img))
                             .ToList(),
                 diamondQuality = item.DiamondDetails.FirstOrDefault()?.DiamondQuality?.QualityGrade,
-                stoneQuality = item.StoneDetails.FirstOrDefault()?.StoneQuality?.QualityGrade
+                stoneQuality = item.StoneDetails.FirstOrDefault()?.StoneQuality?.QualityGrade,
+                isWishlisted = isWishlisted
             };
 
             return Json(result);
