@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject ICartService CartService
+@inject Yash_Gems___Jewelleries.Services.ILayoutService LayoutService
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -21,8 +25,7 @@
 
 </head>
 
-<body class="bg-surface">
-
+<body>
     <!-- Scroll Top -->
     <button id="goTop">
         <span class="border-progress"></span>
@@ -297,6 +300,11 @@
                         </nav>
                     </div>
                     <div class="col-xl-2 col-md-4 col-3">
+                        @{
+                            var userId = UserManager.GetUserId(User);
+                            var cartCount = await CartService.GetCartCountAsync(userId);
+                            var wishCount = await LayoutService.GetWishlistCountAsync(userId);
+                        }
                         <ul class="nav-icon">
                             <li class="d-inline-flex">
                                 <a href="#search" data-bs-toggle="offcanvas" class="nav-icon-item text-black link">
@@ -307,16 +315,11 @@
                             <li class="d-none d-md-inline-flex">
                                 <partial name="_LoginPartial" />
                             </li>
-                            <li class="d-none d-md-inline-flex">
-                                <a href="wishlist.html" class="nav-icon-item text-black link">
-                                    <i class="icon icon-hearth"></i>
-                                </a>
+                            <li class="d-none d-md-inline-flex" id="wishlist-indicator-container">
+                                <partial name="~/Views/Account/_WishlistIndicatorPartial.cshtml" model="wishCount" />
                             </li>
-                            <li class="d-inline-flex">
-                                <a href="#shoppingCart" data-bs-toggle="offcanvas" class="nav-icon-item text-black link">
-                                    <i class="icon icon-cart"></i>
-                                    <span class="count-notice"></span>
-                                </a>
+                            <li class="d-inline-flex" id="cart-indicator-container">
+                                <partial name="~/Views/Cart/_CartIndicatorPartial.cshtml" model="cartCount" />
                             </li>
                         </ul>
                     </div>
@@ -537,9 +540,9 @@
         <div class="mb-canvas-content">
             <div class="mb-body">
                 <div class="mb-content-top">
-                    <form class="form-search">
+                    <form class="form-search" action="/Shop" method="get">
                         <fieldset>
-                            <input type="text" placeholder="Search for anything..." class="" name="text" tabindex="0" value="" aria-required="true"
+                            <input type="text" placeholder="Search for anything..." class="" name="searchQuery" tabindex="0" value="" aria-required="true"
                                    required="">
                         </fieldset>
                         <button type="submit" class="link"><i class="icon icon-search"></i></button>
@@ -1056,270 +1059,10 @@
     <!-- Shopping Cart -->
     <div class="offcanvas offcanvas-end popup-shopping-cart" id="shoppingCart">
         <div class="canvas-wrapper">
-            <div class="canvas-header">
-                <h3 class="title fw-normal text-uppercase">shopping cart</h3>
-                <span class="icon-close link icon-close-popup" data-bs-dismiss="offcanvas"></span>
-            </div>
-            <div class="wrap list-file-delete">
-                <div class="tf-mini-cart-threshold">
-                    <h6 class="text fw-normal text-uppercase">
-                        Spend <span class="fw-medium">$100</span> more to get
-                        <span class="fw-medium">
-                            Free
-                            Shipping
-                        </span>
-                    </h6>
-                    <div class="tf-progress-bar tf-progress-ship">
-                        <div class="value" style="width: 0%;" data-progress="75">
-                            <i class="icon icon-delivery"></i>
-                        </div>
-                    </div>
-                    <div class="tf-number-count">
-                        <p class="text-uppercase"><span class="prd-count">4</span> products</p>
-
-                        <a href="javascript:void(0)" class="tf-btn-line style-line-2 clear-file-delete">
-                            <span class="text-body">
-                                Empty cart
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="tf-mini-cart-wrap">
-                    <div class="tf-mini-cart-main">
-                        <div class="tf-mini-cart-sroll">
-                            <ul class="tf-mini-cart-items">
-                                <li class="tf-mini-cart-item file-delete">
-                                    <div class="tf-mini-cart-image">
-                                        <img src="/app/images/products/product-24.jpg" alt="">
-                                    </div>
-                                    <div class="tf-mini-cart-info">
-                                        <a href="product-default.html" class="prd-name link">
-                                            Crystal Birthstone Eternity Circle Charm
-                                        </a>
-                                        <p class="type-select text-main-4">
-                                            Rose Gold / 50
-                                        </p>
-                                        <div class="prd-quantity">
-                                            <p class="text-caption">
-                                                Qty:
-                                            </p>
-                                            <div class="wg-quantity style-2">
-                                                <button class="btn-quantity minus-quantity"><i class="icon-minus"></i></button>
-                                                <input class="quantity-product" type="text" name="number" value="1">
-                                                <button class="btn-quantity plus-quantity"><i class="icon-plus"></i></button>
-                                            </div>
-                                        </div>
-                                        <a href="javascript:void(0)" class="tf-btn-line style-line-2 remove">
-                                            <span class="text-caption">
-                                                Remove
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <p class="tf-mini-card-price h6 fw-normal">
-                                        $130.00
-                                    </p>
-                                </li>
-                                <li class="tf-mini-cart-item file-delete">
-                                    <div class="tf-mini-cart-image">
-                                        <img src="/app/images/products/product-26.jpg" alt="">
-                                    </div>
-                                    <div class="tf-mini-cart-info">
-                                        <a href="product-default.html" class="prd-name link">
-                                            Ball Bracelet
-                                        </a>
-                                        <p class="type-select text-main-4">
-                                            Rose Gold / 50
-                                        </p>
-                                        <div class="prd-quantity">
-                                            <p class="text-caption">
-                                                Qty:
-                                            </p>
-                                            <div class="wg-quantity style-2">
-                                                <button class="btn-quantity minus-quantity"><i class="icon-minus"></i></button>
-                                                <input class="quantity-product" type="text" name="number" value="1">
-                                                <button class="btn-quantity plus-quantity"><i class="icon-plus"></i></button>
-                                            </div>
-                                        </div>
-                                        <a href="javascript:void(0)" class="tf-btn-line style-line-2 remove">
-                                            <span class="text-caption">
-                                                Remove
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <p class="tf-mini-card-price h6 fw-normal">
-                                        $150.00
-                                    </p>
-                                </li>
-                                <li class="tf-mini-cart-item file-delete">
-                                    <div class="tf-mini-cart-image">
-                                        <img src="/app/images/products/product-28.jpg" alt="">
-                                    </div>
-                                    <div class="tf-mini-cart-info">
-                                        <a href="product-default.html" class="prd-name link">
-                                            Engagement Ring in 18k Yellow Gold
-                                        </a>
-                                        <p class="type-select text-main-4">
-                                            Rose Gold / 50
-                                        </p>
-                                        <div class="prd-quantity">
-                                            <p class="text-caption">
-                                                Qty:
-                                            </p>
-                                            <div class="wg-quantity style-2">
-                                                <button class="btn-quantity minus-quantity"><i class="icon-minus"></i></button>
-                                                <input class="quantity-product" type="text" name="number" value="1">
-                                                <button class="btn-quantity plus-quantity"><i class="icon-plus"></i></button>
-                                            </div>
-                                        </div>
-                                        <a href="javascript:void(0)" class="tf-btn-line style-line-2 remove">
-                                            <span class="text-caption">
-                                                Remove
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <p class="tf-mini-card-price h6 fw-normal">
-                                        $130.00
-                                    </p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="tf-mini-cart-bottom">
-                        <div class="tf-mini-cart-tool">
-                            <div class="tf-mini-cart-tool-btn btn-add-gift">
-                                <i class="icon icon-gift"></i>
-                                <p class="text-caption">Add gift wrap</p>
-                            </div>
-                            <div class="tf-mini-cart-tool-btn btn-add-note">
-                                <i class="icon icon-note"></i>
-                                <p class="text-caption">Order note</p>
-                            </div>
-                            <div class="tf-mini-cart-tool-btn btn-estimate-shipping">
-                                <i class="icon icon-delivery-3"></i>
-                                <p class="text-caption">Shipping</p>
-                            </div>
-                        </div>
-                        <div class="tf-mini-cart-bottom-wrap">
-                            <div class="tf-cart-totals-discounts">
-                                <h6 class="tf-cart-total-text fw-normal text-uppercase">total:</h6>
-                                <div class="tf-totals-total-value h6 fw-normal">$390.00</div>
-                            </div>
-                            <div class="tf-mini-cart-view-checkout">
-                                <a href="shop-cart.html" class="tf-btn w-100 style-2">
-                                    <span class="fw-medium">
-                                        GO TO CART
-                                    </span>
-                                </a>
-                                <a href="checkout.html" class="tf-btn btn-fill animate-btn w-100">
-                                    <span class="fw-medium">
-                                        CHECKOUT
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tf-mini-cart-tool-openable add-gift">
-                        <div class="overlay tf-mini-cart-tool-close"></div>
-                        <form action="#" class="tf-mini-cart-tool-content">
-                            <div class="tf-mini-cart-tool-text h5 fw-normal text-uppercase">Add gift wrap</div>
-                            <div class="tf-mini-cart-tool-text1">
-                                The product will be wrapped carefully.
-                                Fee is only <span class="text text-main">$10.00</span>. Do you want a
-                                gift wrap?
-                            </div>
-                            <div class="tf-cart-tool-btns">
-                                <button class="subscribe-button tf-btn w-100 btn-fill animate-btn" type="submit">
-                                    Add a Gift Wrap
-                                </button>
-                                <button type="button" class="tf-btn style-2 w-100 tf-mini-cart-tool-close">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="tf-mini-cart-tool-openable add-note">
-                        <div class="overlay tf-mini-cart-tool-close"></div>
-                        <form action="#" class="tf-mini-cart-tool-content style-border">
-                            <label for="Cart-note" class="tf-mini-cart-tool-text h5 fw-normal text-uppercase">
-                                Order note
-                            </label>
-                            <textarea name="note" id="Cart-note" placeholder="Instruction for seller..." class="d-flex"></textarea>
-                            <div class="tf-cart-tool-btns">
-                                <button class="subscribe-button tf-btn w-100 btn-fill animate-btn" type="submit">
-                                    Save
-                                </button>
-                                <button type="button" class="tf-btn style-2 w-100 tf-mini-cart-tool-close">Close</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="tf-mini-cart-tool-openable estimate-shipping">
-                        <div class="overlay tf-mini-cart-tool-close"></div>
-                        <form id="shipping-form" class="tf-mini-cart-tool-content style-border">
-                            <div class="tf-mini-cart-tool-text h5 fw-normal text-uppercase">Shipping estimates</div>
-                            <div class="field">
-                                <p class="text-sm">Country</p>
-                                <div class="tf-select">
-                                    <select class="w-100" id="shipping-country-form" name="address[country]" data-default="">
-                                        <option value="Australia"
-                                                data-provinces='[["Australian Capital Territory","Australian Capital Territory"],["New South Wales","New South Wales"],["Northern Territory","Northern Territory"],["Queensland","Queensland"],["South Australia","South Australia"],["Tasmania","Tasmania"],["Victoria","Victoria"],["Western Australia","Western Australia"]]'>
-                                            Australia
-                                        </option>
-                                        <option value="Austria" data-provinces='[]'>Austria</option>
-                                        <option value="Belgium" data-provinces='[]'>Belgium</option>
-                                        <option value="Canada" data-provinces='[["Ontario","Ontario"],["Quebec","Quebec"]]'>
-                                            Canada
-                                        </option>
-                                        <option value="Czech Republic" data-provinces='[]'>Czechia</option>
-                                        <option value="Denmark" data-provinces='[]'>Denmark</option>
-                                        <option value="Finland" data-provinces='[]'>Finland</option>
-                                        <option value="France" data-provinces='[]'>France</option>
-                                        <option value="Germany" data-provinces='[]'>Germany</option>
-                                        <option selected value="United States"
-                                                data-provinces='[["Alabama","Alabama"],["California","California"],["Florida","Florida"]]'>
-                                            United States
-                                        </option>
-                                        <option value="United Kingdom"
-                                                data-provinces='[["England","England"],["Scotland","Scotland"],["Wales","Wales"],["Northern Ireland","Northern Ireland"]]'>
-                                            United Kingdom
-                                        </option>
-                                        <option value="Pakistan" data-provinces='[]'>Pakistan</option>
-                                        <option value="Japan" data-provinces='[]'>Japan</option>
-                                        <option value="Mexico" data-provinces='[]'>Mexico</option>
-                                        <option value="South Korea" data-provinces='[]'>South Korea</option>
-                                        <option value="Spain" data-provinces='[]'>Spain</option>
-                                        <option value="Italy" data-provinces='[]'>Italy</option>
-                                        <option value="Vietnam"
-                                                data-provinces='[["Ha Noi","Ha Noi"],["Da Nang","Da Nang"],["Ho Chi Minh","Ho Chi Minh"]]'>
-                                            Vietnam
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <p class="text-sm">State/Province</p>
-                                <div class="tf-select">
-                                    <select id="shipping-province-form" name="address[province]" data-default=""></select>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <p class="text-sm">Zipcode</p>
-                                <input type="number" data-opend-focus placeholder="41000" id="zipcode" name="address[zip]" value="">
-                            </div>
-                            <div id="zipcode-message" class="error" style="display: none;">
-                                We found one shipping rate available for undefined.
-                            </div>
-                            <div id="zipcode-success" class="success" style="display: none;">
-                                <p>We found one shipping rate available for your address:</p>
-                                <p class="standard">Standard at <span>$0.00</span> USD</p>
-                            </div>
-                            <div class="tf-cart-tool-btns">
-                                <button class="tf-btn w-100 btn-fill animate-btn" type="submit">
-                                    Estimate
-                                </button>
-                                <div class="tf-mini-cart-tool-primary tf-btn style-2 w-100 tf-mini-cart-tool-close">Close</div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            @{
+                var cartModel = await CartService.GetCartAsync(userId);
+            }
+            <partial name="~/Views/Cart/_CartSidebarPartial.cshtml" model="cartModel" />
         </div>
     </div>
     <!-- /Shopping Cart -->
@@ -1328,9 +1071,9 @@
         <div class="offcanvas-content">
             <div class="container">
                 <div class="popup-content">
-                    <form class="form-search">
+                    <form class="form-search" action="/Shop" method="get">
                         <fieldset>
-                            <input type="text" placeholder="ENTER YOUR SEARCH" class="" name="text" tabindex="0" value="" aria-required="true"
+                            <input type="text" placeholder="ENTER YOUR SEARCH" class="" name="searchQuery" tabindex="0" value="" aria-required="true"
                                    required="">
                         </fieldset>
                         <button type="submit" class="link"><i class="icon icon-search"></i></button>
@@ -1339,50 +1082,63 @@
                         </span>
                     </form>
                     <div class="tf-grid-layout sm-col-2">
+                        @{
+                            var searchCategories = await LayoutService.GetCategoriesAsync();
+                            var featuredProducts = await LayoutService.GetFeaturedProductsAsync(2);
+                        }
+                        
                         <div class="feature-wrap">
                             <p class="title">QUICK LINK</p>
                             <ul class="quick-link-list">
-                                <li><a href="shop-collection-list.html" class="link-item text-main-4 link">Best Sellers</a></li>
-                                <li><a href="shop-collection-list.html" class="link-item text-main-4 link">Bracelets</a></li>
-                                <li><a href="shop-collection-list.html" class="link-item text-main-4 link">Earrings</a></li>
-                                <li><a href="shop-collection-list.html" class="link-item text-main-4 link">Rings</a></li>
+                                @if (searchCategories.Any())
+                                {
+                                    @foreach (var cat in searchCategories)
+                                    {
+                                        <li>
+                                            <a asp-controller="Shop" asp-action="Index" asp-route-categoryIds="@cat.CategoryId" class="link-item text-main-4 link">@cat.CategoryName</a>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li><p class="text-caption text-main-4">No categories found.</p></li>
+                                }
                             </ul>
                         </div>
                         <div class="feature-wrap">
                             <p class="title">SUGGESTION FOR YOU</p>
                             <ul class="product-list">
-                                <li>
-                                    <div class="tf-product-mini-view">
-                                        <a href="product-default.html" class="prd-image">
-                                            <img src="/app/images/products/product-28.jpg" alt="">
-                                        </a>
-                                        <div class="prd-content">
-                                            <a href="product-default.html" class="prd-name link text-uppercase">
-                                                engagement ring in 18k yellow gold
-                                            </a>
-                                            <div class="price-wrap">
-                                                <span class="price-new price-on-sale">$2,499.00</span>
-                                                <span class="price-old compare-at-price text-caption">$2,623.95</span>
+                                @if (featuredProducts.Any())
+                                {
+                                    @foreach (var item in featuredProducts)
+                                    {
+                                        <li>
+                                            <div class="tf-product-mini-view">
+                                                <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="prd-image">
+                                                    <img src="@(item.PrimaryImageUrl ?? "/app/images/products/product-default.jpg")" alt="@item.ItemName">
+                                                </a>
+                                                <div class="prd-content">
+                                                    <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="prd-name link text-uppercase">
+                                                        @item.ItemName
+                                                    </a>
+                                                    <div class="price-wrap">
+                                                        <span class="price-new @(item.DiscountPercentage > 0 ? "price-on-sale" : "")">
+                                                            @item.SellingPrice.ToString("C")
+                                                        </span>
+                                                        @if (item.DiscountPercentage > 0)
+                                                        {
+                                                            <span class="price-old compare-at-price text-caption">@item.MRP.ToString("C")</span>
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="tf-product-mini-view">
-                                        <a href="product-default.html" class="prd-image">
-                                            <img src="/app/images/products/product-32.jpg" alt="">
-                                        </a>
-                                        <div class="prd-content">
-                                            <a href="product-default.html" class="prd-name link text-uppercase">
-                                                Infinite Lab - Grown Diamond Bangle
-                                            </a>
-                                            <div class="price-wrap">
-                                                <span class="price-new price-on-sale">$2,499.00</span>
-                                                <span class="price-old compare-at-price text-caption">$2,623.95</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li><p class="text-caption text-main-4">No suggestions available.</p></li>
+                                }
                             </ul>
                         </div>
                     </div>
@@ -1510,7 +1266,7 @@
                         </div>
                         <div class="tf-product-total-quantity">
                             <div class="group-btn">
-                                <a href="#shoppingCart" data-bs-toggle="offcanvas" class="tf-btn btn-fill-2 animate-btn text-uppercase fw-medium">
+                                    <a href="javascript:void(0);" class="tf-btn btn-fill-2 animate-btn text-uppercase fw-medium">
                                     <span class="text-line-clamp-1">
                                         add to bag
                                     </span>
@@ -1522,17 +1278,13 @@
                                         <span class="icon icon-heart-2"></span>
                                         <span class="tooltip">Add to Wishlist</span>
                                     </a>
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare" class="tf-btn-icon hover-tooltip">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Compare</span>
-                                    </a>
                                 </div>
                             </div>
-                            <a href="checkout.html" class="tf-btn w-100 text-uppercase fw-medium">
+                            <a href="javascript:void(0);" class="tf-btn w-100 text-uppercase fw-medium">
                                 buy it now
                             </a>
                         </div>
-                        <a href="product-default.html" class="tf-btn-line">
+                        <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="styleCode" class="tf-btn-line">
                             <span class="text-body">View full details</span>
                             <i class="icon icon-arrow-top-right"></i>
                         </a>
@@ -1541,532 +1293,7 @@
             </div>
         </div>
     </div>
-    <!-- /Quick View -->
-    <!-- Compare -->
-    <div class="modal modalCentered fade modal-compare" id="compare">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <span class="icon-close-popup" data-bs-dismiss="modal">
-                    <i class="icon-close"></i>
-                </span>
-                <div class="modal-heading">
-                    <h3 class="title fw-normal text-uppercase">compare products</h3>
-                </div>
-                <div class="modal-body main-list-clear">
-                    <div class="tf-compare-inner">
-                        <div class="tf-compare-list list-empty">
-                            <p class="text-empty">Your compare is curently empty</p>
-                            <div class="tf-compare-item card_product--V01 file-delete">
-                                <div class="card_product-wrapper aspect-ratio-1">
-                                    <span class="remove icon-close"></span>
-                                    <a href="product-default.html" class="product-img">
-                                        <img src="/app/images/products/product-24.jpg" data-src="/app/images/products/product-24.jpg" alt="Image Product"
-                                             class="lazyload img-product">
-                                        <img src="/app/images/products/product-25.jpg" data-src="/app/images/products/product-25.jpg" alt="Image Product"
-                                             class="lazyload img-hover">
-                                    </a>
-                                </div>
-                                <div class="card_product-info text-center">
-                                    <a href="product-default.html" class="name-product link text-line-clamp-2">
-                                        Crystal Birthstone Eternity Circle Charm
-                                    </a>
-                                    <div class="price-wrap justify-content-center">
-                                        <span class="price-new fw-medium">$3,370.00</span>
-                                        <span class="price-old fw-normal text-caption">$3,899.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tf-compare-item card_product--V01 file-delete">
-                                <div class="card_product-wrapper aspect-ratio-1">
-                                    <span class="remove icon-close"></span>
-                                    <a href="product-default.html" class="product-img">
-                                        <img src="/app/images/products/product-26.jpg" data-src="/app/images/products/product-26.jpg" alt="Image Product"
-                                             class="lazyload img-product">
-                                        <img src="/app/images/products/product-27.jpg" data-src="/app/images/products/product-27.jpg" alt="Image Product"
-                                             class="lazyload img-hover">
-                                    </a>
-                                </div>
-                                <div class="card_product-info text-center">
-                                    <a href="product-default.html" class="name-product link text-line-clamp-2">
-                                        Ball Bracelet
-                                    </a>
-                                    <div class="price-wrap justify-content-center">
-                                        <span class="price-new fw-medium">$2,499.00</span>
-                                        <span class="price-old fw-normal text-caption">$2,899.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tf-compare-item card_product--V01 file-delete">
-                                <div class="card_product-wrapper aspect-ratio-1">
-                                    <span class="remove icon-close"></span>
-                                    <a href="product-default.html" class="product-img">
-                                        <img src="/app/images/products/product-28.jpg" data-src="/app/images/products/product-28.jpg" alt="Image Product"
-                                             class="lazyload img-product">
-                                        <img src="/app/images/products/product-29.jpg" data-src="/app/images/products/product-29.jpg" alt="Image Product"
-                                             class="lazyload img-hover">
-                                    </a>
-                                </div>
-                                <div class="card_product-info text-center">
-                                    <a href="product-default.html" class="name-product link text-line-clamp-2">
-                                        Engagement Ring in 18k Yellow Gold
-                                    </a>
-                                    <div class="price-wrap justify-content-center">
-                                        <span class="price-new fw-medium">$2,499.00</span>
-                                        <span class="price-old fw-normal text-caption">$2,899.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tf-compare-item card_product--V01 file-delete">
-                                <div class="card_product-wrapper aspect-ratio-1">
-                                    <span class="remove icon-close"></span>
-                                    <a href="product-default.html" class="product-img">
-                                        <img src="/app/images/products/product-34.jpg" data-src="/app/images/products/product-34.jpg" alt="Image Product"
-                                             class="lazyload img-product">
-                                        <img src="/app/images/products/product-35.jpg" data-src="/app/images/products/product-35.jpg" alt="Image Product"
-                                             class="lazyload img-hover">
-                                    </a>
-                                </div>
-                                <div class="card_product-info text-center">
-                                    <a href="product-default.html" class="name-product link text-line-clamp-2">
-                                        Vine Ring in Platinum with a Tanzanite and Diamonds
-                                    </a>
-                                    <div class="price-wrap justify-content-center">
-                                        <span class="price-new fw-medium">$2,499.00</span>
-                                        <span class="price-old fw-normal text-caption">$2,899.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="group-btn">
-                        <a href="compare.html" class="tf-btn btn-fill animate-btn fw-medium">
-                            COMPARE <span class="count-item-compare">(4)</span>
-                        </a>
-                        <button type="button" class="tf-btn fw-medium clear-list-empty">
-                            <span>CLEAR ALL</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Compare -->
-    <!-- Quick Add -->
-    <div class="modal modalCentered fade modal-quick-add" id="quickAdd">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="tf-product-info-wrap mt-0">
-                    <div class="tf-product-info-inner tf-product-info-list mb-0">
-                        <div class="tf-product-mini-view">
-                            <a href="product-default.html" class="prd-image">
-                                <img src="/app/images/products/product-28.jpg" alt="Image Product">
-                            </a>
-                            <div class="prd-content">
-                                <a href="product-default.html" class="prd-name link h6 fw-normal text-uppercase">
-                                    engagement ring in 18k yellow gold
-                                </a>
-                                <div class="price-wrap">
-                                    <span class="price-new price-on-sale h5">$2,499.00</span>
-                                    <span class="price-old compare-at-price">$2,899.00</span>
-                                </div>
-                            </div>
-                            <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-                        </div>
-                        <div class="tf-product-info-variant">
-                            <div class="variant-picker-item variant-color">
-                                <div class="variant-picker-label h6 fw-normal">
-                                    Material:
-                                    <span class="variant-picker-label-value value-currentColor">gold</span>
-                                </div>
-                                <div class="variant-picker-values">
-                                    <div class="hover-tooltip color-btn style-image-square active" data-color="gold" data-price="2,499.00">
-                                        <span class="check-color">
-                                            <img src="/app/images/products/material/yellow.jpg" alt="">
-                                        </span>
-                                        <span class="tooltip">Gold</span>
-                                    </div>
-                                    <div class="hover-tooltip color-btn style-image-square" data-color="rose" data-price="2,599.00">
-                                        <span class="check-color">
-                                            <img src="/app/images/products/material/pink.jpg" alt="">
-                                        </span>
-                                        <span class="tooltip">Rose</span>
-                                    </div>
-                                    <div class="hover-tooltip color-btn style-image-square" data-color="titanium" data-price="2,699.00">
-                                        <span class="check-color">
-                                            <img src="/app/images/products/material/gray.jpg" alt="">
-                                        </span>
-                                        <span class="tooltip">Titanium</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="variant-picker-item variant-size">
-                                <div class="variant-picker-label h6 fw-normal">
-                                    Size:
-                                    <span class="variant-picker-label-value value-currentSize">48</span>
-                                </div>
-                                <div class="variant-picker-values">
-                                    <div class="variant-picker-values">
-                                        <div class="btn-group">
-                                            <span class="size-btn active" data-size="48" data-price="2,499.00">48</span>
-                                            <span class="size-btn" data-size="50" data-price="999.00">50</span>
-                                            <span class="size-btn" data-size="52" data-price="1,999.00">52</span>
-                                            <span class="size-btn" data-size="54" data-price="2,199.00">54</span>
-                                        </div>
-                                        <a href="#sizeGuide" data-bs-toggle="offcanvas" class="tf-btn-line style-line-2 fw-normal">
-                                            <span class="text-caption">Size Guide</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="variant-picker-item">
-                                <div class="variant-picker-label h6 fw-normal">Quantity</div>
-                                <div class="variant-picker-values">
-                                    <div class="wg-quantity">
-                                        <button class="btn-quantity btn-decrease"><i class="icon-minus"></i></button>
-                                        <input class="quantity-product" type="text" name="number" value="1">
-                                        <button class="btn-quantity btn-increase"><i class="icon-plus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tf-product-total-quantity mb-0">
-                            <div class="group-btn">
-                                <a href="#shoppingCart" data-bs-toggle="offcanvas" class="tf-btn btn-fill-2 text-uppercase fw-medium animate-btn">
-
-                                    add to bag
-                                    <i class="icon-minus d-none d-sm-block"></i>
-                                    <span class="price-add d-none d-sm-block">$2,499.00</span>
-                                </a>
-                                <div class="group-btn-action">
-                                    <a href="javascript:void(0);" class="tf-btn-icon hover-tooltip btn-add-wishlist">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare" class="tf-btn-icon hover-tooltip">
-                                        <span class="icon icon-compare"></span>
-                                        <span class="tooltip">Compare</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <a href="checkout.html" class="tf-btn w-100 text-uppercase fw-medium">
-                                buy it now
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- /Quick Add -->
-    <!-- Size Guide -->
-    <div class="offcanvas offcanvas-end canvas-sidebar canvas-size" id="sizeGuide">
-        <div class="canvas-header">
-            <h3 class="title fw-normal text-uppercase">size guide</h3>
-            <span class="icon-close link icon-close-popup" data-bs-dismiss="offcanvas"></span>
-        </div>
-        <div class="canvas-body">
-            <div class="tf-page-size-chart-content">
-                <p class="title h5 fw-normal text-uppercase">know the size</p>
-                <ul class="resize-info-list">
-                    <li>1. Select an existing ring that fits the desired finger.</li>
-                    <li>2. Measure the internal diameter of the ring in mm.</li>
-                    <li>3. Select the diameter below to determine your ring size.</li>
-                </ul>
-                <div class="img-chart">
-                    <img src="/app/images/section/resize-chart.png" data-src="/app/images/section/resize-chart.png" alt="" class="lazyload">
-                </div>
-            </div>
-            <div class="tf-table-res-df">
-                <p class="title h5 fw-normal text-uppercase">Size chart</p>
-                <p class="sub text-main-4 mb-0">
-                    At Yash, we want your jewelry to fit flawlessly. Use our size guide to ensure the perfect
-                    match
-                    for rings, bracelets, and necklaces.
-                </p>
-            </div>
-            <div class="tf-sizeguide-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>INTERNAL DIAMETER (MM)</th>
-                            <th>US</th>
-                            <th>US</th>
-                            <th>EU</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>13.6</td>
-                            <td>E</td>
-                            <td>2.75</td>
-                            <td>42</td>
-                        </tr>
-                        <tr>
-                            <td>14.0</td>
-                            <td>F</td>
-                            <td>3.25</td>
-                            <td>44</td>
-                        </tr>
-                        <tr>
-                            <td>14.4</td>
-                            <td>G</td>
-                            <td>3.75</td>
-                            <td>45</td>
-                        </tr>
-                        <tr>
-                            <td>14.9</td>
-                            <td>H</td>
-                            <td>4.25</td>
-                            <td>46.5</td>
-                        </tr>
-                        <tr>
-                            <td>15.1</td>
-                            <td>I</td>
-                            <td>4.5</td>
-                            <td>47</td>
-                        </tr>
-                        <tr>
-                            <td>15.5</td>
-                            <td>J</td>
-                            <td>5</td>
-                            <td>48.5</td>
-                        </tr>
-                        <tr>
-                            <td>15.9</td>
-                            <td>K</td>
-                            <td>5.5</td>
-                            <td>50</td>
-                        </tr>
-                        <tr>
-                            <td>16.3</td>
-                            <td>l</td>
-                            <td>6</td>
-                            <td>51</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <!-- /Size Guide -->
-    <!-- Filter -->
-    <div class="offcanvas offcanvas-start canvas-sidebar canvas-filter" id="filterShop">
-        <div class="canvas-wrapper">
-            <div class="canvas-header">
-                <span class="title">FILTER</span>
-                <span class="icon-close link icon-close-popup" data-bs-dismiss="offcanvas"></span>
-            </div>
-            <div class="canvas-body">
-                <div class="apply-filter-wrap">
-                    <p class="title h6 fw-normal text-uppercase">Applied Filters</p>
-                    <div id="product-count-grid" class="count-text text-main-4">No Filter Selected</div>
-                    <div class="meta-filter-shop">
-                        <div id="applied-filters"></div>
-                    </div>
-                </div>
-
-                <div class="widget-facet">
-                    <div class="facet-title h6 fw-normal" data-bs-target="#availability" role="button" data-bs-toggle="collapse" aria-expanded="true"
-                         aria-controls="availability">
-                        <span class="h6 fw-normal text-uppercase">availability</span>
-                        <span class="icon ic-accordion-custom"></span>
-                    </div>
-                    <div id="availability" class="collapse show">
-                        <ul class="collapse-body filter-group-check current-scrollbar">
-                            <li class="list-item">
-                                <input type="radio" name="availability" class="tf-check style-2" id="inStock">
-                                <label for="inStock" class="label">
-                                    <span>In Stock</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item disabled">
-                                <input type="radio" name="availability" class="tf-check style-2" id="outStock">
-                                <label for="outStock" class="label">
-                                    <span>Out of Stock</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="widget-facet">
-                    <div class="facet-title h6 fw-normal" data-bs-target="#categories" role="button" data-bs-toggle="collapse" aria-expanded="true"
-                         aria-controls="categories">
-                        <span class="h6 fw-normal text-uppercase">category</span>
-                        <span class="icon ic-accordion-custom"></span>
-                    </div>
-                    <div id="categories" class="collapse show">
-                        <ul class="collapse-body filter-group-check current-scrollbar">
-                            <li class="list-item">
-                                <input type="checkbox" name="category" class="tf-check style-2" id="bracelet">
-                                <label for="bracelet" class="label">
-                                    <span>Bracelets</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="category" class="tf-check style-2" id="earring">
-                                <label for="earring" class="label">
-                                    <span>Earrings</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="category" class="tf-check style-2" id="ring">
-                                <label for="ring" class="label">
-                                    <span>Rings</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="category" class="tf-check style-2" id="necklace">
-                                <label for="necklace" class="label">
-                                    <span>Necklaces</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="category" class="tf-check style-2" id="new-in">
-                                <label for="new-in" class="label">
-                                    <span>New In</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="category" class="tf-check style-2" id="gift-idea">
-                                <label for="gift-idea" class="label">
-                                    <span>Gift ideas</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="widget-facet">
-                    <div class="facet-title h6 fw-normal" data-bs-target="#materials" role="button" data-bs-toggle="collapse" aria-expanded="true"
-                         aria-controls="materials">
-                        <span class="h6 fw-normal text-uppercase">Material</span>
-                        <span class="icon ic-accordion-custom"></span>
-                    </div>
-                    <div id="materials" class="collapse show">
-                        <ul class="collapse-body filter-group-check current-scrollbar">
-                            <li class="list-item">
-                                <input type="checkbox" name="material" class="tf-check style-2" id="gold">
-                                <label for="gold" class="label">
-                                    <span>Gold</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="material" class="tf-check style-2" id="sterling-silver">
-                                <label for="sterling-silver" class="label">
-                                    <span>Sterling Silver</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="material" class="tf-check style-2" id="white-gold">
-                                <label for="white-gold" class="label">
-                                    <span>White Gold</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="material" class="tf-check style-2" id="pink-gold">
-                                <label for="pink-gold" class="label">
-                                    <span>Pink Gold</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="widget-facet">
-                    <div class="facet-title h6 fw-normal" data-bs-target="#stone-color" role="button" data-bs-toggle="collapse" aria-expanded="true"
-                         aria-controls="stone-color">
-                        <span class="h6 fw-normal text-uppercase">stone colour</span>
-                        <span class="icon ic-accordion-custom"></span>
-                    </div>
-                    <div id="stone-color" class="collapse show">
-                        <ul class="collapse-body filter-group-check current-scrollbar">
-                            <li class="list-item">
-
-                                <input type="checkbox" name="color" class="tf-check style-2" id="blue">
-                                <label for="blue" class="label">
-                                    <img src="/app/images/products/material/dia-blue.jpg" alt="Colour" class="img-check">
-                                    <span>Blue</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="color" class="tf-check style-2" id="pink">
-                                <label for="pink" class="label">
-                                    <img src="/app/images/products/material/dia-pink.jpg" alt="Colour" class="img-check">
-                                    <span>Pink</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="checkbox" name="color" class="tf-check style-2" id="white">
-                                <label for="white" class="label">
-                                    <img src="/app/images/products/material/dia-white.jpg" alt="Colour" class="img-check">
-                                    <span>White</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="widget-facet">
-                    <div class="facet-title h6 fw-normal" data-bs-target="#price" role="button" data-bs-toggle="collapse" aria-expanded="true"
-                         aria-controls="price">
-                        <span class="h6 fw-normal text-uppercase">price</span>
-                        <span class="icon ic-accordion-custom"></span>
-                    </div>
-                    <div id="price" class="collapse show">
-                        <ul class="collapse-body filter-group-check current-scrollbar">
-                            <li class="list-item">
-                                <input type="radio" name="price" class="tf-check style-2" id="u-500">
-                                <label for="u-500" class="label">
-                                    <span>Under $500</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="radio" name="price" class="tf-check style-2" id="u-1000">
-                                <label for="u-1000" class="label">
-                                    <span>Under $1000</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="radio" name="price" class="tf-check style-2" id="u-2000">
-                                <label for="u-2000" class="label">
-                                    <span>Under $2000</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                            <li class="list-item">
-                                <input type="radio" name="price" class="tf-check style-2" id="up-2000">
-                                <label for="up-2000" class="label">
-                                    <span>Over $2000</span><span class="count-wrap">[ <span class="count">20</span> ]</span>
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="widget-facet">
-                    <div class="facet-title h6 fw-normal" data-bs-target="#size" role="button" data-bs-toggle="collapse" aria-expanded="true"
-                         aria-controls="size">
-                        <span class="h6 fw-normal text-uppercase">size</span>
-                        <span class="icon ic-accordion-custom"></span>
-                    </div>
-                    <div id="size" class="collapse show">
-                        <div class="collapse-body filter-size-box flat-check-list">
-                            <div class="check-item size-item size-check"><span class="count size">5</span></div>
-                            <div class="check-item size-item size-check"><span class="count size">6</span></div>
-                            <div class="check-item size-item size-check"><span class="count size">7</span></div>
-                            <div class="check-item size-item size-check"><span class="count size">8</span></div>
-                            <div class="check-item size-item size-check"><span class="count size">9</span></div>
-                            <div class="check-item size-item size-check disabled"><span class="count size">10</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="canvas-bottom">
-                <button id="reset-filter" class="tf-btn btn-reset">
-                    <span class=" fw-medium">CLEAR ALL</span>
-                </button>
-                <button type="button" class="tf-btn btn-fill animate-btn" data-bs-dismiss="offcanvas">
-                    <span class=" fw-medium">APPLY [100]</span>
-                </button>
-            </div>
-        </div>
-    </div>
-    <!-- /Filter -->
     <!-- Toolbar -->
     <div class="tf-toolbar-bottom">
         <div class="toolbar-item">
@@ -2128,6 +1355,7 @@
     <script src="/app/js/count-down.js"></script>
     <script src="/app/js/wow.min.js"></script>
     <script src="/app/js/main.js"></script>
+    <script src="/app/js/cart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Function to handle form submission via AJAX
@@ -2153,12 +1381,10 @@
                                 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
                             }
                         });
-
                         if (response.redirected) {
                             window.location.href = response.url;
                             return;
                         }
-
                         if (response.ok) {
                             const result = await response.json();
                             if (result.success) {
@@ -2214,6 +1440,129 @@
                 const registerModal = new bootstrap.Modal(document.getElementById('register'));
                 registerModal.show();
             }
+            // --- Quick View Logic ---
+            $(document).on('click', '.quickview', function() {
+                const styleCode = $(this).data('stylecode');
+                if (!styleCode) return;
+                const $modal = $('#quickView');
+                
+                // Clear previous data or show loading state
+                $modal.find('.product-info-name').text('Loading...');
+                $modal.find('.price-new').text('');
+                $modal.find('.price-old').text('').hide();
+                $modal.find('.badges-on-sale').hide();
+                $modal.find('.product-infor-sub').text('');
+                $.ajax({
+                    url: '/Shop/GetQuickDetails/' + styleCode,
+                    type: 'GET',
+                    success: function(data) {
+                        // Populate Basic Info
+                        $modal.find('.product-info-name').text(data.itemName).attr('href', '/Shop/ProductDetail/' + data.styleCode);
+                        $modal.find('.price-new').text(data.sellingPriceFormatted);
+                        $modal.find('.price-add').text(data.sellingPriceFormatted);
+                        
+                        if (data.isOnSale) {
+                            $modal.find('.price-old').text(data.mrpFormatted).show();
+                            $modal.find('.number-sale').text(Math.round(data.discountPercentage) + '% OFF');
+                            $modal.find('.badges-on-sale').show();
+                        } else {
+                            $modal.find('.price-old').hide();
+                            $modal.find('.badges-on-sale').hide();
+                        }
+                        $modal.find('.product-infor-sub').text(data.description || 'No description available.');
+                        $modal.find('.value-currentColor').text(data.goldKarat || 'N/A');
+                        $modal.find('.value-currentSize').text(data.productType || 'N/A');
+                        
+                        // Hide generic color/size pickers since we don't have multiple variants per style code yet
+                        $modal.find('.variant-color .variant-picker-values').hide();
+                        $modal.find('.variant-size .variant-picker-values .btn-group').hide();
+                        $modal.find('.variant-size .variant-picker-values .tf-btn-line').hide();
+                        // Update Modal Buttons
+                        const $atbBtn = $modal.find('.btn-add-to-cart');
+                        $atbBtn.attr('data-stylecode', data.styleCode);
+                        
+                        if (data.quantity <= 0) {
+                            $atbBtn.addClass('disabled').text('OUT OF STOCK').find('i, .price-add').hide();
+                        } else {
+                            $atbBtn.removeClass('disabled').html('<span class="text-line-clamp-1">add to bag</span><i class="icon-minus d-none d-sm-block"></i><span class="price-add d-none d-sm-block">' + data.sellingPriceFormatted + '</span>');
+                        }
+                        $modal.find('.view-full-details').attr('href', '/Shop/ProductDetail/' + data.styleCode);
+                        $modal.find('.btn-buy-now').data('stylecode', data.styleCode);
+
+                        // Update Wishlist Button
+                        var $wishlistBtn = $modal.find('.btn-add-wishlist');
+                        $wishlistBtn.attr('data-stylecode', data.styleCode);
+                        if (data.isWishlisted) {
+                            $wishlistBtn.addClass('active').attr('title', 'Remove from Wishlist');
+                            $wishlistBtn.find('.icon').removeClass('icon-heart-2').addClass('icon-trash');
+                            $wishlistBtn.find('.tooltip').text('Remove from Wishlist');
+                        } else {
+                            $wishlistBtn.removeClass('active').attr('title', 'Add to Wishlist');
+                            $wishlistBtn.find('.icon').removeClass('icon-trash').addClass('icon-heart-2');
+                            $wishlistBtn.find('.tooltip').text('Add to Wishlist');
+                        }
+
+                        // Update Images / Swiper
+                        const $wrapper = $modal.find('.swiper-wrapper');
+                        $wrapper.empty();
+                        if (data.images && data.images.length > 0) {
+                            data.images.forEach(img => {
+                                $wrapper.append(`
+                                    <div class="swiper-slide">
+                                        <div class="item">
+                                            <img src="${img}" alt="${data.itemName}">
+                                        </div>
+                                    </div>
+                                `);
+                            });
+                        } else {
+                            $wrapper.append(`
+                                <div class="swiper-slide">
+                                    <div class="item">
+                                        <img src="/app/images/products/product-default.jpg" alt="${data.itemName}">
+                                    </div>
+                                </div>
+                            `);
+                        }
+                        // Re-initialize or update Swiper
+                        if ($modal.find('.tf-single-slide')[0].swiper) {
+                            $modal.find('.tf-single-slide')[0].swiper.destroy();
+                        }
+                        new Swiper($modal.find('.tf-single-slide')[0], {
+                            loop: false,
+                            autoplay: false,
+                            spaceBetween: 0,
+                            speed: 1000,
+                            navigation: {
+                                nextEl: ".single-slide-next",
+                                prevEl: ".single-slide-prev",
+                            },
+                        });
+                    },
+                    error: function() {
+                        alert('Error loading product details.');
+                        $modal.modal('hide');
+                    }
+                });
+            });
+            $(document).on('click', '.btn-buy-now', function() {
+                const styleCode = $(this).data('stylecode');
+                const quantity = $('#quickView .quantity-product').val() || 1;
+                if (!styleCode) return;
+                // Add to cart and then redirect to checkout
+                $.ajax({
+                    url: '/Cart/AddToCart',
+                    type: 'POST',
+                    data: { styleCode: styleCode, quantity: quantity },
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = '/Checkout';
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            });
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
