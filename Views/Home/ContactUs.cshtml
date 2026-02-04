@@ -9,7 +9,7 @@
         <div class="page-title">
             <div class="breadcrumbs">
                 <ul class="bread-wrap">
-                    <li><a href="index-2.html" class="text-main-4 link">Home</a></li>
+                    <li><a asp-controller="Home" asp-action="Index"  class="text-main-4 link">Home</a></li>
                     <li class="br-line w-12 bg-main"></li>
                     <li>Contact Us</li>
                 </ul>
@@ -126,7 +126,6 @@
                                 </fieldset>
                             </div>
                             <textarea asp-for="Message" placeholder="Message" style="height: 150px;" required></textarea>
-                            <span asp-validation-for="Message" class="text-danger fs-12"></span>
                         </div>
                         @if (TempData["SuccessInquiry"] != null)
                         {
@@ -140,7 +139,7 @@
                                 @TempData["ErrorInquiry"]
                             </div>
                         }
-                        <button type="submit" class="tf-btn btn-fill animate-btn w-100 mt-3">
+                        <button type="submit" class="tf-btn btn-fill animate-btn w-100">
                             SEND
                         </button>
                     </form>
