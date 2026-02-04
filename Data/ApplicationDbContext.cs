@@ -257,6 +257,11 @@ namespace Yash_Gems___Jewelleries.Data
             modelBuilder.Entity<Review>()
                 .HasIndex(r => new { r.StyleCode, r.IsApproved });
 
+            // Unique composite index to enforce one review per user per product
+            modelBuilder.Entity<Review>()
+                .HasIndex(r => new { r.UserId, r.StyleCode })
+                .IsUnique();
+
             // Wishlist indexes
             modelBuilder.Entity<Wishlist>()
                 .HasIndex(w => new { w.UserId, w.StyleCode })
