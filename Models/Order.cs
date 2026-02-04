@@ -202,7 +202,7 @@ namespace Yash_Gems___Jewelleries.Models
         /// </summary>
         public static string GenerateOrderNumber()
         {
-            return $"ORD{DateTime.Now:yyyyMMddHHmmss}{new Random().Next(1000, 9999)}";
+            return $"ORD{new Random().Next(1000, 9999)}";
         }
     }
 }
