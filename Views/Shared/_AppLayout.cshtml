@@ -2,6 +2,15 @@
 @inject ICartService CartService
 @inject Yash_Gems___Jewelleries.Services.ILayoutService LayoutService
 @inject UserManager<ApplicationUser> UserManager
+@{
+    var navCategories = await LayoutService.GetCategoriesAsync(7);
+    var navFeaturedProducts = await LayoutService.GetFeaturedProductsAsync(7);
+    var navNewArrivals = await LayoutService.GetNewArrivalsAsync(7);
+    var navBrands = await LayoutService.GetBrandsAsync(7);
+    var userId = UserManager.GetUserId(User);
+    var cartCount = await CartService.GetCartCountAsync(userId);
+    var wishCount = await LayoutService.GetWishlistCountAsync(userId);
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,7 +65,7 @@
                                         $200
                                     </p>
                                     <span class="br-line"></span>
-                                    <a href="shop-default.html" class="tf-btn-line style-white-2 text-uppercase lh-19">
+                                    <a asp-controller="Shop" asp-action="Index" class="tf-btn-line style-white-2 text-uppercase lh-19">
                                         Shop Now
                                         <i class="icon-arrow-top-right-2 fs-10"></i>
                                     </a>
@@ -70,7 +79,7 @@
                                         $200
                                     </p>
                                     <span class="br-line"></span>
-                                    <a href="shop-default.html" class="tf-btn-line style-white-2 text-uppercase lh-19">
+                                    <a asp-controller="Shop" asp-action="Index" class="tf-btn-line style-white-2 text-uppercase lh-19">
                                         Shop Now
                                         <i class="icon-arrow-top-right-2 fs-10"></i>
                                     </a>
@@ -93,7 +102,7 @@
                         </a>
                     </div>
                     <div class="col-xl-2 col-md-4 col-6">
-                        <a href="index-2.html" class="logo-site">
+                        <a asp-controller="Home" asp-action="Index" class="logo-site">
                             <img src="/app/images/logo/logo.svg" alt="">
                         </a>
                     </div>
@@ -116,171 +125,76 @@
                                             <div class="mega-menu-wrap">
                                                 <div class="wrapper-sub-menu">
                                                     <div class="mega-menu-item">
-                                                        <p class="text-caption menu-heading">PRODUCT LAYOUT</p>
+                                                        <p class="text-caption menu-heading">PRODUCTS</p>
                                                         <ul class="menu-list">
-                                                            <li><a href="product-default.html" class="menu-link-text link">Product Default</a></li>
-                                                            <li><a href="product-style-02.html" class="menu-link-text link">Product Style 2</a></li>
-                                                            <li><a href="product-style-03.html" class="menu-link-text link">Product Style 3</a></li>
-                                                            <li>
-                                                                <a href="product-style-04.html" class="menu-link-text link">
-                                                                    Product Style 4
-                                                                    <span class="demo-label">Hot</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="product-style-05.html" class="menu-link-text link">
-                                                                    Product Style 5
-                                                                    <span class="demo-label type-trend">Trending</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="product-style-04-no-size.html" class="menu-link-text link">
-                                                                    Product No
-                                                                    Size
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="product-notify-avaiable.html" class="menu-link-text link">
-                                                                    Product Notify
-                                                                    Avaiable <span class="demo-label type-new">New</span>
-                                                                </a>
-                                                            </li>
+                                                            @foreach (var product in navFeaturedProducts)
+                                                            {
+                                                                <li>
+                                                                    <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@product.StyleCode" class="menu-link-text link">@product.ItemName</a>
+                                                                </li>
+                                                            }
                                                         </ul>
                                                     </div>
                                                     <div class="mega-menu-item">
-                                                        <p class="text-caption menu-heading">PRODUCT DESCRIPTION</p>
+                                                        <p class="text-caption menu-heading">CATEGORIES</p>
                                                         <ul class="menu-list">
-                                                            <li>
-                                                                <a href="product-description-side-dropdown.html"
-                                                                   class="menu-link-text link">Description Side Dropdown</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="product-description-full-accordion.html"
-                                                                   class="menu-link-text link">Description Full Accordions</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="product-description-side-drawer.html" class="menu-link-text link">
-                                                                    Description
-                                                                    Side Drawer
-                                                                </a>
-                                                            </li>
+                                                            @foreach (var category in navCategories)
+                                                            {
+                                                                <li><a asp-controller="Shop" asp-action="Index" asp-route-categoryIds="@category.CategoryId" class="menu-link-text link">@category.CategoryName</a></li>
+                                                            }
                                                         </ul>
                                                     </div>
                                                     <div class="mega-menu-item">
-                                                        <p class="text-caption menu-heading">PRODUCT DETAILS</p>
+                                                        <p class="text-caption menu-heading">NEW ARRIVALS</p>
                                                         <ul class="menu-list">
-                                                            <li>
-                                                                <a href="product-inner-zoom.html" class="menu-link-text link">Product Inner Zoom</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="product-inner-circle-zoom.html" class="menu-link-text link">
-                                                                    Product Inner
-                                                                    Circle Zoom
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="product-no-zoom.html" class="menu-link-text link">Product No Zoom</a></li>
-                                                            <li>
-                                                                <a href="product-video.html" class="menu-link-text link">
-                                                                    Product Video <span class="demo-label type-trend">Trending</span>
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="product-3d.html" class="menu-link-text link">Product 3D/AR</a></li>
-                                                            <li>
-                                                                <a href="product-group.html" class="menu-link-text link">
-                                                                    Product Group <span class="demo-label type-new">New</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="product-affiliate.html" class="menu-link-text link">
-                                                                    Product Affiliate <span class="demo-label type-new">New</span>
-                                                                </a>
-                                                            </li>
+                                                            @foreach (var product in navNewArrivals)
+                                                            {
+                                                                <li>
+                                                                    <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@product.StyleCode" class="menu-link-text link">@product.ItemName</a>
+                                                                </li>
+                                                            }
                                                         </ul>
                                                     </div>
                                                     <div class="mega-menu-item">
-                                                        <p class="text-caption menu-heading">PRODUCT FEATURES</p>
+                                                        <p class="text-caption menu-heading">BRANDS</p>
                                                         <ul class="menu-list">
-                                                            <li>
-                                                                <a href="product-pickup-available.html" class="menu-link-text link">
-                                                                    Pickup
-                                                                    Available
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="product-swatch-image.html" class="menu-link-text link">Swatch Image</a></li>
-                                                            <li>
-                                                                <a href="product-together.html" class="menu-link-text link">
-                                                                    Buy Together
-                                                                    <span class="demo-label type-new">New</span>
-                                                                </a>
-                                                            </li>
-                                                            <li><a href="product-size-guide.html" class="menu-link-text link">Size Guide</a></li>
-                                                            <li>
-                                                                <a href="product-engrave-option.html" class="menu-link-text link">Engrave Option</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="product-buyX-getY.html" class="menu-link-text link">
-                                                                    Buy X Get Y <span class="demo-label type-new">New</span>
-                                                                </a>
-                                                            </li>
+                                                            @foreach (var brand in navBrands)
+                                                            {
+                                                                <li>
+                                                                    <a asp-controller="Shop" asp-action="Index" asp-route-brandIds="@brand.BrandId" class="menu-link-text link">@brand.BrandType</a>
+                                                                </li>
+                                                            }
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div class="wrapper-sub-collection">
-                                                    <div class="card_product--V01">
-                                                        <div class="card_product-wrapper aspect-ratio-1">
-                                                            <a href="product-default.html" class="product-img">
-                                                                <img src="/app/images/products/product-28.jpg" data-src="/app/images/products/product-28.jpg"
-                                                                     alt="Image Product" class="lazyload img-product">
-                                                                <img src="/app/images/products/product-29.jpg" data-src="/app/images/products/product-29.jpg"
-                                                                     alt="Image Product" class="lazyload img-hover">
-                                                            </a>
-                                                            <ul class="list-product-btn center">
-                                                                <li>
-                                                                    <a href="#quickView" data-bs-toggle="modal"
-                                                                       class="hover-tooltip box-icon quickview">
-                                                                        <span class="icon icon-view"></span>
-                                                                        <span class="tooltip">Quick View</span>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="card_product-info">
-                                                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                                                Engagement Ring in 18k Yellow Gold
-                                                            </a>
-                                                            <div class="price-wrap">
-                                                                <span class="price-new h5">$2,499.00</span>
-                                                                <span class="price-old fw-normal">$2,899.00</span>
+                                                    @foreach (var product in navFeaturedProducts.Take(2))
+                                                    {
+                                                        <div class="card_product--V01">
+                                                            <div class="card_product-wrapper aspect-ratio-1">
+                                                                <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@product.StyleCode" class="product-img">
+                                                                    <img src="@(string.IsNullOrEmpty(product.PrimaryImageUrl) ? "/app/images/products/product-28.jpg" : product.PrimaryImageUrl)" 
+                                                                         data-src="@(string.IsNullOrEmpty(product.PrimaryImageUrl) ? "/app/images/products/product-28.jpg" : product.PrimaryImageUrl)"
+                                                                         alt="@product.ItemName" class="lazyload img-product">
+                                                                    <img src="@(string.IsNullOrEmpty(product.SecondaryImageUrl) ? product.PrimaryImageUrl : product.SecondaryImageUrl)" 
+                                                                         data-src="@(string.IsNullOrEmpty(product.SecondaryImageUrl) ? product.PrimaryImageUrl : product.SecondaryImageUrl)"
+                                                                         alt="@product.ItemName" class="lazyload img-hover">
+                                                                </a>
+                                                            </div>
+                                                            <div class="card_product-info">
+                                                                <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@product.StyleCode" class="name-product h5 fw-normal link text-line-clamp-2">
+                                                                    @product.ItemName
+                                                                </a>
+                                                                <div class="price-wrap">
+                                                                    <span class="price-new h5">@product.SellingPrice.ToString("C")</span>
+                                                                    @if (product.DiscountPercentage > 0)
+                                                                    {
+                                                                        <span class="price-old fw-normal">@product.MRP.ToString("C")</span>
+                                                                    }
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="card_product--V01">
-                                                        <div class="card_product-wrapper aspect-ratio-1">
-                                                            <a href="product-default.html" class="product-img">
-                                                                <img src="/app/images/products/product-20.jpg" data-src="/app/images/products/product-20.jpg"
-                                                                     alt="Image Product" class="lazyload img-product">
-                                                                <img src="/app/images/products/product-21.jpg" data-src="/app/images/products/product-21.jpg"
-                                                                     alt="Image Product" class="lazyload img-hover">
-                                                            </a>
-                                                            <ul class="list-product-btn center">
-                                                                <li>
-                                                                    <a href="#quickView" data-bs-toggle="modal"
-                                                                       class="hover-tooltip box-icon quickview">
-                                                                        <span class="icon icon-view"></span>
-                                                                        <span class="tooltip">Quick View</span>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="card_product-info">
-                                                            <a href="product-default.html" class="name-product h5 fw-normal link text-line-clamp-2">
-                                                                Organically Shaped Heart Bangle
-                                                            </a>
-                                                            <div class="price-wrap">
-                                                                <span class="price-new h5">$2,499.00</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -300,11 +214,6 @@
                         </nav>
                     </div>
                     <div class="col-xl-2 col-md-4 col-3">
-                        @{
-                            var userId = UserManager.GetUserId(User);
-                            var cartCount = await CartService.GetCartCountAsync(userId);
-                            var wishCount = await LayoutService.GetWishlistCountAsync(userId);
-                        }
                         <ul class="nav-icon">
                             <li class="d-inline-flex">
                                 <a href="#search" data-bs-toggle="offcanvas" class="nav-icon-item text-black link">
@@ -338,49 +247,49 @@
                 <div class="container">
                     <ul class="category-list justify-content-xl-center">
                         <li>
-                            <a href="shop-collection-list.html" class="tf-btn btn-line has-icon link">
+                            <a asp-controller="Shop" asp-action="Index" class="tf-btn btn-line has-icon link">
                                 <span class="text h6 text-uppercase fw-normal">New Collection</span>
                                 <i class="icon icon-arrow-top-right"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="shop-collection-list.html" class="tf-btn btn-line has-icon link">
+                            <a asp-controller="Shop" asp-action="Index" class="tf-btn btn-line has-icon link">
                                 <span class="text h6 text-uppercase fw-normal">All Jewelry</span>
                                 <i class="icon icon-arrow-top-right"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="shop-collection-list.html" class="tf-btn btn-line has-icon link">
+                            <a asp-controller="Shop" asp-action="Index" class="tf-btn btn-line has-icon link">
                                 <span class="text h6 text-uppercase fw-normal">Charms</span>
                                 <i class="icon icon-arrow-top-right"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="shop-collection-list.html" class="tf-btn btn-line has-icon link">
+                            <a asp-controller="Shop" asp-action="Index" class="tf-btn btn-line has-icon link">
                                 <span class="text h6 text-uppercase fw-normal">Bracelets</span>
                                 <i class="icon icon-arrow-top-right"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="shop-collection-list.html" class="tf-btn btn-line has-icon link">
+                            <a asp-controller="Shop" asp-action="Index" class="tf-btn btn-line has-icon link">
                                 <span class="text h6 text-uppercase fw-normal">Rings</span>
                                 <i class="icon icon-arrow-top-right"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="shop-collection-list.html" class="tf-btn btn-line has-icon link">
+                            <a asp-controller="Shop" asp-action="Index" class="tf-btn btn-line has-icon link">
                                 <span class="text h6 text-uppercase fw-normal">Earrings</span>
                                 <i class="icon icon-arrow-top-right"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="shop-collection-list.html" class="tf-btn btn-line has-icon link">
+                            <a asp-controller="Shop" asp-action="Index" class="tf-btn btn-line has-icon link">
                                 <span class="text h6 text-uppercase fw-normal">Gifts</span>
                                 <i class="icon icon-arrow-top-right"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="shop-collection-list.html" class="tf-btn btn-line has-icon link">
+                            <a asp-controller="Shop" asp-action="Index" class="tf-btn btn-line has-icon link">
                                 <span class="text h6 text-uppercase fw-normal">Collections</span>
                                 <i class="icon icon-arrow-top-right"></i>
                             </a>
@@ -430,7 +339,7 @@
                                                 <a href="https://www.google.com/maps?q=123+Yarran+st,Punchbowl,NSW+202196,Australia" target="_blank"
                                                    class="text-main-4 link text-decoration-underline">See Our Stores</a>
                                             </li>
-                                            <li><a href="tel:6483441233" class="text-main-4 link">(64) 8344 1233</a></li>
+                                            <li><a href="tel:6483441233" class="text-main-4 link">+92-9876543210</a></li>
                                             <li><a href="mailto:hello@yash.com" class="text-main-4 link">hello@yash.com</a></li>
                                         </ul>
                                         <ul class="tf-social-icon">
@@ -459,16 +368,15 @@
                                 </div>
                                 <div class="footer-col-block p-xl-0">
                                     <p class="footer-heading footer-heading-mobile font-2">
-                                        HELP
+                                        QUICK LINKS
                                     </p>
                                     <div class="tf-collapse-content">
                                         <ul class="footer-menu-list">
-                                            <li><a href="shipping.html" class="text-main-4 link">Shipping</a></li>
-                                            <li><a href="return.html" class="text-main-4 link">Returns</a></li>
-                                            <li><a href="privacy.html" class="text-main-4 link">Privacy Policy</a></li>
-                                            <li><a href="wishlist.html" class="text-main-4 link">My Wishlist</a></li>
-                                            <li><a href="compare.html" class="text-main-4 link">Compare</a></li>
-                                            <li><a href="faq.html" class="text-main-4 link">FAQ’s</a></li>
+                                            <li><a asp-controller="Home" asp-action="Index" class="text-main-4 link">Home</a></li>
+                                            <li><a asp-controller="Shop" asp-action="Index" class="text-main-4 link">Shop</a></li>
+                                            <li><a asp-controller="Account" asp-action="Wishlist" class="text-main-4 link">My Wishlist</a></li>
+                                            <li><a asp-controller="Cart" asp-action="Index" class="text-main-4 link">Cart</a></li>
+                                            <li><a asp-controller="Account" asp-action="Order" class="text-main-4 link">Orders</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -478,10 +386,10 @@
                                     </p>
                                     <div class="tf-collapse-content">
                                         <ul class="footer-menu-list">
-                                            <li><a href="about-us.html" class="text-main-4 link">Our Story</a></li>
-                                            <li><a href="our-store.html" class="text-main-4 link">Visit Our Store</a></li>
-                                            <li><a href="contact-us.html" class="text-main-4 link">Contact Us</a></li>
-                                            <li><a href="account-page.html" class="text-main-4 link">Account</a></li>
+                                            <li><a asp-controller="Home" asp-action="AboutUs" class="text-main-4 link">Our Story</a></li>
+                                            <li><a asp-controller="Account" asp-action="Inquiries" class="text-main-4 link">Inquiries</a></li>
+                                            <li><a asp-controller="Home" asp-action="ContactUs" class="text-main-4 link">Contact Us</a></li>
+                                            <li><a asp-controller="Account" asp-action="Index" class="text-main-4 link">Account</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -549,66 +457,23 @@
                     </form>
                     <ul class="nav-ul-mb" id="wrapper-menu-navigation">
                         <li class="nav-mb-item">
-                            <a href="#dropdown-menu-home" class="collapsed mb-menu-link" data-bs-toggle="collapse" aria-expanded="true"
-                               aria-controls="dropdown-menu-home">
+                            <a asp-controller="Home" asp-action="Index" class="collapsed mb-menu-link" aria-expanded="true">
                                 <span>Home</span>
-                                <span class="btn-open-sub"></span>
                             </a>
-                            <div id="dropdown-menu-home" class="collapse">
-                                <ul class="sub-nav-menu">
-                                    <li><a href="index-2.html" class="sub-nav-link">Home 1 <span class="demo-label">Hot</span></a></li>
-                                    <li><a href="home-2.html" class="sub-nav-link">Home 2 <span class="demo-label">Hot</span></a></li>
-                                    <li><a href="home-3.html" class="sub-nav-link">Home 3</a></li>
-                                    <li><a href="home-4.html" class="sub-nav-link">Home 4</a></li>
-                                    <li><a href="home-5.html" class="sub-nav-link">Home 5 <span class="demo-label type-new">New</span></a></li>
-                                    <li><a href="home-6.html" class="sub-nav-link">Home 6 <span class="demo-label type-new">New</span></a></li>
-                                </ul>
-                            </div>
-
                         </li>
                         <li class="nav-mb-item">
                             <a href="#dropdown-menu-shop" class="collapsed mb-menu-link" data-bs-toggle="collapse" aria-expanded="true"
                                aria-controls="dropdown-menu-shop">
-                                <span>Shop</span>
+                                <span>Shop By Category</span>
                                 <span class="btn-open-sub"></span>
                             </a>
                             <div id="dropdown-menu-shop" class="collapse">
                                 <ul class="sub-nav-menu">
-                                    <li>
-                                        <a href="#sub-shop-layout" class="sub-nav-link collapsed" data-bs-toggle="collapse" aria-expanded="true"
-                                           aria-controls="sub-shop-layout">
-                                            <span>Shop Layout</span>
-                                            <span class="btn-open-sub"></span>
-                                        </a>
-                                        <div id="sub-shop-layout" class="collapse">
-                                            <ul class="sub-nav-menu sub-menu-level-2">
-                                                <li><a href="shop-default.html" class="sub-nav-link">Default</a></li>
-                                                <li><a href="shop-left-sidebar.html" class="sub-nav-link">Filter Left Sidebar</a></li>
-                                                <li><a href="shop-right-sidebar.html" class="sub-nav-link">Filter Right Sidebar</a></li>
-                                                <li><a href="shop-filter-top.html" class="sub-nav-link">Filter Top</a></li>
-                                                <li><a href="shop-default.html" class="sub-nav-link">Filter Drawer</a></li>
-                                                <li><a href="shop-collection-list.html" class="sub-nav-link">Collection List</a></li>
-                                                <li><a href="shop-sub-collection.html" class="sub-nav-link">Sub Collection</a></li>
-                                                <li><a href="shop-grid-2-columns.html" class="sub-nav-link">Grid 2 Collumns</a></li>
-                                                <li><a href="shop-grid-3-collumns.html" class="sub-nav-link">Grid 3 Collumns </a></li>
-                                                <li><a href="shop-grid-4-collumns.html" class="sub-nav-link">Grid 4 Collumns</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#sub-shop-list" class="sub-nav-link collapsed" data-bs-toggle="collapse" aria-expanded="true"
-                                           aria-controls="sub-shop-list">
-                                            <span>Shop List</span>
-                                            <span class="btn-open-sub"></span>
-                                        </a>
-                                        <div id="sub-shop-list" class="collapse">
-                                            <ul class="sub-nav-menu sub-menu-level-2">
-                                                <li><a href="shop-default.html" class="sub-nav-link">Pagination Links</a></li>
-                                                <li><a href="shop-load-more-button.html" class="sub-nav-link">Load More Button</a></li>
-                                                <li><a href="shop-infinity-scroll.html" class="sub-nav-link">Infinity Scroll</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
+                                    @foreach (var category in navCategories)
+                                    {
+                                        <li><a asp-controller="Shop" asp-action="Index" asp-route-categoryIds="@category.CategoryId" class="sub-nav-link">@category.CategoryName</a></li>
+                                    }
+                                    <li><a asp-controller="Shop" asp-action="Index" class="sub-nav-link">View All Jewelry</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -620,160 +485,58 @@
                             </a>
                             <div id="dropdown-menu-product" class="collapse">
                                 <ul class="sub-nav-menu">
-                                    <li>
-                                        <a href="#sub-product-layout" class="sub-nav-link collapsed" data-bs-toggle="collapse" aria-expanded="true"
-                                           aria-controls="sub-product-layout">
-                                            <span>Product Layouts</span>
-                                            <span class="btn-open-sub"></span>
-                                        </a>
-                                        <div id="sub-product-layout" class="collapse">
-                                            <ul class="sub-nav-menu sub-menu-level-2">
-                                                <li><a href="product-default.html" class="sub-nav-link">Product Default</a></li>
-                                                <li><a href="product-style-02.html" class="sub-nav-link">Product Style 2</a></li>
-                                                <li><a href="product-style-03.html" class="sub-nav-link">Product Style 3</a></li>
-                                                <li>
-                                                    <a href="product-style-04.html" class="sub-nav-link">
-                                                        Product Style 4 <span class="demo-label">Hot</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="product-style-05.html" class="sub-nav-link">
-                                                        Product Style 5 <span class="demo-label type-trend">Trending</span>
-                                                    </a>
-                                                </li>
-                                                <li><a href="product-style-04-no-size.html" class="sub-nav-link">Product No Size</a></li>
-                                                <li>
-                                                    <a href="product-notify-avaiable.html" class="sub-nav-link">
-                                                        Product Notify Avaiable <span class="demo-label type-new">New</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#sub-product-desc" class="sub-nav-link collapsed" data-bs-toggle="collapse" aria-expanded="true"
-                                           aria-controls="sub-product-desc">
-                                            <span>Product Description</span>
-                                            <span class="btn-open-sub"></span>
-                                        </a>
-                                        <div id="sub-product-desc" class="collapse">
-                                            <ul class="sub-nav-menu sub-menu-level-2">
-                                                <li>
-                                                    <a href="product-description-side-dropdown.html" class="sub-nav-link">
-                                                        Description Side
-                                                        Dropdown
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="product-description-full-accordion.html" class="sub-nav-link">
-                                                        Description Full
-                                                        Accordions
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="product-description-side-drawer.html" class="sub-nav-link">Description Side Drawer</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#sub-product-detail" class="sub-nav-link collapsed" data-bs-toggle="collapse" aria-expanded="true"
-                                           aria-controls="sub-product-detail">
-                                            <span>Product Details</span>
-                                            <span class="btn-open-sub"></span>
-                                        </a>
-                                        <div id="sub-product-detail" class="collapse">
-                                            <ul class="sub-nav-menu sub-menu-level-2">
-                                                <li><a href="product-inner-zoom.html" class="sub-nav-link">Product Inner Zoom</a></li>
-                                                <li><a href="product-inner-circle-zoom.html" class="sub-nav-link">Product Inner Circle Zoom</a></li>
-                                                <li><a href="product-no-zoom.html" class="sub-nav-link">Product No Zoom</a></li>
-                                                <li><a href="product-video.html" class="sub-nav-link">Product Video</a></li>
-                                                <li><a href="product-3d.html" class="sub-nav-link">Product 3D/AR</a></li>
-                                                <li>
-                                                    <a href="product-group.html" class="sub-nav-link">
-                                                        Product Group <span class="demo-label type-new">New</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="product-affiliate.html" class="sub-nav-link">
-                                                        Product Affiliate <span class="demo-label type-new">New</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#sub-product-feature" class="sub-nav-link collapsed" data-bs-toggle="collapse" aria-expanded="true"
-                                           aria-controls="sub-product-feature">
-                                            <span>Product Features</span>
-                                            <span class="btn-open-sub"></span>
-                                        </a>
-                                        <div id="sub-product-feature" class="collapse">
-                                            <ul class="sub-nav-menu sub-menu-level-2">
-                                                <li><a href="product-pickup-available.html" class="sub-nav-link">Pickup Available</a></li>
-                                                <li><a href="product-swatch-image.html" class="sub-nav-link">Swatch Image</a></li>
-                                                <li>
-                                                    <a href="product-together.html" class="sub-nav-link">
-                                                        Buy Together <span class="demo-label type-new">New</span>
-                                                    </a>
-                                                </li>
-                                                <li><a href="product-style-04.html" class="sub-nav-link">Size Guide</a></li>
-                                                <li><a href="product-engrave-option.html" class="sub-nav-link">Engrave Option</a></li>
-                                                <li><a href="product-buyX-getY.html" class="sub-nav-link">Buy X Get Y</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-
+                                    @foreach (var product in navFeaturedProducts)
+                                    {
+                                        <li><a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@product.StyleCode" class="sub-nav-link">@product.ItemName</a></li>
+                                    }
                                 </ul>
                             </div>
                         </li>
                         <li class="nav-mb-item">
-                            <a href="#dropdown-menu-pages" class="collapsed mb-menu-link" data-bs-toggle="collapse" aria-expanded="true"
-                               aria-controls="dropdown-menu-pages">
-                                <span>Pages</span>
+                            <a href="#dropdown-menu-arrival" class="collapsed mb-menu-link" data-bs-toggle="collapse" aria-expanded="true"
+                               aria-controls="dropdown-menu-arrival">
+                                <span>New Arrivals</span>
                                 <span class="btn-open-sub"></span>
                             </a>
-                            <div id="dropdown-menu-pages" class="collapse">
+                            <div id="dropdown-menu-arrival" class="collapse">
                                 <ul class="sub-nav-menu">
-                                    <li><a href="about-us.html" class="sub-nav-link">About Us</a></li>
-                                    <li><a href="contact-us.html" class="sub-nav-link">Contact Us</a></li>
-                                    <li><a href="our-store.html" class="sub-nav-link">Store Location</a></li>
-                                    <li><a href="account-page.html" class="sub-nav-link">My Account</a></li>
-                                    <li><a href="faq.html" class="sub-nav-link">FAQ</a></li>
-                                    <li><a href="shop-cart.html" class="sub-nav-link">Shop Cart </a></li>
-                                    <li><a href="before-you-leave.html" class="sub-nav-link">Before You Leave</a></li>
-                                    <li><a href="product-popup.html" class="sub-nav-link">Products Popup</a></li>
-                                    <li><a href="newsletter-popup.html" class="sub-nav-link">Newsletter Popup</a></li>
-                                    <li><a href="404.html" class="sub-nav-link">404</a></li>
-                                    <li>
-                                        <a href="coming-soon.html" class="sub-nav-link">Coming Soon!</a>
-                                    </li>
+                                    @foreach (var product in navNewArrivals)
+                                    {
+                                        <li><a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@product.StyleCode" class="sub-nav-link">@product.ItemName</a></li>
+                                    }
                                 </ul>
                             </div>
-
                         </li>
                         <li class="nav-mb-item">
-                            <a href="#dropdown-menu-blog" class="collapsed mb-menu-link" data-bs-toggle="collapse" aria-expanded="true"
-                               aria-controls="dropdown-menu-blog">
-                                <span>Blog</span>
+                            <a href="#dropdown-menu-brand" class="collapsed mb-menu-link" data-bs-toggle="collapse" aria-expanded="true"
+                               aria-controls="dropdown-menu-brand">
+                                <span>Brands</span>
                                 <span class="btn-open-sub"></span>
                             </a>
-                            <div id="dropdown-menu-blog" class="collapse">
+                            <div id="dropdown-menu-brand" class="collapse">
                                 <ul class="sub-nav-menu">
-                                    <li><a href="blog-list-style-1.html" class="sub-nav-link">Blog List Style 1</a></li>
-                                    <li><a href="blog-list-style-2.html" class="sub-nav-link">Blog List Style 2</a></li>
-                                    <li><a href="blog-single.html" class="sub-nav-link">Single Post</a></li>
+                                    @foreach (var brand in navBrands)
+                                    {
+                                        <li><a asp-controller="Shop" asp-action="Index" asp-route-brandIds="@brand.BrandId" class="sub-nav-link">@brand.BrandType</a></li>
+                                    }
                                 </ul>
                             </div>
                         </li>
                         <li class="nav-mb-item">
-                            <a href="https://themeforest.net/user/themesflat" class="mb-menu-link">Buy Theme</a>
+                            <a asp-controller="Home" asp-action="AboutUs" class="collapsed mb-menu-link" aria-expanded="true">
+                                <span>About Us</span>
+                            </a>
+                        </li>
+                        <li class="nav-mb-item">
+                            <a asp-controller="Home" asp-action="ContactUs" class="collapsed mb-menu-link" aria-expanded="true">
+                                <span>Contact Us</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
                 <div class="mb-other-content">
                     <div class="group-icon">
-                        <a href="wishlist.html" class="site-nav-icon">
+                        <a asp-controller="Account" asp-action="Wishlist" class="site-nav-icon">
                             <i class="icon icon-hearth"></i>
                             Wishlist
                         </a>
@@ -783,9 +546,9 @@
                                 <form method="post" action="/Account/Logout" id="logoutFormMobile">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="returnUrl" value="/" />
-                                    <button type="submit" class="site-nav-icon" style="background:none; border:none; padding:0; display:flex; align-items:center;">
+                                    <button type="submit" class="site-nav-icon">
                                         <i class="icon icon-user"></i>
-                                        <span style="margin-left: 10px;">Logout</span>
+                                        Logout
                                     </button>
                                 </form>
                             }
@@ -799,7 +562,7 @@
                         </p>
                     </div>
                     <div class="mb-notice">
-                        <a href="contact-us.html" class="text-need">Need Help?</a>
+                        <a asp-controller="Home" asp-action="ContactUs" class="text-need">Need Help?</a>
                     </div>
                     <ul class="mb-info">
                         <li>
@@ -817,7 +580,7 @@
                         </li>
                         <li>
                             Phone:
-                            <a href="tel:6483441233" class="fw-medium">(64) 8344 1233</a>
+                            <a href="tel:6483441233" class="fw-medium">+92-9876543210</a>
                         </li>
                     </ul>
                 </div>
@@ -1083,7 +846,7 @@
                     </form>
                     <div class="tf-grid-layout sm-col-2">
                         @{
-                            var searchCategories = await LayoutService.GetCategoriesAsync();
+                            var searchCategories = await LayoutService.GetCategoriesAsync(5);
                             var featuredProducts = await LayoutService.GetFeaturedProductsAsync(2);
                         }
                         
@@ -1151,153 +914,14 @@
     <!-- Quick View -->
     <div class="modal modalCentered fade modal-quick-view" id="quickView">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-                <div class="tf-product-media-wrap tf-btn-swiper-item">
-                    <div dir="ltr" class="swiper tf-single-slide">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide" data-color="gold">
-                                <div class="item">
-                                    <img class="lazyload" data-src="/app/images/products/detail/prd-detail-1.jpg"
-                                         src="/app/images/products/detail/prd-detail-1.jpg" alt="">
-                                </div>
-                            </div>
-                            <div class="swiper-slide" data-color="rose">
-                                <div class="item">
-                                    <img class="lazyload" data-src="/app/images/products/detail/prd-detail-4.jpg"
-                                         src="/app/images/products/detail/prd-detail-4.jpg" alt="">
-                                </div>
-                            </div>
-                            <div class="swiper-slide" data-color="titanium">
-                                <div class="item">
-                                    <img class="lazyload" data-src="/app/images/products/detail/prd-detail-7.jpg"
-                                         src="/app/images/products/detail/prd-detail-7.jpg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="nav-swiper-group style-3">
-                            <div class=" nav-thumbs thumbs-prev single-slide-prev">
-                                <span class="fw-normal">PRE</span>
-                            </div>
-                            <span class="text-main">/</span>
-                            <div class=" nav-thumbs thumbs-next single-slide-next">
-                                <span class="fw-normal">NEXT</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tf-product-info-wrap">
-                    <div class="tf-product-info-inner tf-product-info-list">
-                        <div class="tf-product-info-heading">
-                            <a href="product-default.html" class="product-info-name h4 fw-normal text-uppercase link">
-                                engagement ring in 18k yellow gold
-                            </a>
-                            <div class="product-info-price">
-                                <div class="price-wrap">
-                                    <span class="price-new price-on-sale h4">$2,499.00</span>
-                                    <span class="price-old compare-at-price fw-normal h6">$2,899.00</span>
-                                    <p class="badges-on-sale">
-                                        <i class="icon-tag"></i>
-                                        <span class="number-sale" data-person-sale="30">
-                                            30% OFF
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="product-infor-sub text-main-4">
-                                Lorem ipsum dolor sit amet nec etiamconsectetur. Egestas cursus a maecenas massa facilisi adipiscing dolor iaculis. In
-                                mattis nec morbi.
-                            </p>
-                        </div>
-                        <div class="tf-product-info-variant">
-                            <div class="variant-picker-item variant-color">
-                                <div class="variant-picker-label h6 fw-normal">
-                                    Material:
-                                    <span class="variant-picker-label-value value-currentColor">gold</span>
-                                </div>
-                                <div class="variant-picker-values">
-                                    <div class="hover-tooltip color-btn style-image-square" data-color="gold" data-price="2,499.00">
-                                        <span class="check-color">
-                                            <img src="/app/images/products/material/yellow.jpg" alt="">
-                                        </span>
-                                        <span class="tooltip">Gold</span>
-                                    </div>
-                                    <div class="hover-tooltip color-btn style-image-square" data-color="rose" data-price="2,499.00">
-                                        <span class="check-color">
-                                            <img src="/app/images/products/material/pink.jpg" alt="">
-                                        </span>
-                                        <span class="tooltip">Rose</span>
-                                    </div>
-                                    <div class="hover-tooltip color-btn style-image-square" data-color="titanium" data-price="2,499.00">
-                                        <span class="check-color">
-                                            <img src="/app/images/products/material/gray.jpg" alt="">
-                                        </span>
-                                        <span class="tooltip">Titanium</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="variant-picker-item variant-size">
-                                <div class="variant-picker-label h6 fw-normal">
-                                    Size:
-                                    <span class="variant-picker-label-value value-currentSize">48</span>
-                                </div>
-                                <div class="variant-picker-values">
-                                    <div class="btn-group">
-                                        <span class="size-btn active" data-size="48" data-price="2,499.00">48</span>
-                                        <span class="size-btn" data-size="50" data-price="999.00">50</span>
-                                        <span class="size-btn" data-size="52" data-price="1,999.00">52</span>
-                                        <span class="size-btn" data-size="54" data-price="2,199.00">54</span>
-                                    </div>
-                                    <a href="#sizeGuide" data-bs-toggle="offcanvas" class="tf-btn-line style-line-2 fw-normal">
-                                        Size Guide
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="variant-picker-item">
-                                <div class="variant-picker-label h6 fw-normal">Quantity</div>
-                                <div class="variant-picker-values">
-                                    <div class="wg-quantity">
-                                        <button class="btn-quantity btn-decrease"><i class="icon-minus"></i></button>
-                                        <input class="quantity-product" type="text" name="number" value="1">
-                                        <button class="btn-quantity btn-increase"><i class="icon-plus"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tf-product-total-quantity">
-                            <div class="group-btn">
-                                    <a href="javascript:void(0);" class="tf-btn btn-fill-2 animate-btn text-uppercase fw-medium">
-                                    <span class="text-line-clamp-1">
-                                        add to bag
-                                    </span>
-                                    <i class="icon-minus d-none d-sm-block"></i>
-                                    <span class="price-add d-none d-sm-block">$2,499.00</span>
-                                </a>
-                                <div class="group-btn-action">
-                                    <a href="javascript:void(0);" class="tf-btn-icon hover-tooltip btn-add-wishlist">
-                                        <span class="icon icon-heart-2"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <a href="javascript:void(0);" class="tf-btn w-100 text-uppercase fw-medium">
-                                buy it now
-                            </a>
-                        </div>
-                        <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="styleCode" class="tf-btn-line">
-                            <span class="text-body">View full details</span>
-                            <i class="icon icon-arrow-top-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <!-- Content will be loaded dynamically -->
         </div>
     </div>
-    <!-- /Quick Add -->
+    <!-- /Quick View -->
     <!-- Toolbar -->
     <div class="tf-toolbar-bottom">
         <div class="toolbar-item">
-            <a href="shop-default.html">
+            <a asp-controller="Shop" asp-action="Index">
                 <span class="toolbar-icon">
                     <i class="icon icon-menu-home"></i>
                 </span>
@@ -1313,7 +937,7 @@
             </a>
         </div>
         <div class="toolbar-item">
-            <a href="account-page.html">
+            <a asp-controller="Account" asp-action="Login">
                 <span class="toolbar-icon">
                     <i class="icon icon-user-2"></i>
                 </span>
@@ -1321,19 +945,19 @@
             </a>
         </div>
         <div class="toolbar-item">
-            <a href="wishlist.html">
+            <a asp-controller="Account" asp-action="Wishlist">
                 <span class="toolbar-icon">
                     <i class="icon icon-hearth-3"></i>
-                    <span class="toolbar-count">0</span>
+                    <span class="toolbar-count wishlist-count">@wishCount</span>
                 </span>
                 <span class="toolbar-label">Wishlist</span>
             </a>
         </div>
         <div class="toolbar-item">
-            <a href="shop-cart.html">
+            <a asp-controller="Cart" asp-action="Index">
                 <span class="toolbar-icon">
                     <i class="icon icon-cart-2"></i>
-                    <span class="toolbar-count">0</span>
+                    <span class="toolbar-count cart-count">@cartCount</span>
                 </span>
                 <span class="toolbar-label">Cart</span>
             </a>
@@ -1356,6 +980,7 @@
     <script src="/app/js/wow.min.js"></script>
     <script src="/app/js/main.js"></script>
     <script src="/app/js/cart.js"></script>
+    <script src="/app/js/site.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Function to handle form submission via AJAX
@@ -1440,111 +1065,86 @@
                 const registerModal = new bootstrap.Modal(document.getElementById('register'));
                 registerModal.show();
             }
-            // --- Quick View Logic ---
-            $(document).on('click', '.quickview', function() {
-                const styleCode = $(this).data('stylecode');
-                if (!styleCode) return;
-                const $modal = $('#quickView');
+            // Quick View Logic
+            $(document).on('click', '.quickview', function(e) {
+                e.preventDefault();
+                var styleCode = $(this).data('stylecode');
+                var $modal = $('#quickView');
                 
-                // Clear previous data or show loading state
-                $modal.find('.product-info-name').text('Loading...');
-                $modal.find('.price-new').text('');
-                $modal.find('.price-old').text('').hide();
-                $modal.find('.badges-on-sale').hide();
-                $modal.find('.product-infor-sub').text('');
+                // Show loading state
+                $modal.find('.modal-dialog').html('<div class="modal-content"><div class="modal-body text-center p-5"><div class="spinner-border text-primary" role="status"></div><p class="mt-3">Loading product details...</p></div></div>');
+                $modal.modal('show');
+
                 $.ajax({
-                    url: '/Shop/GetQuickDetails/' + styleCode,
+                    url: '/Shop/QuickView/' + styleCode,
                     type: 'GET',
-                    success: function(data) {
-                        // Populate Basic Info
-                        $modal.find('.product-info-name').text(data.itemName).attr('href', '/Shop/ProductDetail/' + data.styleCode);
-                        $modal.find('.price-new').text(data.sellingPriceFormatted);
-                        $modal.find('.price-add').text(data.sellingPriceFormatted);
+                    success: function(html) {
+                        $modal.find('.modal-dialog').html(html);
                         
-                        if (data.isOnSale) {
-                            $modal.find('.price-old').text(data.mrpFormatted).show();
-                            $modal.find('.number-sale').text(Math.round(data.discountPercentage) + '% OFF');
-                            $modal.find('.badges-on-sale').show();
-                        } else {
-                            $modal.find('.price-old').hide();
-                            $modal.find('.badges-on-sale').hide();
-                        }
-                        $modal.find('.product-infor-sub').text(data.description || 'No description available.');
-                        $modal.find('.value-currentColor').text(data.goldKarat || 'N/A');
-                        $modal.find('.value-currentSize').text(data.productType || 'N/A');
-                        
-                        // Hide generic color/size pickers since we don't have multiple variants per style code yet
-                        $modal.find('.variant-color .variant-picker-values').hide();
-                        $modal.find('.variant-size .variant-picker-values .btn-group').hide();
-                        $modal.find('.variant-size .variant-picker-values .tf-btn-line').hide();
-                        // Update Modal Buttons
-                        const $atbBtn = $modal.find('.btn-add-to-cart');
-                        $atbBtn.attr('data-stylecode', data.styleCode);
-                        
-                        if (data.quantity <= 0) {
-                            $atbBtn.addClass('disabled').text('OUT OF STOCK').find('i, .price-add').hide();
-                        } else {
-                            $atbBtn.removeClass('disabled').html('<span class="text-line-clamp-1">add to bag</span><i class="icon-minus d-none d-sm-block"></i><span class="price-add d-none d-sm-block">' + data.sellingPriceFormatted + '</span>');
-                        }
-                        $modal.find('.view-full-details').attr('href', '/Shop/ProductDetail/' + data.styleCode);
-                        $modal.find('.btn-buy-now').data('stylecode', data.styleCode);
-
-                        // Update Wishlist Button
-                        var $wishlistBtn = $modal.find('.btn-add-wishlist');
-                        $wishlistBtn.attr('data-stylecode', data.styleCode);
-                        if (data.isWishlisted) {
-                            $wishlistBtn.addClass('active').attr('title', 'Remove from Wishlist');
-                            $wishlistBtn.find('.icon').removeClass('icon-heart-2').addClass('icon-trash');
-                            $wishlistBtn.find('.tooltip').text('Remove from Wishlist');
-                        } else {
-                            $wishlistBtn.removeClass('active').attr('title', 'Add to Wishlist');
-                            $wishlistBtn.find('.icon').removeClass('icon-trash').addClass('icon-heart-2');
-                            $wishlistBtn.find('.tooltip').text('Add to Wishlist');
-                        }
-
-                        // Update Images / Swiper
-                        const $wrapper = $modal.find('.swiper-wrapper');
-                        $wrapper.empty();
-                        if (data.images && data.images.length > 0) {
-                            data.images.forEach(img => {
-                                $wrapper.append(`
-                                    <div class="swiper-slide">
-                                        <div class="item">
-                                            <img src="${img}" alt="${data.itemName}">
-                                        </div>
-                                    </div>
-                                `);
+                        // Initialize Swiper for the modal images
+                        if (typeof Swiper !== 'undefined') {
+                            new Swiper($modal.find('.tf-product-media-main')[0], {
+                                slidesPerView: 1,
+                                spaceBetween: 10,
+                                navigation: {
+                                    nextEl: '.swiper-button-next',
+                                    prevEl: '.swiper-button-prev',
+                                },
                             });
-                        } else {
-                            $wrapper.append(`
-                                <div class="swiper-slide">
-                                    <div class="item">
-                                        <img src="/app/images/products/product-default.jpg" alt="${data.itemName}">
-                                    </div>
-                                </div>
-                            `);
                         }
-                        // Re-initialize or update Swiper
-                        if ($modal.find('.tf-single-slide')[0].swiper) {
-                            $modal.find('.tf-single-slide')[0].swiper.destroy();
-                        }
-                        new Swiper($modal.find('.tf-single-slide')[0], {
-                            loop: false,
-                            autoplay: false,
-                            spaceBetween: 0,
-                            speed: 1000,
-                            navigation: {
-                                nextEl: ".single-slide-next",
-                                prevEl: ".single-slide-prev",
-                            },
-                        });
+                        
+                        // Set initial price on Add to Bag button
+                        updateQuickViewPrice();
                     },
                     error: function() {
-                        alert('Error loading product details.');
-                        $modal.modal('hide');
+                        $modal.find('.modal-dialog').html('<div class="modal-content"><div class="modal-body text-center p-5 text-danger"><p>Failed to load product details.</p><button type="button" class="btn btn-secondary mt-3" data-bs-dismiss="modal">Close</button></div></div>');
                     }
                 });
             });
+
+            // Quick View Quantity & Price Logic
+            $(document).on('click', '#quickView .btn-increase', function() {
+                var $input = $(this).siblings('.quantity-product');
+                var val = parseInt($input.val()) || 1;
+                $input.val(val + 1);
+                updateQuickViewPrice();
+            });
+
+            $(document).on('click', '#quickView .btn-decrease', function() {
+                var $input = $(this).siblings('.quantity-product');
+                var val = parseInt($input.val()) || 1;
+                if (val > 1) {
+                    $input.val(val - 1);
+                    updateQuickViewPrice();
+                }
+            });
+
+            $(document).on('change', '#quickView .quantity-product', function() {
+                updateQuickViewPrice();
+            });
+
+            function updateQuickViewPrice() {
+                var $modal = $('#quickView');
+                var $addBtn = $modal.find('.btn-add-to-cart');
+                if (!$addBtn.length) return;
+
+                var unitPrice = parseFloat($addBtn.data('unit-price')) || 0;
+                var qty = parseInt($modal.find('.quantity-product').val()) || 1;
+                var total = unitPrice * qty;
+                
+                // Detect currency symbol from the main price display in modal
+                var priceText = $modal.find('.price-new').first().text() || "₹0";
+                var symbol = priceText.match(/[^\d,.\s]/g); 
+                symbol = (symbol && symbol.length > 0) ? symbol[0] : '₹';
+
+                var formatted = total.toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                $modal.find('.price-add').text(symbol + formatted);
+            }
+
             $(document).on('click', '.btn-buy-now', function() {
                 const styleCode = $(this).data('stylecode');
                 const quantity = $('#quickView .quantity-product').val() || 1;

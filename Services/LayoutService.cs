@@ -17,12 +17,35 @@ namespace Yash_Gems___Jewelleries.Services
             _context = context;
         }
 
-        // Fetch all active categories
-        public async Task<List<Category>> GetCategoriesAsync()
+        // Fetch all active categories with limit
+        public async Task<List<Category>> GetCategoriesAsync(int count)
         {
             return await _context.Categories
                 .Where(c => c.IsActive)
                 .OrderBy(c => c.CategoryName)
+                .Take(count)
+                .ToListAsync();
+        }
+
+        // Fetch new arrivals with limit
+        public async Task<List<Item>> GetNewArrivalsAsync(int count)
+        {
+            return await _context.Items
+                .Include(i => i.Category)
+                .Include(i => i.Brand)
+                .Where(i => i.IsActive && i.Quantity > 0)
+                .OrderByDescending(i => i.CreatedDate)
+                .Take(count)
+                .ToListAsync();
+        }
+
+        // Fetch brands with limit
+        public async Task<List<Brand>> GetBrandsAsync(int count)
+        {
+            return await _context.Brands
+                .Where(b => b.IsActive)
+                .OrderBy(b => b.BrandType)
+                .Take(count)
                 .ToListAsync();
         }
 
