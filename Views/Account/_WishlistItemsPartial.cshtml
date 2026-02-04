@@ -2,17 +2,19 @@
 
 @if (!Model.Any())
 {
-   <div class="col-12">
-        <div class="d-flex justify-content-center">
-            <div class="my-acount-content account-order empty">
-                <div class="ic-img">
-                    <img src="/app/images/section/empty-cart.svg" alt="Empty Cart">
+    <div class="wd-full tempo text-center">
+        <div class="col-12">
+            <div class="d-flex justify-content-center">
+                <div class="my-acount-content account-order empty">
+                    <div class="ic-img">
+                        <img src="/app/images/section/empty-cart.svg" alt="Empty Cart">
+                    </div>
+                    <p class="title text-lg-2">Your wishlist is empty</p>
+                    <p class="sub-title">Browse our collection and find something you love.</p>
+                    <a asp-action="Index" asp-controller="Shop" class="tf-btn fw-medium btn-out-line">
+                        SHOPPING
+                    </a>
                 </div>
-                <p class="title text-lg-2">Your wishlist is empty</p>
-                <p class="sub-title">Browse our collection and find something you love.</p>
-                <a asp-action="Index" asp-controller="Shop" class="tf-btn fw-medium btn-out-line">
-                    SHOPPING
-                </a>
             </div>
         </div>
     </div>
