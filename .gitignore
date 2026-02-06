@@ -70,3 +70,5 @@ logs/
 
 # Publish output
 publish/
+
+wwwroot/uploads/
