@@ -1,15 +1,15 @@
-@model Yash_Gems___Jewelleries.Models.ViewModels.CartViewModel
+@model Yash_Gems___Jewelleries.ViewModels.CartViewModel
 
 @foreach (var item in Model.Items)
 {
     <tr class="file-delete order_item each-prd" data-stylecode="@item.StyleCode">
         <td>
             <div class="order_product">
-                <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="image">
+                <a asp-controller="Item" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="image">
                     <img src="@(!string.IsNullOrEmpty(item.ProductImage) ? item.ProductImage : "/app/images/products/product-default.jpg")" alt="@item.ProductName">
                 </a>
                 <div class="infor">
-                    <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="prd-name h6 fw-normal link">
+                    <a asp-controller="Item" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="prd-name h6 fw-normal link">
                         @item.ProductName
                     </a>
                     <p class="prd-type">@item.ProductType / @item.StyleCode</p>

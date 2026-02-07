@@ -1,4 +1,4 @@
-@model Yash_Gems___Jewelleries.Models.ViewModels.CartViewModel
+@model Yash_Gems___Jewelleries.ViewModels.CartViewModel
 
 <div class="canvas-header">
     <h3 class="title fw-normal text-uppercase">shopping cart</h3>
@@ -36,7 +36,7 @@
                                     <img src="@(!string.IsNullOrEmpty(item.ProductImage) ? item.ProductImage : "/app/images/products/product-default.jpg")" alt="@item.ProductName">
                                 </div>
                                 <div class="tf-mini-cart-info">
-                                    <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="prd-name link">@item.ProductName</a>
+                                    <a asp-controller="Item" asp-action="ProductDetail" asp-route-id="@item.StyleCode" class="prd-name link">@item.ProductName</a>
                                     <p class="type-select text-main-4">@item.ProductType / @item.StyleCode</p>
                                     <div class="prd-quantity">
                                         <p class="text-caption">Qty: @item.Quantity</p>

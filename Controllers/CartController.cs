@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -14,12 +15,14 @@ namespace Yash_Gems___Jewelleries.Controllers
         private readonly ICartService _cartService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICompositeViewEngine _viewEngine;
+        private readonly Data.ApplicationDbContext _context;
 
-        public CartController(ICartService cartService, UserManager<ApplicationUser> userManager, ICompositeViewEngine viewEngine)
+        public CartController(ICartService cartService, UserManager<ApplicationUser> userManager, ICompositeViewEngine viewEngine, Data.ApplicationDbContext context)
         {
             _cartService = cartService;
             _userManager = userManager;
             _viewEngine = viewEngine;
+            _context = context;
         }
 
         private string? GetUserId()
@@ -61,6 +64,24 @@ namespace Yash_Gems___Jewelleries.Controllers
         public async Task<IActionResult> Index()
         {
             var cartViewModel = await _cartService.GetCartAsync(GetUserId());
+            
+            // Fetch recommended products
+            cartViewModel.RecommendedProducts = await _context.Items
+                .Where(i => i.IsActive && i.Quantity > 0)
+                .OrderBy(r => Guid.NewGuid())
+                .Take(8)
+                .ToListAsync();
+
+            // Fetch user wishlist for button states
+            var userId = GetUserId();
+            if (userId != null)
+            {
+                cartViewModel.WishlistStyleCodes = await _context.Wishlists
+                    .Where(w => w.UserId == userId)
+                    .Select(w => w.StyleCode)
+                    .ToListAsync();
+            }
+
             return View(cartViewModel);
         }
 
