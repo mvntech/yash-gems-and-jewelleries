@@ -13,88 +13,48 @@
           <div class="col-xl-12">
                <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center gap-1">
-                    <form asp-action="Index" method="get">
-                    
-                         <h4 class="card-title flex-grow-1">All Product List @(ViewBag.TotalItems != null ? $"({ViewBag.TotalItems})" : "")</h4>
-
-                         <a href="@Url.Action("Add", "Item", new { area = "Admin" })" class="btn btn-sm btn-primary">
-                              Add Product
-                         </a>
+                         <h4 class="card-title flex-grow-1">All Product List</h4>
 
                          <div class="dropdown">
                               <a href="#" class="dropdown-toggle btn btn-sm btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
-                                   Category
-                              </a>
-                              <!-- Category Dropdown -->
-                         </div>
-                         <div class="dropdown">
-                              <a href="#" class="dropdown-toggle btn btn-sm btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
-                                   Status
+                                   @(ViewBag.CategoryId != null 
+                                       ? ((IEnumerable<Yash_Gems___Jewelleries.Models.Masters.Category>)ViewBag.Categories)?.FirstOrDefault(c => c.CategoryId == ViewBag.CategoryId)?.CategoryName ?? "Categories" 
+                                       : "Categories")
                               </a>
                               <div class="dropdown-menu dropdown-menu-end">
-                                   <!-- item-->
-                                   <a href="#!" class="dropdown-item">All</a>
-                                   <!-- item-->
-                                   <a href="#!" class="dropdown-item">Active</a>
-                                   <!-- item-->
-                                   <a href="#!" class="dropdown-item">Inactive</a>
+                                  <a class="dropdown-item" href="@Url.Action("Index", "Item", new { area = "Admin", searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, isActive = ViewBag.IsActive })">All Categories</a>
+                                  @if (ViewBag.Categories != null)
+                                  {
+                                   foreach (var category in (IEnumerable<Yash_Gems___Jewelleries.Models.Masters.Category>)ViewBag.Categories)
+                                   {
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Item", new { area = "Admin", categoryId = category.CategoryId, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, isActive = ViewBag.IsActive })">@category.CategoryName</a>
+                                   }
+                                  }
                               </div>
                          </div>
-                    </form>
+
+                         <div class="dropdown">
+                              <a href="#" class="dropdown-toggle btn btn-sm btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
+                                   @(ViewBag.IsActive == true ? "Active" : ViewBag.IsActive == false ? "Inactive" : "Status")
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-end">
+                                  <a class="dropdown-item" href="@Url.Action("Index", "Item", new { area = "Admin", searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId })">All Status</a>
+                                   <a class="dropdown-item" href="@Url.Action("Index", "Item", new { area = "Admin", isActive = true, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId })">Active</a>
+                                   <a class="dropdown-item" href="@Url.Action("Index", "Item", new { area = "Admin", isActive = false, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId })">Inactive</a>
+                              </div>
+                         </div>
+
+                          <a href="@Url.Action("Add", "Item", new { area = "Admin" })" class="btn btn-sm btn-primary">
+                              Add Product
+                         </a>
                     </div>
-                     <!-- Filter Panel -->
-                     <div class="card-body border-bottom">
-                          <form asp-action="Index" method="get" class="row g-3">
-                               <div class="col-md-3">
-                                    <label class="form-label">Search</label>
-                                    <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" class="form-control" placeholder="Search by Style Code or Name">
-                               </div>
-                               <div class="col-md-2">
-                                    <label class="form-label">Brand</label>
-                                    <select name="brandId" class="form-select">
-                                         <option value="">All Brands</option>
-                                         @if (ViewBag.Brands != null)
-                                         {
-                                            foreach (var brand in (IEnumerable<Yash_Gems___Jewelleries.Models.Masters.Brand>)ViewBag.Brands)
-                                            {
-                                                <option value="@brand.BrandId" selected="@(ViewBag.BrandId != null && (int)ViewBag.BrandId == brand.BrandId)">@brand.BrandType</option>
-                                            }
-                                         }
-                                    </select>
-                               </div>
-                               <div class="col-md-2">
-                                    <label class="form-label">Category</label>
-                                    <select name="categoryId" class="form-select">
-                                         <option value="">All Categories</option>
-                                         @if (ViewBag.Categories != null)
-                                         {
-                                            foreach (var category in (IEnumerable<Yash_Gems___Jewelleries.Models.Masters.Category>)ViewBag.Categories)
-                                            {
-                                                <option value="@category.CategoryId" selected="@(ViewBag.CategoryId != null && (int)ViewBag.CategoryId == category.CategoryId)">@category.CategoryName</option>
-                                            }
-                                         }
-                                    </select>
-                               </div>
-                               <div class="col-md-2">
-                                    <label class="form-label">Status</label>
-                                    <select name="isActive" class="form-select">
-                                         <option value="">All Status</option>
-                                         <option value="true" selected="@((bool?)ViewBag.IsActive == true)">Active</option>
-                                         <option value="false" selected="@((bool?)ViewBag.IsActive == false)">Inactive</option>
-                                    </select>
-                               </div>
-                               <div class="col-md-3 d-flex align-items-end gap-2">
-                                    <button type="submit" class="btn btn-primary"><i class="bx bx-filter-alt me-1"></i>Filter</button>
-                                     <a href="@Url.Action("Index", "Item", new { area = "Admin" })" class="btn btn-secondary"><i class="bx bx-reset me-1"></i>Reset</a>
-                               </div>
-                          </form>
-                     </div>
+
                     <div>
                          <div class="table-responsive">
                               <table class="table align-middle mb-0 table-hover table-centered">
                                    <thead class="bg-light-subtle">
                                         <tr>
-                                             <th>Product Name & Type</th>
+                                             <th>Product Info</th>
                                              <th>Price</th>
                                              <th>Stock</th>
                                              <th>Category</th>
@@ -111,7 +71,7 @@
                                                        <td>
                                                             <div class="d-flex align-items-center gap-2">
                                                                  <div class="rounded bg-light avatar-md d-flex align-items-center justify-content-center">
-                                                                      <img src="@(string.IsNullOrEmpty(item.PrimaryImageUrl) ? "/uploads/default" : item.PrimaryImageUrl)" alt="@item.ItemName">
+                                                                      <img src="@(string.IsNullOrEmpty(item.PrimaryImageUrl) ? "/uploads/default.png" : item.PrimaryImageUrl)" alt="@item.ItemName" class="avatar-md">
                                                                  </div>
                                                                  <div>
                                                                       <a href="@Url.Action("Detail", "Item", new { area = "Admin", id = item.StyleCode })" class="text-dark fw-medium fs-15">@item.ItemName</a>
@@ -162,26 +122,63 @@
                          </div>
                          <!-- end table-responsive -->
                     </div>
-                    <div class="card-footer border-top">
-                         <nav aria-label="Page navigation example">
-                              <ul class="pagination justify-content-end mb-0">
-                                   <li class="page-item @(currentPage <= 1 ? "disabled" : "")">
-                                        <a class="page-link" href="@Url.Action("Index", "Item", new { area = "Admin", page = currentPage - 1, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId, isActive = ViewBag.IsActive })">Previous</a>
-                                   </li>
-                                   
-                                   @for (int i = 1; i <= totalPages; i++)
-                                   {
-                                        <li class="page-item @(i == currentPage ? "active" : "")">
-                                             <a class="page-link" href="@Url.Action("Index", "Item", new { area = "Admin", page = i, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId, isActive = ViewBag.IsActive })">@i</a>
-                                        </li>
-                                   }
+                    @if (totalPages > 1)
+                    {
+                        <div class="card-footer border-top">
+                             <nav aria-label="Page navigation example">
+                                  <ul class="pagination justify-content-end mb-0">
+                                       <li class="page-item @(currentPage <= 1 ? "disabled" : "")">
+                                            <a class="page-link" href="@Url.Action("Index", "Item", new { area = "Admin", page = currentPage - 1, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId, isActive = ViewBag.IsActive })">Previous</a>
+                                       </li>
+                                       
+                                       @{
+                                            int maxPagesToShow = 5;
+                                            int startPage = Math.Max(1, currentPage - (maxPagesToShow / 2));
+                                            int endPage = Math.Min(totalPages, startPage + maxPagesToShow - 1);
+                                            
+                                            if (endPage - startPage + 1 < maxPagesToShow)
+                                            {
+                                                startPage = Math.Max(1, endPage - maxPagesToShow + 1);
+                                            }
+                                            startPage = Math.Max(1, startPage);
+                                       }
 
-                                   <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
-                                        <a class="page-link" href="@Url.Action("Index", "Item", new { area = "Admin", page = currentPage + 1, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId, isActive = ViewBag.IsActive })">Next</a>
-                                   </li>
-                              </ul>
-                         </nav>
-                    </div>
+                                       @if (startPage > 1)
+                                       {
+                                            <li class="page-item">
+                                                 <a class="page-link" href="@Url.Action("Index", "Item", new { area = "Admin", page = 1, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId, isActive = ViewBag.IsActive })">1</a>
+                                            </li>
+                                            @if (startPage > 2)
+                                            {
+                                                 <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            }
+                                       }
+
+                                       @for (int i = startPage; i <= endPage; i++)
+                                       {
+                                            <li class="page-item @(i == currentPage ? "active" : "")">
+                                                 <a class="page-link" href="@Url.Action("Index", "Item", new { area = "Admin", page = i, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId, isActive = ViewBag.IsActive })">@i</a>
+                                            </li>
+                                       }
+
+                                       @if (endPage < totalPages)
+                                       {
+                                            @if (endPage < totalPages - 1)
+                                            {
+                                                 <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            }
+                                            <li class="page-item">
+                                                 <a class="page-link" href="@Url.Action("Index", "Item", new { area = "Admin", page = totalPages, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId, isActive = ViewBag.IsActive })">@totalPages</a>
+                                            </li>
+                                       }
+
+                                       <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
+                                            <a class="page-link" href="@Url.Action("Index", "Item", new { area = "Admin", page = currentPage + 1, searchTerm = ViewBag.SearchTerm, brandId = ViewBag.BrandId, categoryId = ViewBag.CategoryId, isActive = ViewBag.IsActive })">Next</a>
+                                       </li>
+                                  </ul>
+                             </nav>
+                        </div>
+                    }
                </div>
           </div>
 
