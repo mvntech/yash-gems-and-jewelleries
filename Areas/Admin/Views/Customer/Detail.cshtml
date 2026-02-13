@@ -1,4 +1,5 @@
 ﻿@model Yash_Gems___Jewelleries.ViewModels.CustomerDetailViewModel
+@using Yash_Gems___Jewelleries.Models.Enums
 @{
 	ViewData["Title"] = Model.Customer.FirstName.ToUpper() + " " + Model.Customer.LastName.ToUpper() + "'s Profile";
 }
@@ -10,7 +11,7 @@
             <div class="card overflow-hidden">
                 <div class="card-body">
                     <div class="bg-primary profile-bg rounded-top p-5 position-relative mx-n3 mt-n3">
-                        <img src="/admin/images/users/avatar-@(new Random().Next(1, 11)).jpg" alt="" class="avatar-lg border border-light border-3 rounded-circle position-absolute top-100 start-0 translate-middle ms-5">
+                        <img src="/uploads/dummy-user.jpg" alt="" class="avatar-lg border border-light border-3 rounded-circle position-absolute top-100 start-0 translate-middle ms-5">
                     </div>
                     <div class="mt-4 pt-3">
                         <h4 class="mb-1"> @Model.Customer.FirstName @Model.Customer.LastName <i class="bx bxs-badge-check text-success align-middle"></i></h4>
@@ -217,7 +218,7 @@
                                         <tr>
                                             <td><a href="javascript: void(0);" class="text-body fw-medium">#@order.OrderNumber</a> </td>
                                             <td> 
-                                                <span class="badge @(order.OrderStatus == "Delivered" ? "bg-success-subtle text-success" : (order.OrderStatus == "Cancelled" ? "bg-danger-subtle text-danger" : "bg-primary-subtle text-primary")) py-1 px-2">@order.OrderStatus</span> 
+                                                <span class="badge @(order.OrderStatus == OrderStatus.Delivered ? "bg-success-subtle text-success" : (order.OrderStatus == OrderStatus.Cancelled ? "bg-danger-subtle text-danger" : "bg-primary-subtle text-primary")) py-1 px-2">@order.OrderStatus</span> 
                                             </td>
                                             <td> @order.TotalAmount.ToString("C") </td>
                                             <td> @order.OrderDate.ToString("dd MMM, yyyy")</td>

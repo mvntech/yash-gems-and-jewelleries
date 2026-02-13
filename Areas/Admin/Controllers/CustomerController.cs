@@ -53,7 +53,7 @@ namespace Yash_Gems___Jewelleries.Areas.Admin.Controllers
             {
                 customerQuery = customerQuery.Where(c => 
                     (c.FirstName + " " + c.LastName).Contains(search) || 
-                    c.Email.Contains(search) ||
+                    (c.Email != null && c.Email.Contains(search)) ||
                     (c.PhoneNumber != null && c.PhoneNumber.Contains(search)));
             }
 
