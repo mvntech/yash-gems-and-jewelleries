@@ -12,8 +12,8 @@ using Yash_Gems___Jewelleries.Data;
 namespace Yash_Gems___Jewelleries.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260204094207_AddPersistedReviewStats")]
-    partial class AddPersistedReviewStats
+    [Migration("20260214080856_AddNotificationSystem")]
+    partial class AddNotificationSystem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,6 +234,10 @@ namespace Yash_Gems___Jewelleries.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<string>("ProfilePictureUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -317,6 +321,12 @@ namespace Yash_Gems___Jewelleries.Migrations
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
@@ -786,11 +796,36 @@ namespace Yash_Gems___Jewelleries.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Location")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Website")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("BrandId");
 
@@ -803,7 +838,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             BrandType = "Tanishq",
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "India's most trusted jewelry brand",
-                            IsActive = true
+                            IsActive = true,
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -811,7 +847,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             BrandType = "Malabar Gold",
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Heritage jewelry designs",
-                            IsActive = true
+                            IsActive = true,
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -819,7 +856,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             BrandType = "CaratLane",
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Modern jewelry designs",
-                            IsActive = true
+                            IsActive = true,
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -827,7 +865,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             BrandType = "Giva",
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Affordable silver jewelry",
-                            IsActive = true
+                            IsActive = true,
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -835,7 +874,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             BrandType = "Yash",
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Premium in-house brand",
-                            IsActive = true
+                            IsActive = true,
+                            RowVersion = new byte[0]
                         });
                 });
 
@@ -869,6 +909,12 @@ namespace Yash_Gems___Jewelleries.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
@@ -884,6 +930,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Finger rings for all occasions",
                             IsActive = true,
+                            RowVersion = new byte[0],
                             Stock = 0
                         },
                         new
@@ -893,6 +940,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Elegant necklaces and chains",
                             IsActive = true,
+                            RowVersion = new byte[0],
                             Stock = 0
                         },
                         new
@@ -902,6 +950,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Studs, jhumkas and drops",
                             IsActive = true,
+                            RowVersion = new byte[0],
                             Stock = 0
                         },
                         new
@@ -911,6 +960,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Traditional and modern bangles",
                             IsActive = true,
+                            RowVersion = new byte[0],
                             Stock = 0
                         },
                         new
@@ -920,6 +970,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Wrist jewelry for men and women",
                             IsActive = true,
+                            RowVersion = new byte[0],
                             Stock = 0
                         },
                         new
@@ -929,6 +980,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Traditional nose pins",
                             IsActive = true,
+                            RowVersion = new byte[0],
                             Stock = 0
                         },
                         new
@@ -938,6 +990,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Symbol of marriage",
                             IsActive = true,
+                            RowVersion = new byte[0],
                             Stock = 0
                         },
                         new
@@ -947,6 +1000,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Traditional toe rings",
                             IsActive = true,
+                            RowVersion = new byte[0],
                             Stock = 0
                         },
                         new
@@ -956,6 +1010,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Payal and anklets",
                             IsActive = true,
+                            RowVersion = new byte[0],
                             Stock = 0
                         });
                 });
@@ -990,6 +1045,12 @@ namespace Yash_Gems___Jewelleries.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("CertificateId");
 
                     b.ToTable("Certificates");
@@ -1001,7 +1062,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CertifyType = "BIS 916",
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
-                            IssuingAuthority = "Bureau of Indian Standards (HM)"
+                            IssuingAuthority = "Bureau of Indian Standards (HM)",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1009,7 +1071,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CertifyType = "IGI",
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
-                            IssuingAuthority = "International Gemological Institute"
+                            IssuingAuthority = "International Gemological Institute",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1017,7 +1080,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CertifyType = "GIA",
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsActive = true,
-                            IssuingAuthority = "Gemological Institute of America"
+                            IssuingAuthority = "Gemological Institute of America",
+                            RowVersion = new byte[0]
                         });
                 });
 
@@ -1059,6 +1123,12 @@ namespace Yash_Gems___Jewelleries.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("DiamondQualityId");
 
                     b.ToTable("DiamondQualities");
@@ -1072,7 +1142,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Cut = "Excellent",
                             IsActive = true,
-                            QualityGrade = "VVS"
+                            QualityGrade = "VVS",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1082,7 +1153,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Cut = "Very Good",
                             IsActive = true,
-                            QualityGrade = "VS"
+                            QualityGrade = "VS",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1092,7 +1164,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Cut = "Good",
                             IsActive = true,
-                            QualityGrade = "SI"
+                            QualityGrade = "SI",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1102,7 +1175,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Cut = "Good",
                             IsActive = true,
-                            QualityGrade = "AD"
+                            QualityGrade = "AD",
+                            RowVersion = new byte[0]
                         });
                 });
 
@@ -1135,6 +1209,12 @@ namespace Yash_Gems___Jewelleries.Migrations
                     b.Property<decimal>("PurityPercentage")
                         .HasColumnType("decimal(5,2)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("GoldTypeId");
 
                     b.ToTable("GoldKarats");
@@ -1147,7 +1227,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             Description = "Pure Gold (Coins/Bars)",
                             GoldCarat = "24K",
                             IsActive = true,
-                            PurityPercentage = 99.9m
+                            PurityPercentage = 99.9m,
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1156,7 +1237,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             Description = "Standard for Gold Jewelry",
                             GoldCarat = "22K",
                             IsActive = true,
-                            PurityPercentage = 91.6m
+                            PurityPercentage = 91.6m,
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1165,7 +1247,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             Description = "Standard for Diamond Jewelry",
                             GoldCarat = "18K",
                             IsActive = true,
-                            PurityPercentage = 75.0m
+                            PurityPercentage = 75.0m,
+                            RowVersion = new byte[0]
                         });
                 });
 
@@ -1199,6 +1282,12 @@ namespace Yash_Gems___Jewelleries.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.HasKey("ProductTypeId");
 
                     b.ToTable("ProductTypes");
@@ -1210,7 +1299,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Classic gold jewelry",
                             IsActive = true,
-                            ProductTypeName = "Gold Jewelry"
+                            ProductTypeName = "Gold Jewelry",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1218,7 +1308,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Sparkling diamond pieces",
                             IsActive = true,
-                            ProductTypeName = "Diamond Jewelry"
+                            ProductTypeName = "Diamond Jewelry",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1226,7 +1317,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Rare and pure platinum",
                             IsActive = true,
-                            ProductTypeName = "Platinum"
+                            ProductTypeName = "Platinum",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1234,7 +1326,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Sterling silver jewelry",
                             IsActive = true,
-                            ProductTypeName = "Silver"
+                            ProductTypeName = "Silver",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1242,7 +1335,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Traditional Kundan jewelry",
                             IsActive = true,
-                            ProductTypeName = "Kundan"
+                            ProductTypeName = "Kundan",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1250,7 +1344,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Uncut diamond jewelry",
                             IsActive = true,
-                            ProductTypeName = "Polki"
+                            ProductTypeName = "Polki",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1258,7 +1353,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "South Indian temple designs",
                             IsActive = true,
-                            ProductTypeName = "Temple Jewelry"
+                            ProductTypeName = "Temple Jewelry",
+                            RowVersion = new byte[0]
                         },
                         new
                         {
@@ -1266,7 +1362,8 @@ namespace Yash_Gems___Jewelleries.Migrations
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Precious stone jewelry",
                             IsActive = true,
-                            ProductTypeName = "Gemstone"
+                            ProductTypeName = "Gemstone",
+                            RowVersion = new byte[0]
                         });
                 });
 
@@ -1303,6 +1400,12 @@ namespace Yash_Gems___Jewelleries.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("StoneType")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -1321,6 +1424,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             IsActive = true,
                             Origin = "Burma",
                             QualityGrade = "Standard",
+                            RowVersion = new byte[0],
                             StoneType = "Ruby"
                         },
                         new
@@ -1331,6 +1435,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             IsActive = true,
                             Origin = "Colombia",
                             QualityGrade = "Standard",
+                            RowVersion = new byte[0],
                             StoneType = "Emerald"
                         },
                         new
@@ -1341,6 +1446,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             IsActive = true,
                             Origin = "Kashmir",
                             QualityGrade = "Standard",
+                            RowVersion = new byte[0],
                             StoneType = "Sapphire"
                         },
                         new
@@ -1351,6 +1457,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             IsActive = true,
                             Origin = "South Sea",
                             QualityGrade = "AAA",
+                            RowVersion = new byte[0],
                             StoneType = "Pearl"
                         },
                         new
@@ -1361,6 +1468,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             IsActive = true,
                             Origin = "Brazil",
                             QualityGrade = "A",
+                            RowVersion = new byte[0],
                             StoneType = "Topaz"
                         },
                         new
@@ -1371,6 +1479,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             IsActive = true,
                             Origin = "Brazil",
                             QualityGrade = "A",
+                            RowVersion = new byte[0],
                             StoneType = "Amethyst"
                         },
                         new
@@ -1381,6 +1490,7 @@ namespace Yash_Gems___Jewelleries.Migrations
                             IsActive = true,
                             Origin = "India",
                             QualityGrade = "Standard",
+                            RowVersion = new byte[0],
                             StoneType = "Meena"
                         });
                 });
@@ -1432,6 +1542,57 @@ namespace Yash_Gems___Jewelleries.Migrations
                         .IsUnique();
 
                     b.ToTable("NewsletterSubscriptions");
+                });
+
+            modelBuilder.Entity("Yash_Gems___Jewelleries.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ReferenceId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TargetRole")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("IsRead");
+
+                    b.HasIndex("TargetRole", "IsRead");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Yash_Gems___Jewelleries.Models.Order", b =>
@@ -1507,7 +1668,14 @@ namespace Yash_Gems___Jewelleries.Migrations
                     b.Property<DateTime?>("ExpectedDeliveryDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("GiftMessage")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsGift")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -1523,8 +1691,7 @@ namespace Yash_Gems___Jewelleries.Migrations
 
                     b.Property<string>("OrderStatus")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("PaymentDate")
                         .HasColumnType("datetime2");
@@ -1572,6 +1739,9 @@ namespace Yash_Gems___Jewelleries.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<DateTime>("StatusUpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal(18,2)");
 
@@ -1596,12 +1766,16 @@ namespace Yash_Gems___Jewelleries.Migrations
 
                     b.HasKey("OrderId");
 
+                    b.HasIndex("IsActive");
+
                     b.HasIndex("OrderDate");
 
                     b.HasIndex("OrderNumber")
                         .IsUnique();
 
                     b.HasIndex("OrderStatus");
+
+                    b.HasIndex("PaymentStatus");
 
                     b.HasIndex("UserId");
 
@@ -1680,6 +1854,39 @@ namespace Yash_Gems___Jewelleries.Migrations
                     b.HasIndex("StyleCode");
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("Yash_Gems___Jewelleries.Models.OrderStatusHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ChangedBy")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("StatusHistories");
                 });
 
             modelBuilder.Entity("Yash_Gems___Jewelleries.Models.Review", b =>
@@ -2031,6 +2238,17 @@ namespace Yash_Gems___Jewelleries.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("Yash_Gems___Jewelleries.Models.OrderStatusHistory", b =>
+                {
+                    b.HasOne("Yash_Gems___Jewelleries.Models.Order", "Order")
+                        .WithMany("StatusHistories")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Yash_Gems___Jewelleries.Models.Review", b =>
                 {
                     b.HasOne("Yash_Gems___Jewelleries.Models.Item", "Item")
@@ -2150,6 +2368,8 @@ namespace Yash_Gems___Jewelleries.Migrations
             modelBuilder.Entity("Yash_Gems___Jewelleries.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
+
+                    b.Navigation("StatusHistories");
                 });
 #pragma warning restore 612, 618
         }
