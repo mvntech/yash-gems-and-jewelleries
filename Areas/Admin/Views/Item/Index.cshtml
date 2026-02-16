@@ -56,9 +56,10 @@
                                         <tr>
                                              <th>Product Info</th>
                                              <th>Price</th>
+                                             <th>Discount</th>
                                              <th>Stock</th>
                                              <th>Category</th>
-                                             <th>Rating</th>
+                                             <th>Status</th>
                                              <th>Action</th>
                                         </tr>
                                    </thead>
@@ -71,7 +72,7 @@
                                                        <td>
                                                             <div class="d-flex align-items-center gap-2">
                                                                  <div class="rounded bg-light avatar-md d-flex align-items-center justify-content-center">
-                                                                      <img src="@(string.IsNullOrEmpty(item.PrimaryImageUrl) ? "/uploads/default.png" : item.PrimaryImageUrl)" alt="@item.ItemName" class="avatar-md">
+                                                                      <img src="@(string.IsNullOrEmpty(item.PrimaryImageUrl) ? "/uploads/default.png" : (item.PrimaryImageUrl.StartsWith("/") ? item.PrimaryImageUrl : "/" + item.PrimaryImageUrl))" alt="@item.ItemName" class="avatar-md">
                                                                  </div>
                                                                  <div>
                                                                       <a href="@Url.Action("Detail", "Item", new { area = "Admin", id = item.StyleCode })" class="text-dark fw-medium fs-15">@item.ItemName</a>
@@ -80,32 +81,37 @@
                                                             </div>
                                                        </td>
                                                        <td>@item.SellingPrice.ToString("C")</td>
+                                                       <td>@item.DiscountPercentage.ToString("C")</td>
                                                        <td>
                                                             <p class="mb-1 text-muted"><span class="text-dark fw-medium">@item.Quantity Item</span> Left</p>
                                                             <p class="mb-0 text-muted">@item.OrderItems.Sum(oi => oi.Quantity) Sold</p>
                                                        </td>
-                                                       <td>@item.Category?.CategoryName</td>
-                                                       <td> 
-                                                            <span class="badge p-1 bg-light text-dark fs-12 me-1">
-                                                                 <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i> @item.AverageRating.ToString("F1")
-                                                            </span> 
-                                                            @item.ReviewCount Review
-                                                       </td>
-                                                       <td>
-                                                            <div class="d-flex gap-2">
-                                                                 <button type="button" 
-                                                                         onclick="toggleItemStatus('@item.StyleCode', this)" 
-                                                                         class="btn btn-light btn-sm status-toggle-btn" 
-                                                                         title="Toggle Status">
-                                                                      <iconify-icon icon="@(item.IsActive ? "solar:eye-broken" : "solar:eye-closed-broken")" 
-                                                                                    class="align-middle fs-18 text-muted"></iconify-icon>
-                                                                 </button>
-                                                                 <a href="@Url.Action("Edit", "Item", new { area = "Admin", id = item.StyleCode })" class="btn btn-soft-primary btn-sm" title="Edit Product"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                 <form asp-area="Admin" asp-controller="Item" asp-action="Delete" asp-route-id="@item.StyleCode" method="post" onsubmit="return confirm('Are you sure you want to delete this product?');" style="display:inline;">
-                                                                      <button type="submit" class="btn btn-soft-danger btn-sm" title="Delete Product"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></button>
-                                                                 </form>
-                                                            </div>
-                                                       </td>
+                                                        <td>@item.Category?.CategoryName</td>
+                                                        <td>
+                                                             @if (item.IsActive)
+                                                             {
+                                                                  <span class="badge border border-success text-success px-2 py-1 fs-13">Active</span>
+                                                             }
+                                                             else
+                                                             {
+                                                                  <span class="badge border border-danger text-danger px-2 py-1 fs-13">Inactive</span>
+                                                             }
+                                                        </td>
+                                                        <td>
+                                                             <div class="d-flex gap-2">
+                                                                  <button type="button" 
+                                                                          onclick="toggleItemStatus('@item.StyleCode', this)" 
+                                                                          class="btn btn-light btn-sm status-toggle-btn" 
+                                                                          title="Toggle Status">
+                                                                       <iconify-icon icon="@(item.IsActive ? "solar:eye-broken" : "solar:eye-closed-broken")" 
+                                                                                     class="align-middle fs-18 text-secondary"></iconify-icon>
+                                                                  </button>
+                                                                  <a href="@Url.Action("Edit", "Item", new { area = "Admin", id = item.StyleCode })" class="btn btn-soft-primary btn-sm" title="Edit Product"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
+                                                                  <button type="button" onclick="deleteItem('@item.StyleCode', this)" class="btn btn-soft-danger btn-sm" title="Delete Product">
+                                                                       <iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon>
+                                                                  </button>
+                                                             </div>
+                                                        </td>
                                                   </tr>
                                              }
                                         }
@@ -191,8 +197,9 @@
         function toggleItemStatus(styleCode, btn) {
             const $btn = $(btn);
             const $icon = $btn.find('iconify-icon');
+            const $row = $btn.closest('tr');
+            const $badge = $row.find('.status-badge');
             
-            // Disable button during request
             $btn.prop('disabled', true);
             
             $.ajax({
@@ -203,23 +210,40 @@
                     __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
                 },
                 success: function (response) {
-                    if (response.success) {
-                        // Update icon and color
-                        if (response.isActive) {
-                            $icon.attr('icon', 'solar:eye-broken').addClass('text-success').removeClass('text-muted');
+                    AdminPanel.handleResponse(response, function() {
+                        if (response.success_toggle) {
+                            $icon.attr('icon', 'solar:eye-broken').addClass('text-secondary').removeClass('text-muted');
+                            $badge.removeClass('bg-danger-subtle text-danger').addClass('bg-secondary-subtle text-secondary').text('Active');
                         } else {
-                            $icon.attr('icon', 'solar:eye-closed-broken').addClass('text-muted').removeClass('text-success');
+                            $icon.attr('icon', 'solar:eye-closed-broken').addClass('text-muted').removeClass('text-secondary');
+                            $badge.removeClass('bg-secondary-subtle text-secondary').addClass('bg-danger-subtle text-danger').text('Inactive');
                         }
-                    } else {
-                        alert(response.message);
-                    }
+                    });
                 },
-                error: function () {
-                    alert('Failed to update product status.');
+                error: function (xhr) {
+                    AdminPanel.showToast('Error: ' + (xhr.responseJSON?.message || 'Failed to update status'), 'danger');
                 },
                 complete: function() {
                     $btn.prop('disabled', false);
                 }
+            });
+        }
+
+        function deleteItem(styleCode, btn) {
+            AdminPanel.confirmAction({
+                text: "This product will be permanently deleted!",
+                confirmButtonText: 'Yes, delete it!'
+            }, function() {
+                $.post('@Url.Action("Delete", "Item", new { area = "Admin" })', { 
+                    id: styleCode, 
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() 
+                }, function(response) {
+                    AdminPanel.handleResponse(response, function() {
+                        location.reload();
+                    });
+                }).fail(function() {
+                    AdminPanel.showToast("Failed to delete product.", "danger");
+                });
             });
         }
     </script>

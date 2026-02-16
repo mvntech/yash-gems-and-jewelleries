@@ -150,8 +150,7 @@
                             <div class="col-lg-4">
                                 <div class="mb-3">
                                     <label asp-for="StyleCode" class="form-label">Style Code (Auto-Generated)</label>
-                                    <input asp-for="StyleCode" class="form-control bg-light" readonly placeholder="Style Code">
-                                    <span asp-validation-for="StyleCode" class="text-danger"></span>
+                                    <input asp-for="StyleCode" class="form-control" readonly placeholder="Style Code">
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -191,7 +190,7 @@
                         <h4 class="card-title">Diamond Details</h4>
                         <button type="button" class="btn btn-sm btn-primary" id="add-diamond">Add Diamond</button>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table align-middle mb-0 table-hover table-centered" id="diamond-table">
                                 <thead class="bg-light-subtle">
@@ -223,7 +222,7 @@
                         <h4 class="card-title">Stone Details</h4>
                         <button type="button" class="btn btn-sm btn-primary" id="add-stone">Add Stone</button>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table align-middle mb-0 table-hover table-centered" id="stone-table">
                                 <thead class="bg-light-subtle">
