@@ -1,17 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Yash_Gems___Jewelleries.Data;
-using Yash_Gems___Jewelleries.Models;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Yash_Gems___Jewelleries.Data;
+using Yash_Gems___Jewelleries.Models.Enums;
+using Yash_Gems___Jewelleries.ViewModels;
+using Yash_Gems___Jewelleries.Interfaces;
+using Yash_Gems___Jewelleries.Models;
+using Yash_Gems___Jewelleries.Services;
 
 namespace Yash_Gems___Jewelleries.Controllers
 {
@@ -23,6 +25,9 @@ namespace Yash_Gems___Jewelleries.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ICompositeViewEngine _viewEngine;
+        private readonly INotificationService _notificationService;
+
+        private readonly IImageService _imageService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -30,7 +35,9 @@ namespace Yash_Gems___Jewelleries.Controllers
             ApplicationDbContext context,
             ILogger<AccountController> logger,
             IEmailSender emailSender,
-            ICompositeViewEngine viewEngine)
+            ICompositeViewEngine viewEngine,
+            IImageService imageService,
+            INotificationService notificationService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -38,6 +45,8 @@ namespace Yash_Gems___Jewelleries.Controllers
             _logger = logger;
             _emailSender = emailSender;
             _viewEngine = viewEngine;
+            _imageService = imageService;
+            _notificationService = notificationService;
         }
 
         // Render Partial View To String Method
@@ -105,7 +114,7 @@ namespace Yash_Gems___Jewelleries.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([Bind(Prefix = "Input")] LoginInput input, string? returnUrl = null)
+        public async Task<IActionResult> Login([Bind(Prefix = "Input")] LoginViewModel input, string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
@@ -118,7 +127,11 @@ namespace Yash_Gems___Jewelleries.Controllers
                 var user = await _userManager.FindByEmailAsync(input.Email);
                 if (user != null && await _userManager.IsInRoleAsync(user, "Admin"))
                 {
-                    returnUrl = Url.Action("Index", "Admin");
+                    returnUrl = Url.Action(
+                        action: "Index",
+                        controller: "Dashboard",
+                        values: new { area = "Admin" }
+                    );
                 }
 
                 return Json(new { success = true, redirectUrl = returnUrl });
@@ -134,7 +147,7 @@ namespace Yash_Gems___Jewelleries.Controllers
             }
             else
             {
-                return Json(new { success = false, message = "Invalid login attempt." });
+                return Json(new { success = false, message = "Invalid credentials. Please try again." });
             }
         }
 
@@ -157,8 +170,15 @@ namespace Yash_Gems___Jewelleries.Controllers
             var result = await _userManager.CreateAsync(user, password);
             if (result.Succeeded)
             {
-                _logger.LogInformation("User created a new account with password.");
                 await _userManager.AddToRoleAsync(user, "Customer");
+
+                // Trigger Notification
+                await _notificationService.CreateNotificationAsync(
+                    "New Customer Registered",
+                    $"New customer {user.FirstName} {user.LastName} ({user.Email}) has joined.",
+                    NotificationType.NewCustomerRegistration,
+                    user.Id,
+                    "System");
 
                 // In production, we will send email verification here
                 // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -205,7 +225,7 @@ namespace Yash_Gems___Jewelleries.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword([Bind(Prefix = "Input")] ForgotPasswordInput input)
+        public async Task<IActionResult> ForgotPassword([Bind(Prefix = "Input")] ForgotPasswordViewModel input)
         {
             if (ModelState.IsValid)
             {
@@ -235,7 +255,7 @@ namespace Yash_Gems___Jewelleries.Controllers
                 return RedirectToAction("Index", "Home", new { error = "Invalid password reset token." });
             }
 
-            var model = new ResetPasswordInput { Code = code, Email = email };
+            var model = new ResetPasswordViewModel { Code = code, Email = email };
             return View(model);
         }
 
@@ -243,7 +263,7 @@ namespace Yash_Gems___Jewelleries.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordInput input)
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel input)
         {
             if (!ModelState.IsValid)
             {
@@ -323,6 +343,15 @@ namespace Yash_Gems___Jewelleries.Controllers
                         if (createResult.Succeeded)
                         {
                             await _userManager.AddToRoleAsync(user, "Customer");
+
+                            // Trigger Notification
+                            await _notificationService.CreateNotificationAsync(
+                                "New Customer Registered",
+                                $"New customer {user.FirstName} {user.LastName} ({user.Email}) joined via {info.LoginProvider}.",
+                                NotificationType.NewCustomerRegistration,
+                                user.Id,
+                                info.LoginProvider);
+
                             createResult = await _userManager.AddLoginAsync(user, info);
                             if (createResult.Succeeded)
                             {
@@ -346,67 +375,6 @@ namespace Yash_Gems___Jewelleries.Controllers
             }
         }
 
-        public class LoginInput
-        {
-            public string Email { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-            public bool RememberMe { get; set; }
-        }
-
-        public class ForgotPasswordInput
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; } = string.Empty;
-        }
-
-        public class ResetPasswordInput
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; } = string.Empty;
-
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; } = string.Empty;
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; } = string.Empty;
-
-            public string Code { get; set; } = string.Empty;
-        }
-
-
-        public class UserDetailModel
-        {
-            [Required]
-            [Display(Name = "First Name")]
-            public string FirstName { get; set; } = string.Empty;
-
-            [Required]
-            [Display(Name = "Last Name")]
-            public string LastName { get; set; } = string.Empty;
-
-            [Required]
-            [Display(Name = "Username")]
-            public string UserName { get; set; } = string.Empty;
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Current Password")]
-            public string? CurrentPassword { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "New Password")]
-            public string? NewPassword { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm Password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-            public string? ConfirmPassword { get; set; }
-        }
-
         // GET: /Account/Detail (View Profile Details)
         [Authorize]
         public async Task<IActionResult> Detail()
@@ -417,11 +385,15 @@ namespace Yash_Gems___Jewelleries.Controllers
                 return RedirectToAction("Login");
             }
 
-            var model = new UserDetailModel
+            var model = new AccountProfileViewModel
             {
                 FirstName = user.FirstName ?? string.Empty,
                 LastName = user.LastName ?? string.Empty,
-                UserName = user.UserName ?? string.Empty
+                Address = user.Address,
+                City = user.City,
+                State = user.State,
+                DateOfBirth = user.DateOfBirth,
+                ProfilePictureUrl = user.ProfilePictureUrl
             };
 
             ViewBag.HasPassword = await _userManager.HasPasswordAsync(user);
@@ -433,23 +405,46 @@ namespace Yash_Gems___Jewelleries.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Detail(UserDetailModel model)
+        public async Task<IActionResult> Detail(AccountProfileViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return RedirectToAction("Login");
             }
 
-            // Update basic info
+            if (!ModelState.IsValid)
+            {
+                ViewBag.HasPassword = await _userManager.HasPasswordAsync(user);
+                return View(model);
+            }
+
+            // Update profile fields
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
-            user.UserName = model.UserName;
+            user.Address = model.Address;
+            user.City = model.City;
+            user.State = model.State;
+            user.DateOfBirth = model.DateOfBirth;
+
+            // Handle Profile Picture Upload
+            if (model.ProfilePictureFile != null)
+            {
+                try 
+                {
+                    var profilePictureUrl = await SaveProfilePictureAsync(model.ProfilePictureFile, user.ProfilePictureUrl);
+                    if (profilePictureUrl != null)
+                    {
+                        user.ProfilePictureUrl = profilePictureUrl;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("ProfilePictureFile", ex.Message);
+                    ViewBag.HasPassword = await _userManager.HasPasswordAsync(user);
+                    return View(model);
+                }
+            }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
 
@@ -465,11 +460,13 @@ namespace Yash_Gems___Jewelleries.Controllers
                     if (string.IsNullOrEmpty(model.CurrentPassword))
                     {
                         ModelState.AddModelError("CurrentPassword", "Current password is required to set a new password.");
+                        ViewBag.HasPassword = hasPassword;
                         return View(model);
                     }
                     if (string.IsNullOrEmpty(model.NewPassword))
                     {
                         ModelState.AddModelError("NewPassword", "New password is required.");
+                        ViewBag.HasPassword = hasPassword;
                         return View(model);
                     }
 
@@ -480,6 +477,7 @@ namespace Yash_Gems___Jewelleries.Controllers
                         {
                             ModelState.AddModelError(string.Empty, error.Description);
                         }
+                        ViewBag.HasPassword = hasPassword;
                         return View(model);
                     }
                 }
@@ -492,21 +490,33 @@ namespace Yash_Gems___Jewelleries.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+                ViewBag.HasPassword = hasPassword;
                 return View(model);
             }
 
             await _signInManager.RefreshSignInAsync(user);
             
-            if (!string.IsNullOrEmpty(model.CurrentPassword) && !hasPassword)
-            {
-                 // Warning was set above
-            }
-            else
-            {
-                TempData["Success"] = "Profile details updated successfully.";
-            }
+            TempData["Success"] = "Profile details updated successfully.";
 
             return RedirectToAction(nameof(Detail));
+        }
+
+        private async Task<string?> SaveProfilePictureAsync(IFormFile file, string? oldPictureUrl)
+        {
+            // Validate image using centralized service
+            if (!_imageService.IsValidImage(file))
+            {
+                throw new Exception("Invalid image file. Please upload a valid image (jpg, png, webp) under 5MB.");
+            }
+
+            // Delete old file if exists and is not the default
+            if (!string.IsNullOrEmpty(oldPictureUrl) && !oldPictureUrl.Contains("dummy-user.jpg"))
+            {
+                _imageService.DeleteImage(oldPictureUrl);
+            }
+
+            // Save new file using centralized service
+            return await _imageService.SaveImageAsync(file, IImageService.Profile);
         }
 
         // GET: /Account/Order (View User's Orders)
@@ -524,7 +534,12 @@ namespace Yash_Gems___Jewelleries.Controllers
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
 
-            return View(orders);
+            var model = new CustomerOrderIndexViewModel
+            {
+                Orders = orders,
+            };
+
+            return View(model);
         }
 
         // GET: /Account/GetOrderDetail/{id}
@@ -550,7 +565,7 @@ namespace Yash_Gems___Jewelleries.Controllers
             return PartialView("_OrderDetailPartial", order);
         }
 
-        // GET: /Account/Inquiries (View User's Inquiries)
+        // GET: /Account/Inquiries
         [Authorize]
         public async Task<IActionResult> Inquiries()
         {
@@ -567,131 +582,6 @@ namespace Yash_Gems___Jewelleries.Controllers
                 .ToListAsync();
 
             return View(inquiries);
-        }
-
-        // GET: /Account/Wishlist
-        [Authorize]
-        public async Task<IActionResult> Wishlist()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return RedirectToAction("Login");
-            }
-
-            var wishlistItems = await _context.Wishlists
-                .Include(w => w.Item)
-                .Where(w => w.UserId == user.Id)
-                .OrderByDescending(w => w.AddedDate)
-                .ToListAsync();
-
-            return View(wishlistItems);
-        }
-
-        // POST: /Account/ToggleWishlist
-        [HttpPost]
-        public async Task<IActionResult> ToggleWishlist(string styleCode)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return Json(new { success = false, message = "User not logged in" });
-            }
-
-            if (string.IsNullOrEmpty(styleCode))
-            {
-                return Json(new { success = false, message = "Invalid product" });
-            }
-
-            // Verify product exists
-            var productExists = await _context.Items.AnyAsync(i => i.StyleCode == styleCode);
-            if (!productExists)
-            {
-                return Json(new { success = false, message = "Product not found" });
-            }
-
-            var existingItem = await _context.Wishlists
-                .FirstOrDefaultAsync(w => w.UserId == user.Id && w.StyleCode == styleCode);
-
-            bool added;
-            if (existingItem != null)
-            {
-                _context.Wishlists.Remove(existingItem);
-                added = false;
-            }
-            else
-            {
-                _context.Wishlists.Add(new Wishlist
-                {
-                    UserId = user.Id,
-                    StyleCode = styleCode,
-                    AddedDate = DateTime.UtcNow
-                });
-                added = true;
-            }
-
-            await _context.SaveChangesAsync();
-            var count = await _context.Wishlists.CountAsync(w => w.UserId == user.Id);
-
-            return Json(new { 
-                success = true, 
-                added = added, 
-                count = count,
-                indicatorHtml = await RenderPartialViewToString("_WishlistIndicatorPartial", count)
-            });
-        }
-
-        // POST: /Account/RemoveFromWishlist
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveFromWishlist(int id)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return Json(new { success = false, message = "User not logged in" });
-            }
-
-            var item = await _context.Wishlists
-                .FirstOrDefaultAsync(w => w.WishlistId == id && w.UserId == user.Id);
-
-            if (item != null)
-            {
-                _context.Wishlists.Remove(item);
-                await _context.SaveChangesAsync();
-            }
-
-            var wishlistItems = await _context.Wishlists
-                .Include(w => w.Item)
-                .Where(w => w.UserId == user.Id)
-                .ToListAsync();
-
-            var count = wishlistItems.Count;
-
-            return Json(new { 
-                success = true, 
-                count = count,
-                itemsHtml = await RenderPartialViewToString("_WishlistItemsPartial", wishlistItems),
-                indicatorHtml = await RenderPartialViewToString("_WishlistIndicatorPartial", count)
-            });
-        }
-
-        // GET: /Account/GetWishlistCount
-        [HttpGet]
-        public async Task<IActionResult> GetWishlistCount()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            int count = 0;
-            if (user != null)
-            {
-                count = await _context.Wishlists.CountAsync(w => w.UserId == user.Id);
-            }
-            return Json(new { 
-                success = true, 
-                count = count,
-                indicatorHtml = await RenderPartialViewToString("_WishlistIndicatorPartial", count)
-            });
         }
     }
 }
