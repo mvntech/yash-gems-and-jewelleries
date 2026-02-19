@@ -38,8 +38,9 @@ namespace Yash_Gems___Jewelleries.Areas.Admin.Controllers
             }
 
             // Base query for customers
+            var currentUserId = _userManager.GetUserId(User);
             var customerQuery = _context.Users
-                .Where(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == customerRole));
+                .Where(u => u.Id != currentUserId && _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == customerRole));
 
             // Overall Stats
             var allCustomersCount = await customerQuery.CountAsync();
@@ -150,7 +151,8 @@ namespace Yash_Gems___Jewelleries.Areas.Admin.Controllers
                 TotalOrders = totalOrders,
                 TotalSpent = totalSpent,
                 TotalInvoices = totalOrders,
-                LatestOrder = latestOrder
+                LatestOrder = latestOrder,
+                IsNewsletterSubscribed = await _context.NewsletterSubscriptions.AnyAsync(n => n.Email == customer.Email && n.IsSubscribed)
             };
 
             return View(viewModel);
@@ -164,12 +166,29 @@ namespace Yash_Gems___Jewelleries.Areas.Admin.Controllers
             var customer = await _userManager.FindByIdAsync(id);
             if (customer == null)
             {
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                    return Json(new { success = false, message = "Customer not found.", type = "error" });
+
                 TempData["Error"] = "Customer not found.";
                 return RedirectToAction(nameof(Index));
             }
 
             customer.IsActive = !customer.IsActive;
             var result = await _userManager.UpdateAsync(customer);
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                if (result.Succeeded)
+                {
+                    return Json(new { 
+                        success = true, 
+                        message = $"Customer account {(customer.IsActive ? "activated" : "deactivated")} successfully.", 
+                        type = "success",
+                        isActive = customer.IsActive
+                    });
+                }
+                return Json(new { success = false, message = "Failed to update customer status.", type = "danger" });
+            }
 
             if (result.Succeeded)
             {

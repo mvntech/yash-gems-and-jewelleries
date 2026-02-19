@@ -1,7 +1,7 @@
 ﻿@model Yash_Gems___Jewelleries.ViewModels.CustomerDetailViewModel
 @using Yash_Gems___Jewelleries.Models.Enums
 @{
-	ViewData["Title"] = Model.Customer.FirstName.ToUpper() + " " + Model.Customer.LastName.ToUpper() + "'s Profile";
+	ViewData["Title"] = Model.Customer.FirstName + " " + Model.Customer.LastName + "'s Profile";
 }
 
 <!-- Start Container Fluid -->
@@ -11,7 +11,7 @@
             <div class="card overflow-hidden">
                 <div class="card-body">
                     <div class="bg-primary profile-bg rounded-top p-5 position-relative mx-n3 mt-n3">
-                        <img src="/uploads/dummy-user.jpg" alt="" class="avatar-lg border border-light border-3 rounded-circle position-absolute top-100 start-0 translate-middle ms-5">
+                        <img src="@(Model.Customer.ProfilePictureUrl ?? "/uploads/dummy-user.jpg")" alt="" class="avatar-lg border border-light border-3 rounded-circle position-absolute top-100 start-0 translate-middle ms-5">
                     </div>
                     <div class="mt-4 pt-3">
                         <h4 class="mb-1"> @Model.Customer.FirstName @Model.Customer.LastName <i class="bx bxs-badge-check text-success align-middle"></i></h4>
@@ -23,13 +23,11 @@
                 </div>
                 <div class="card-footer border-top gap-1 hstack">
                     <a href="mailto:@Model.Customer.Email" class="btn btn-primary w-100">Send Email</a>
-                    <form asp-action="ToggleActive" asp-route-id="@Model.Customer.Id" method="post" class="w-100">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-soft-dark d-inline-flex align-items-center justify-content-center rounded w-100">
-                            <i class='bx @(Model.Customer.IsActive ? "bx-lock-alt" : "bx-lock-open-alt") fs-18 me-1'></i>
-                            @(Model.Customer.IsActive ? "Deactivate" : "Activate")
-                        </button>
-                    </form>
+                    <button type="button" 
+                            onclick="toggleCustomerStatus('@Model.Customer.Id', this, '@Model.Customer.FirstName @Model.Customer.LastName', @Model.Customer.IsActive.ToString().ToLower())" 
+                            class="btn @(Model.Customer.IsActive ? "btn-soft-dark" : "btn-soft-success") w-100">
+                        @(Model.Customer.IsActive ? "Deactivate" : "Activate")
+                    </button>
                 </div>
             </div>
 
@@ -41,11 +39,11 @@
                     <div>
                         @if (Model.Customer.IsActive)
                         {
-                            <span class="badge bg-success-subtle text-success px-2 py-1">Active User</span>
+                            <span class="badge border border-success text-success px-2 py-1 fs-13">Active User</span>
                         }
                         else
                         {
-                            <span class="badge bg-danger-subtle text-danger px-2 py-1">Inactive</span>
+                            <span class="badge border border-danger text-danger px-2 py-1 fs-13">Inactive</span>
                         }
                     </div>
 
@@ -79,6 +77,21 @@
                                         <p class="d-flex mb-0 align-items-center gap-1 fw-semibold text-dark"> Joined Date : </p>
                                     </td>
                                     <td class="text-dark fw-medium px-0">@Model.Customer.CreatedDate.ToString("dd MMM, yyyy")</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0">
+                                        <p class="d-flex mb-0 align-items-center gap-1 fw-semibold text-dark"> Newsletter : </p>
+                                    </td>
+                                    <td class="px-0">
+                                        @if (Model.IsNewsletterSubscribed)
+                                        {
+                                            <span class="text-dark fw-medium">Subscribed</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted fw-medium">Unsubscribed</span>
+                                        }
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="px-0">
@@ -116,17 +129,6 @@
                                 <div class="d-block">
                                     <a href="#!" class="text-dark fw-medium">Invoice #@order.OrderNumber</a>
                                     <p class="text-muted mb-0 fs-13">@order.OrderDate.ToString("dd MMM yyyy")</p>
-                                </div>
-                                <div class="ms-auto text-end">
-                                    <div class="dropdown">
-                                        <a href="#" class="dropdown-toggle arrow-none card-drop p-0" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="ti ti-dots-vertical"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="javascript:void(0);" class="dropdown-item">Download</a>
-                                            <a href="javascript:void(0);" class="dropdown-item">Share</a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         }
@@ -198,7 +200,7 @@
                 <div class="card-header">
                     <h4 class="card-title">Order History</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table align-middle mb-0 table-hover table-centered">
                             <thead class="bg-light-subtle">
